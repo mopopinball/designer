@@ -1,0 +1,8 @@
+<div [class.active-device]="parentActive && state.getState() === engineState">
+    <mat-icon *ngIf="state.type === OutputDeviceType.LIGHT">highlight</mat-icon>
+    <mat-icon *ngIf="state.type === OutputDeviceType.COIL">compare_arrows</mat-icon>
+    <span class="device-id">{{state.id}}</span> {{formatState(state.getState())}}
+    <button mat-icon-button>
+        <mat-icon (click)="delete.emit()">delete</mat-icon>
+    </button>
+</div>

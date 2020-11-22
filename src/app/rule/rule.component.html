@@ -1,0 +1,22 @@
+<div class="rule" [class.active]="ruleEngine.active">
+    <div class="header">
+        <mat-icon [class.active-icon]="ruleEngine.active">group_work</mat-icon>
+        <div>
+            <input type="text" [(ngModel)]="ruleEngine.id" />
+        </div>
+        
+        <span class="spacer"></span>
+        Auto start: <input type="checkbox" [(ngModel)]="ruleEngine.autoStart" />
+        <button mat-icon-button>
+            <mat-icon (click)="delete.emit()">delete</mat-icon>
+        </button>
+    </div>
+    <div class="section">
+        <div>Devices <button mat-stroked-button (click)="addDevice()">Add</button></div>
+        <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" [parentActive]="ruleEngine.active"></app-desired-output-state>
+    </div>
+    <div class="section">
+        <div>Children <button mat-stroked-button (click)="addChild()">Add</button></div>
+        <app-rule *ngFor="let child of ruleEngine.children" (delete)="deleteChild(child)" [ruleEngine]="child"></app-rule>
+    </div>
+</div>

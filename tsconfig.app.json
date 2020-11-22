@@ -3,13 +3,26 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": ["node"],
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   },
   "files": [
     "src/main.ts",
     "src/polyfills.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "node_modules/@mopopinball/engine/src/system/hardware-config.schema.ts",
+    "node_modules/@mopopinball/engine/src/system/rule-engine/**/*",
+    "node_modules/@mopopinball/engine/src/system/devices/output-device.ts",
+    "node_modules/@mopopinball/engine/src/system/devices/output-device-type.ts",
+    "node_modules/@mopopinball/engine/src/system/devices/lamp-role.ts",
+    "node_modules/@mopopinball/engine/src/system/devices/light.ts",
+    "node_modules/@mopopinball/engine/src/system/dirty-notifier.ts"
+  ],
+  "exclude": [
+    "node_modules/@mopopinball/engine/src/system/rule-engine/**/*.spec.ts",
   ]
 }

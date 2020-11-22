@@ -1,0 +1,25 @@
+.rule {
+    display: block;
+    border: solid 1px white;
+    border-radius: 3px;
+    
+    background: rgb(66, 66, 66);
+
+    .active-icon {
+        color: orange;
+    }
+
+    .header {
+        display: flex;
+        padding: 2px;
+        background: #212121;
+        span {
+            font-weight: bold;
+        }
+    }
+
+    .section {
+        padding: 2px;
+        padding-left: 0.5em;
+    }
+}

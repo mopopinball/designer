@@ -1,0 +1,21 @@
+<div>
+    <mat-dialog-content>
+        <h2><mat-icon>compare_arrows</mat-icon>Coils</h2>
+        <div *ngFor="let coil of coils | keyvalue">
+            {{coil.value.name}}
+            <button (click)="newCoil(coil, 1)">On</button>
+            <button (click)="newCoil(coil, 0)">Off</button>
+        </div>
+        
+        <h2><mat-icon>highlight</mat-icon>Lamps</h2>
+        <div *ngFor="let lamp of lamps | keyvalue">
+            {{lamp.value.name}}
+            <button (click)="newLamp(lamp, 1)">On</button>
+            <button (click)="newLamp(lamp, 0)">Off</button>
+            <button (click)="newLamp(lamp, 2)">Blink</button>
+        </div>
+    </mat-dialog-content>
+    
+
+    
+</div>
