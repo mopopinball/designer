@@ -5,14 +5,22 @@
 
     .io {
         display: flex;
-        padding: 6px;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        .devices {
+            margin-right: 6px;
+        }
+        // padding: 6px;
     }
 
-    .section {
-        padding: 2px;
-        padding-left: 0.5em;
-        border: solid 1px #666;
-        border-radius: 3px;
+    .children {
+        app-rule {
+            padding-bottom: 6px;
+
+            &:last-child {
+                padding-bottom: 0;
+            }
+        }
     }
 
     .trigger {

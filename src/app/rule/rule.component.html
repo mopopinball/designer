@@ -4,64 +4,82 @@
         <div class="title">
             <input type="text" [(ngModel)]="ruleEngine.id" />
         </div>
-        
-        <span class="spacer"></span>
         Auto start: <input type="checkbox" [(ngModel)]="ruleEngine.autoStart" />
+        <span class="spacer"></span>
+        
         <button mat-icon-button>
             <mat-icon (click)="delete.emit()">delete</mat-icon>
         </button>
+        <button mat-icon-button (click)="showBody = !showBody">
+            <mat-icon *ngIf="showBody">keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="!showBody">keyboard_arrow_up</mat-icon>
+        </button>
     </div>
-    <div class="io">
-        <div class="section">
-            <div class="header">
-                <mat-icon>devices_other</mat-icon>
-                <div class="title">Devices</div>
-                <div class="spacer"></div>
-                <button mat-icon-button title="Add new device">
-                    <mat-icon (click)="addDevice()">add_circle_outline</mat-icon>
-                </button>
-            </div>
-            <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" [parentActive]="ruleEngine.active"></app-desired-output-state>
-        </div>
-        <div class="section">
-            <div class="header">
-                <mat-icon>input</mat-icon>
-                <div class="title">Triggers & Actions</div>
-                <div class="spacer"></div>
-                <button mat-icon-button>
-                    <mat-icon (click)="addTrigger()">add_circle_outline</mat-icon>
-                </button>
-            </div>
-            <div *ngFor="let trigger of ruleEngine.triggers" class="trigger">
-                <div class="sub-header" *ngIf="trigger.type === 'switch'">Switch Trigger: {{trigger.switchId}}
-                    <button mat-icon-button [disabled]="!ruleEngine.active">
-                        <mat-icon (click)="activateTrigger(trigger)">done</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                        <mat-icon (click)="deleteTrigger(trigger)">delete</mat-icon>
+    <div class="body" *ngIf="showBody">
+        <div class="io">
+            <div class="nestable-container devices">
+                <div class="header">
+                    <mat-icon>devices_other</mat-icon>
+                    <div class="title">Devices</div>
+                    <div class="spacer"></div>
+                    <button mat-icon-button title="Add new device">
+                        <mat-icon (click)="addDevice()">add_circle_outline</mat-icon>
                     </button>
                 </div>
-                <div>Actions
+                <div class="body">
+                    <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" [parentActive]="ruleEngine.active"></app-desired-output-state>
+                </div>
+            </div>
+            <div class="nestable-container">
+                <div class="header">
+                    <mat-icon>input</mat-icon>
+                    <div class="title">Triggers & Actions</div>
+                    <div class="spacer"></div>
                     <button mat-icon-button>
-                        <mat-icon (click)="addAction(trigger)">add_circle_outline</mat-icon>
+                        <mat-icon (click)="addTrigger()">add_circle_outline</mat-icon>
                     </button>
                 </div>
-                <div *ngFor="let action of trigger.actions" class="action">
-                    <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
-                    <button mat-icon-button>
-                        <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
-                    </button>
-                    <div>
-                        {{action.stopTargetId}} -> {{action.startTargetId}}
+                <div class="body">
+                    <div *ngFor="let trigger of ruleEngine.triggers" class="trigger">
+                        <div class="sub-header" *ngIf="trigger.type === 'switch'">Switch Trigger: {{trigger.switchId}}
+                            <button mat-icon-button [disabled]="!ruleEngine.active">
+                                <mat-icon (click)="activateTrigger(trigger)">done</mat-icon>
+                            </button>
+                            <button mat-icon-button>
+                                <mat-icon (click)="deleteTrigger(trigger)">delete</mat-icon>
+                            </button>
+                        </div>
+                        <div>Actions
+                            <button mat-icon-button>
+                                <mat-icon (click)="addAction(trigger)">add_circle_outline</mat-icon>
+                            </button>
+                        </div>
+                        <div *ngFor="let action of trigger.actions" class="action">
+                            <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
+                            <button mat-icon-button>
+                                <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
+                            </button>
+                            <div>
+                                {{action.stopTargetId}} -> {{action.startTargetId}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="io">
-        <div class="section">
-            <div class="sub-header">Children <button mat-stroked-button (click)="addChild()">Add</button></div>
-            <app-rule *ngFor="let child of ruleEngine.children" (delete)="deleteChild(child)" [ruleEngine]="child"></app-rule>
+        <div>
+            <div class="nestable-container">
+                <div class="header">
+                    <div class="title">Children</div>
+                    <div class="spacer"></div>
+                    <button mat-icon-button title="Add Child">
+                        <mat-icon (click)="addChild()">add_circle_outline</mat-icon>
+                    </button>
+                </div>
+                <div class="body children">
+                    <app-rule *ngFor="let child of ruleEngine.children" (delete)="deleteChild(child)" [ruleEngine]="child"></app-rule>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -8,18 +8,13 @@
     font-family: monospace;
 }
 
-.active {
-    // font-weight: bold;
-    // background: lightgray;
-    
-}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .nestable-container {
     display: block;
     border: solid 1px white;
-    box-shadow: 3px 3px 3px #666666;
+    box-shadow: 3px 3px 3px #333333;
     border-radius: 3px;
     background: rgb(66, 66, 66);
 
@@ -41,5 +36,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         .title {
             margin: 0 1em;
         }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        padding: 6px;
     }
 }

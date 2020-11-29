@@ -18,7 +18,7 @@ export class RuleComponent implements OnInit {
     @Input() ruleEngine: RuleEngine;
     @Output() delete = new EventEmitter<void>();
     devices: DesiredOutputState[];
-
+    showBody = true;
     constructor(public dialog: MatDialog, private gameService: GameService) { }
 
     ngOnInit(): void {
