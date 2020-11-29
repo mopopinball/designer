@@ -1,0 +1,31 @@
+<h2>Create new Action</h2>
+<mat-dialog-content>
+    <div>
+        <div *ngIf="mode !== 'existing'">
+            Trigger Type:
+            <mat-radio-group [(ngModel)]="mode">
+                <mat-radio-button value="switch">Switch</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div *ngIf="mode === 'switch'">
+            Switch:
+            <input type="text"
+            (input)="onSwitchChange($event)"
+            [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let sw of filteredSwitches" [value]="sw.name"
+                (onSelectionChange)="switchSelected(sw)">
+                    {{sw.name}}
+                </mat-option>
+            </mat-autocomplete>
+        </div>
+    </div>
+    <h3>Action</h3>
+    <div>
+        From: <input [(ngModel)]="from" />
+        To: <input [(ngModel)]="to" />
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button (click)="create()">Create</button>
+</mat-dialog-actions>

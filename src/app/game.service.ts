@@ -23,4 +23,8 @@ export class GameService {
     }
     this.tickSubject.next(this.root.getDevices());
   }
+
+  onSwitch(id: string): void {
+    this.root.onSwitch(id);
+  }
 }

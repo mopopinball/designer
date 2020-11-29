@@ -1,25 +1,28 @@
 .rule {
-    display: block;
-    border: solid 1px white;
-    border-radius: 3px;
-    
-    background: rgb(66, 66, 66);
-
     .active-icon {
         color: orange;
     }
 
-    .header {
+    .io {
         display: flex;
-        padding: 2px;
-        background: #212121;
-        span {
-            font-weight: bold;
-        }
+        padding: 6px;
     }
 
     .section {
         padding: 2px;
         padding-left: 0.5em;
+        border: solid 1px #666;
+        border-radius: 3px;
+    }
+
+    .trigger {
+        border: solid 1px white;
+        border-radius: 5px;
+        padding: 5px;
+
+        .action {
+            border: solid 1px white;
+            border-radius: 5px;
+        }
     }
 }

@@ -11,7 +11,35 @@
 .active {
     // font-weight: bold;
     // background: lightgray;
-    border: solid 1px orange !important;
+    
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.nestable-container {
+    display: block;
+    border: solid 1px white;
+    box-shadow: 3px 3px 3px #666666;
+    border-radius: 3px;
+    background: rgb(66, 66, 66);
+
+    &.active {
+        border: solid 1px orange;
+        box-shadow: 1px 1px 3px darkorange;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        padding: 0px 6px;
+        background: #212121;
+        border-radius: 3px 3px 0 0;
+
+        span {
+            font-weight: bold;
+        }
+        .title {
+            margin: 0 1em;
+        }
+    }
+}
