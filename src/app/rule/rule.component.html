@@ -32,7 +32,7 @@
             </div>
             <div class="nestable-container">
                 <div class="header">
-                    <mat-icon>input</mat-icon>
+                    <mat-icon>rule</mat-icon>
                     <div class="title">Triggers & Actions</div>
                     <div class="spacer"></div>
                     <button mat-icon-button>
@@ -40,27 +40,31 @@
                     </button>
                 </div>
                 <div class="body">
-                    <div *ngFor="let trigger of ruleEngine.triggers" class="trigger">
-                        <div class="sub-header" *ngIf="trigger.type === 'switch'">Switch Trigger: {{trigger.switchId}}
-                            <button mat-icon-button [disabled]="!ruleEngine.active">
-                                <mat-icon (click)="activateTrigger(trigger)">done</mat-icon>
+                    <div *ngFor="let trigger of ruleEngine.triggers" class="nestable-container">
+                        <div class="header" *ngIf="trigger.type === 'switch'">Switch Trigger: {{trigger.switchId}}
+                            <button mat-icon-button [disabled]="!ruleEngine.active" title="Activate trigger">
+                                <mat-icon (click)="activateTrigger(trigger)">play_arrow</mat-icon>
                             </button>
+                            <button mat-icon-button title="Add action">
+                                <mat-icon (click)="addAction(trigger)">add_circle_outline</mat-icon>
+                            </button>
+                            <div class="spacer"></div>
                             <button mat-icon-button>
                                 <mat-icon (click)="deleteTrigger(trigger)">delete</mat-icon>
                             </button>
                         </div>
-                        <div>Actions
-                            <button mat-icon-button>
-                                <mat-icon (click)="addAction(trigger)">add_circle_outline</mat-icon>
-                            </button>
-                        </div>
-                        <div *ngFor="let action of trigger.actions" class="action">
-                            <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
-                            <button mat-icon-button>
-                                <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
-                            </button>
-                            <div>
-                                {{action.stopTargetId}} -> {{action.startTargetId}}
+                        <div class="body">
+                            <div *ngFor="let action of trigger.actions" class="action">
+                                <div>
+                                    <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
+                                </div>
+                                <span>
+                                    {{action.stopTargetId}} -> {{action.startTargetId}}
+                                </span>
+                                <div class="spacer"></div>
+                                <button mat-icon-button>
+                                    <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
+                                </button>
                             </div>
                         </div>
                     </div>

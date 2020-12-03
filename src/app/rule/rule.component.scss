@@ -23,14 +23,25 @@
         }
     }
 
-    .trigger {
-        border: solid 1px white;
-        border-radius: 5px;
-        padding: 5px;
+    // .trigger {
+    //     border: solid 1px white;
+    //     border-radius: 5px;
+    //     padding: 5px;
 
         .action {
+            display: flex;
+            align-items: center;
             border: solid 1px white;
             border-radius: 5px;
+            margin-bottom: 10px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            span {
+                margin-left: 0.5em;
+            }
         }
-    }
+    // }
 }
