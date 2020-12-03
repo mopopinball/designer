@@ -11,6 +11,7 @@ import { LightState } from '@mopopinball/engine/src/system/devices/light';
 })
 export class DesiredOutputStateComponent implements OnInit {
   OutputDeviceType: typeof OutputDeviceType = OutputDeviceType;
+  LightState: typeof LightState = LightState;
   engineState: DesiredOutputStateType;
 
   @Input() parentActive: boolean;
@@ -39,6 +40,11 @@ export class DesiredOutputStateComponent implements OnInit {
     else {
       return '';
     }
+  }
+
+  onChangeState(newState) {
+    this.state.setInitialState(newState);
+    this.gameService.update();
   }
 
 }
