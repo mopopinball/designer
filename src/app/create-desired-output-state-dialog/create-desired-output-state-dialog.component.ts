@@ -23,6 +23,9 @@ export class CreateDesiredOutputStateDialogComponent implements OnInit {
   lamps: LampsSchema = {};
   coils: CoilsSchema;
 
+  filteredCoils: KeyValuePair<HardwareCoilSchema>[];
+  filteredLamps: KeyValuePair<HardwareLampSchema>[];
+
   constructor(
     public dialogRef: MatDialogRef<CreateDesiredOutputStateDialogComponent>
   ) { }
@@ -38,6 +41,7 @@ export class CreateDesiredOutputStateDialogComponent implements OnInit {
         this.lamps[lampEntry[0]] = lampEntry[1];
       }
     }
+    this.onSwitchChange({target: {value: ''}});
   }
 
   newLamp(lamp: KeyValuePair<HardwareLampSchema>, state: LightState) {
@@ -49,5 +53,27 @@ export class CreateDesiredOutputStateDialogComponent implements OnInit {
     const result = new DesiredOutputState(coil.key, OutputDeviceType.COIL, state);
     this.dialogRef.close(result);
   }
+
+  onSwitchChange(evt): void {
+    this.filteredCoils = Object.entries(this.coils)
+        .map((entry) => {
+            return {key: entry[0], value: entry[1]};
+        })
+        .filter((details) => {
+            return details.value.name.toLowerCase().indexOf(evt.target.value?.toLowerCase()) >= 0;
+        }).sort((a, b) => {
+            return a.value.name.localeCompare(b.value.name);
+        });
+
+    this.filteredLamps = Object.entries(this.lamps)
+        .map((entry) => {
+            return {key: entry[0], value: entry[1]};
+        })
+        .filter((details) => {
+            return details.value.name.toLowerCase().indexOf(evt.target.value?.toLowerCase()) >= 0;
+        }).sort((a, b) => {
+            return a.value.name.localeCompare(b.value.name);
+        });
+}
 
 }

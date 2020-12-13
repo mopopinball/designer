@@ -1,0 +1,11 @@
+<h1>Select a machine</h1>
+
+<mat-dialog-content>
+    <ul>
+        <li *ngFor="let hw of hardwareFiles">
+            <strong>{{hw.name}} </strong>
+            <span>(System {{hw.system}})</span>
+            <button mat-raised-button color="primary" (click)="select(hw)">Select</button>
+        </li>
+    </ul>
+</mat-dialog-content>

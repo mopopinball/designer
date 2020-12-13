@@ -14,7 +14,7 @@ import { ThrowStmt } from '@angular/compiler';
     styleUrls: ['./rule.component.scss']
 })
 export class RuleComponent implements OnInit {
-
+    @Input() isRoot: boolean = false;
     @Input() ruleEngine: RuleEngine;
     @Output() delete = new EventEmitter<void>();
     devices: DesiredOutputState[];
@@ -25,9 +25,14 @@ export class RuleComponent implements OnInit {
         this.updateDevices();
     }
 
+    openInNewTab() {
+        this.gameService.newTab.emit(this.ruleEngine);
+    }
+
     addDevice() {
         const dialogRef = this.dialog.open(CreateDesiredOutputStateDialogComponent, {
-            width: '50%'
+            width: '50%',
+            height: '75%'
         });
 
         dialogRef.afterClosed().subscribe((result: DesiredOutputState) => {
@@ -46,6 +51,9 @@ export class RuleComponent implements OnInit {
         this.ruleEngine.children.push(
             new RuleEngine('new child', true)
         );
+        // todo: this does not start when added.
+        // todo: toggleing autostart likely does nothing in editor
+        this.gameService.update();
     }
 
     onInput() {

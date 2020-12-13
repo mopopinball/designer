@@ -1,14 +1,23 @@
 <div>
     <mat-dialog-content>
+        <div class="header">
+            <input type="text"
+            class="search"
+            placeholder="Search for a device"
+            (input)="onSwitchChange($event)"
+            >
+        </div>
+        
+
         <h2><mat-icon>compare_arrows</mat-icon>Coils</h2>
-        <div *ngFor="let coil of coils | keyvalue">
+        <div *ngFor="let coil of filteredCoils" class="hw-item">
             {{coil.value.name}}
             <button (click)="newCoil(coil, true)">On</button>
             <button (click)="newCoil(coil, false)">Off</button>
         </div>
         
         <h2><mat-icon>highlight</mat-icon>Lamps</h2>
-        <div *ngFor="let lamp of lamps | keyvalue">
+        <div *ngFor="let lamp of filteredLamps" class="hw-item">
             {{lamp.value.name}}
             <button (click)="newLamp(lamp, 1)">On</button>
             <button (click)="newLamp(lamp, 0)">Off</button>

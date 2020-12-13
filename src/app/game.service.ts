@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { BehaviorSubject } from 'rxjs';
@@ -10,6 +10,8 @@ export class GameService {
   private root: RuleEngine;
   private tickSubject = new BehaviorSubject<Map<string, DesiredOutputState>>(new Map());
   tick = this.tickSubject.asObservable();
+
+  newTab: EventEmitter<RuleEngine> = new EventEmitter();
 
   constructor() { }
 

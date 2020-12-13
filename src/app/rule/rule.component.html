@@ -2,13 +2,18 @@
     <div class="header">
         <mat-icon [class.active-icon]="ruleEngine.active">group_work</mat-icon>
         <div class="title">
-            <input type="text" [(ngModel)]="ruleEngine.id" />
+            <input type="text" [disabled]="ruleEngine.id === 'root'" [(ngModel)]="ruleEngine.id" />
         </div>
-        Auto start: <input type="checkbox" [(ngModel)]="ruleEngine.autoStart" />
+        <div *ngIf="!isRoot">
+            Auto start: <input type="checkbox" [(ngModel)]="ruleEngine.autoStart" />
+        </div>
         <span class="spacer"></span>
         
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="!isRoot">
             <mat-icon (click)="delete.emit()">delete</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="ruleEngine.id !== 'root'">
+            <mat-icon (click)="openInNewTab()">open_in_new</mat-icon>
         </button>
         <button mat-icon-button (click)="showBody = !showBody">
             <mat-icon *ngIf="showBody">keyboard_arrow_down</mat-icon>

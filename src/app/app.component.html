@@ -1,18 +1,49 @@
 <mat-toolbar>
-  <span>Mopo Designer
-    <span class="hardware-details" *ngIf="hardwareConfig">(Hardware: {{hardwareConfig.name}} - System {{hardwareConfig.system}})</span>
-  </span>
-  <span class="spacer"></span>
-  <button mat-icon-button>
-    <mat-icon (click)="test()">print</mat-icon>
-  </button>
-  <button mat-icon-button>
-    <mat-icon (click)="new()">create</mat-icon>
-  </button>
-  <button mat-icon-button>
-    <mat-icon (click)="save()">save</mat-icon>
-  </button>
+    <span>Mopo Designer
+        <div *ngIf="hardwareConfig && root">
+            <span class="hardware-details" *ngIf="hardwareConfig">(Hardware: {{hardwareConfig.name}} - System
+                {{hardwareConfig.system}})
+            </span>
+            <span class="metadata">
+                <input type="text" [(ngModel)]="root.name" />
+            </span>
+        </div>
+    </span>
+    <span class="spacer"></span>
+    <button mat-icon-button>
+        <mat-icon (click)="test()">print</mat-icon>
+    </button>
+    <button mat-icon-button title="Create New">
+        <mat-icon (click)="new()">create</mat-icon>
+    </button>
+    <button mat-icon-button title="Save">
+        <mat-icon (click)="save()">save</mat-icon>
+    </button>
 </mat-toolbar>
-<div class="editor">
-  <app-rule *ngIf="root" [ruleEngine]="root"></app-rule>
-</div>  
+<mat-tab-group *ngIf="hardwareConfig && root" animationDuration="0ms" [selectedIndex]="selectedTabIndex">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <div class="tab-content">
+                <mat-icon class="active-icon">group_work</mat-icon>
+                {{root.id}}
+            </div>
+        </ng-template>
+        <div class="editor">
+            <app-rule *ngIf="root" [ruleEngine]="root" [isRoot]="true"></app-rule>
+        </div>        
+    </mat-tab>
+    <mat-tab *ngFor="let engine of engineTabs">
+        <ng-template mat-tab-label>
+            <div class="tab-content">
+                <mat-icon [class.active-icon]="engine.active">group_work</mat-icon>
+                {{engine.id}}
+                <button mat-icon-button>
+                    <mat-icon (click)="closeTab(engine)">close</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+        <div class="editor">
+            <app-rule [ruleEngine]="engine"></app-rule>
+        </div>        
+    </mat-tab>
+</mat-tab-group>

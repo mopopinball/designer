@@ -12,9 +12,12 @@ import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatTabsModule} from '@angular/material/tabs';
+
 import { FormsModule } from '@angular/forms';
 import { CreateDesiredOutputStateDialogComponent } from './create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 import { CreateActionDialogComponent } from './create-action-dialog/create-action-dialog.component';
+import { SelectHardwareDialogComponent } from './select-hardware-dialog/select-hardware-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,13 +25,15 @@ import { CreateActionDialogComponent } from './create-action-dialog/create-actio
     RuleComponent,
     DesiredOutputStateComponent,
     CreateDesiredOutputStateDialogComponent,
-    CreateActionDialogComponent
+    CreateActionDialogComponent,
+    SelectHardwareDialogComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     MatButtonModule,
     MatDialogModule,
+    MatTabsModule,
     MatIconModule,
     MatAutocompleteModule,
     MatRadioModule,

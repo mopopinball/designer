@@ -4,6 +4,25 @@
       font-size: smaller;
   }
 
+.tab-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  mat-icon {
+    margin-right: 0.5em;
+    
+    &.active-icon {
+      color: orange;
+    }
+  }
+
+  button {
+    margin-left: 1em;
+  }
+  
+}
+
 .editor {
     display: flex;
     padding: 3px;
