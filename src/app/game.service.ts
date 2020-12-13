@@ -19,6 +19,10 @@ export class GameService {
     this.root = root;
   }
 
+  getRoot(): RuleEngine {
+    return this.root;
+  }
+
   update(): void {
     if (!this.root) {
       return;

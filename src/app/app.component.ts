@@ -5,6 +5,7 @@ import { GameService } from './game.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectHardwareDialogComponent } from './select-hardware-dialog/select-hardware-dialog.component';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
+import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 
 @Component({
     selector: 'app-root',
@@ -30,7 +31,6 @@ export class AppComponent implements OnInit {
         this.root = RuleEngine.load(workingRules);
         this.root.start();
         this.gameService.setRoot(this.root);
-        this.test();
 
         this.gameService.newTab.subscribe((engine) => {
             if (this.engineTabs.indexOf(engine) < 0) {
@@ -64,8 +64,12 @@ export class AppComponent implements OnInit {
     }
 
     test() {
-        console.log(this.root.getDevices());
-        this.gameService.update();
+        const dialogRef = this.dialog.open(ExportDialogComponent, {
+            width: '75%',
+            height: '75%'
+        });
+        // console.log(this.root.getDevices());
+        // this.gameService.update();
     }
 
     closeTab(engine: RuleEngine) {

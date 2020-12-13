@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { CreateDesiredOutputStateDialogComponent } from './create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 import { CreateActionDialogComponent } from './create-action-dialog/create-action-dialog.component';
 import { SelectHardwareDialogComponent } from './select-hardware-dialog/select-hardware-dialog.component';
+import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { SelectHardwareDialogComponent } from './select-hardware-dialog/select-h
     DesiredOutputStateComponent,
     CreateDesiredOutputStateDialogComponent,
     CreateActionDialogComponent,
-    SelectHardwareDialogComponent
+    SelectHardwareDialogComponent,
+    ExportDialogComponent
   ],
   imports: [
     BrowserModule,
