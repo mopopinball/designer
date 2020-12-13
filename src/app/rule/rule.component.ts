@@ -51,8 +51,7 @@ export class RuleComponent implements OnInit {
         this.ruleEngine.children.push(
             new RuleEngine('new child', true)
         );
-        // todo: this does not start when added.
-        // todo: toggleing autostart likely does nothing in editor
+        this.ruleEngine.start();
         this.gameService.update();
     }
 
@@ -102,6 +101,22 @@ export class RuleComponent implements OnInit {
         }
         this.gameService.onSwitch(trigger.switchId);
         this.gameService.update();          
+    }
+
+    onAutoStartChange() {
+        if(this.ruleEngine.autoStart) {
+            this.ruleEngine.start();
+        }
+        else {
+            this.ruleEngine.stop();
+        }
+        this.gameService.update();
+    }
+
+    onIdChange() {
+        if(this.ruleEngine.id) {
+            this.gameService.update();
+        }
     }
 
 }

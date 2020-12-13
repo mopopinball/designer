@@ -2,10 +2,10 @@
     <div class="header">
         <mat-icon [class.active-icon]="ruleEngine.active">group_work</mat-icon>
         <div class="title">
-            <input type="text" [disabled]="ruleEngine.id === 'root'" [(ngModel)]="ruleEngine.id" />
+            <input type="text" [disabled]="ruleEngine.id === 'root'" [(ngModel)]="ruleEngine.id" (change)="onIdChange()" />
         </div>
         <div *ngIf="!isRoot">
-            Auto start: <input type="checkbox" [(ngModel)]="ruleEngine.autoStart" />
+            Auto start: <input type="checkbox" [(ngModel)]="ruleEngine.autoStart" (change)="onAutoStartChange()" />
         </div>
         <span class="spacer"></span>
         

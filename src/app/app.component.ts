@@ -38,6 +38,9 @@ export class AppComponent implements OnInit {
             }
             this.selectedTabIndex = this.engineTabs.indexOf(engine) + 1;
         });
+
+        // auto save
+        this.gameService.tick.subscribe(() => this.save());
     }
 
     new(): void {
