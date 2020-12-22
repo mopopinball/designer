@@ -2,6 +2,16 @@ input {
     width: 100%;
 }
 
+.switchSelect {
+    display: flex;
+    white-space: nowrap;
+}
+
+.state-action {
+    display: flex;
+    white-space: nowrap;
+}
+
 mat-radio-group {
     margin-bottom: 1em;
 }

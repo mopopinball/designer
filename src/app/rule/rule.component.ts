@@ -51,7 +51,9 @@ export class RuleComponent implements OnInit {
         this.ruleEngine.children.push(
             new RuleEngine('new child', true)
         );
-        this.ruleEngine.start();
+        if(this.ruleEngine.autoStart) {
+            this.ruleEngine.start();
+        }
         this.gameService.update();
     }
 

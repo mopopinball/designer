@@ -7,7 +7,7 @@
                 <mat-radio-button value="switch">Switch</mat-radio-button>
             </mat-radio-group>
         </div>
-        <div *ngIf="mode === 'switch'">
+        <div *ngIf="mode === 'switch'" class="switchSelect">
             Switch:
             <input type="text"
             (input)="onSwitchChange($event)"
@@ -18,13 +18,25 @@
                     {{sw.name}}
                 </mat-option>
             </mat-autocomplete>
+            Hold Time (ms):
+            <input type="number" [(ngModel)]="switchHoldTime" />
         </div>
     </div>
     <h3>Action</h3>
-    <div>
-        From: <input [(ngModel)]="from" />
-        To: <input [(ngModel)]="to" />
-    </div>
+    <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedActionTabIndex">
+        <mat-tab label="State Transition">
+            <div class="state-action">
+                From State: <input [(ngModel)]="from" />
+                To State: <input [(ngModel)]="to" />
+            </div>        
+        </mat-tab>
+        <mat-tab label="Device Action">
+            <div>
+                <button (click)="selectDevice()">Select Device</button>
+            </div>
+        </mat-tab>
+      </mat-tab-group>
+    
 </mat-dialog-content>
 <mat-dialog-actions>
     <button (click)="create()">Create</button>

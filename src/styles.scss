@@ -21,6 +21,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     &.active {
         border: solid 1px orange;
         box-shadow: 1px 1px 3px darkorange;
+        background: rgb(70, 65, 58);
     }
 
     .header {

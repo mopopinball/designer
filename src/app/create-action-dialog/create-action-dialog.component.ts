@@ -1,9 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActionType, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ActionType, CoilOutputState, DeviceActionSchema, LightOutputState, SoundOutputState, StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 import { SwitchActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-action-trigger'
 import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
+import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
+import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
+import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 
 interface SwitchInfo {
     id: string;
@@ -21,10 +24,14 @@ export class CreateActionDialogComponent implements OnInit {
     from = '';
     to = '';
     switchId = '';
+    selectedActionTabIndex: number = 0;
+    switchHoldTime?: number = null;
+    deviceOutputState: LightOutputState | CoilOutputState | SoundOutputState;
 
     filteredSwitches: SwitchInfo[];
 
     constructor(
+        public dialog: MatDialog,
         public dialogRef: MatDialogRef<CreateActionDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: SwitchInfo) {
         if (data) {
@@ -55,16 +62,41 @@ export class CreateActionDialogComponent implements OnInit {
     }
 
     create(): void {
-        const result: SwitchActionTriggerSchema = {
-            type: TriggerType.SWITCH,
-            switchId: this.switchId,
-            actions: [{
+        let newAction: DeviceActionSchema | StateActionSchema = null;
+        if (this.selectedActionTabIndex === 0) {
+            newAction = {
                 type: ActionType.STATE,
                 startTargetId: this.to,
                 stopTargetId: this.from,
-            }]
+            };
+        } else if (this.selectedActionTabIndex === 1) {
+            newAction = {
+                type: ActionType.DEVICE,
+                state: this.deviceOutputState
+            };
+        }
+        
+        const result: SwitchActionTriggerSchema = {
+            type: TriggerType.SWITCH,
+            switchId: this.switchId,
+            holdIntervalMs: this.switchHoldTime,
+            actions: [newAction]
         };
         this.dialogRef.close(result);
+    }
+
+    selectDevice(): void {
+        const dialogRef = this.dialog.open(CreateDesiredOutputStateDialogComponent, {
+            width: '50%',
+            height: '75%'
+        });
+
+        dialogRef.afterClosed().subscribe((result: DesiredOutputState) => {
+            this.deviceOutputState = result.toJSON();
+            // console.log('The dialog was closed');
+            // this.ruleEngine.devices.set(result.id, result);
+            // this.updateDevices();
+        });
     }
 
 }
