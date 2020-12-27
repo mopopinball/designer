@@ -1,12 +1,20 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActionType, CoilOutputState, DeviceActionSchema, LightOutputState, SoundOutputState, StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
+import { ActionType, CoilOutputState, DataActionSchema, DeviceActionSchema, LightOutputState, SoundOutputState, StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 import { SwitchActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-action-trigger'
 import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
 import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
 import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
+import { DataOperation } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
+import { SelectDataDialogComponent } from '../select-data-dialog/select-data-dialog.component';
+import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
+
+export interface CreateActionData {
+    switchInfo: SwitchInfo,
+    ruleEngine: RuleEngine
+}
 
 interface SwitchInfo {
     id: string;
@@ -27,15 +35,20 @@ export class CreateActionDialogComponent implements OnInit {
     selectedActionTabIndex: number = 0;
     switchHoldTime?: number = null;
     deviceOutputState: LightOutputState | CoilOutputState | SoundOutputState;
+    DataOperation: typeof DataOperation = DataOperation;
 
     filteredSwitches: SwitchInfo[];
+
+    dataActionKey: string;
+    dataActionOperand: number;
+    dataActionOperation: DataOperation;
 
     constructor(
         public dialog: MatDialog,
         public dialogRef: MatDialogRef<CreateActionDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: SwitchInfo) {
+        @Inject(MAT_DIALOG_DATA) public data: CreateActionData) {
         if (data) {
-            this.switchId = data.id;
+            this.switchId = data.switchInfo.id;
             this.mode = 'existing';
         }
     }
@@ -62,7 +75,7 @@ export class CreateActionDialogComponent implements OnInit {
     }
 
     create(): void {
-        let newAction: DeviceActionSchema | StateActionSchema = null;
+        let newAction: DeviceActionSchema | StateActionSchema | DataActionSchema = null;
         if (this.selectedActionTabIndex === 0) {
             newAction = {
                 type: ActionType.STATE,
@@ -73,6 +86,13 @@ export class CreateActionDialogComponent implements OnInit {
             newAction = {
                 type: ActionType.DEVICE,
                 state: this.deviceOutputState
+            };
+        } else if (this.selectedActionTabIndex === 2) {
+            newAction = {
+                type: ActionType.DATA,
+                dataId: this.dataActionKey,
+                operand: this.dataActionOperand,
+                operation: this.dataActionOperation
             };
         }
         
@@ -93,9 +113,16 @@ export class CreateActionDialogComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: DesiredOutputState) => {
             this.deviceOutputState = result.toJSON();
-            // console.log('The dialog was closed');
-            // this.ruleEngine.devices.set(result.id, result);
-            // this.updateDevices();
+        });
+    }
+
+    selectData(): void {
+        const dialogRef = this.dialog.open(SelectDataDialogComponent, {
+            data: this.data.ruleEngine
+        });
+
+        dialogRef.afterClosed().subscribe((selectedKey: string) => {
+            this.dataActionKey = selectedKey;
         });
     }
 

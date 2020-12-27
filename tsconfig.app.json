@@ -23,6 +23,6 @@
     "node_modules/@mopopinball/engine/src/system/dirty-notifier.ts"
   ],
   "exclude": [
-    "node_modules/@mopopinball/engine/src/system/rule-engine/**/*.spec.ts",
+    "node_modules/@mopopinball/engine/src/**/*.spec.ts"
   ]
 }

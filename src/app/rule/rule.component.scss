@@ -10,7 +10,25 @@
         .devices {
             margin-right: 6px;
         }
-        // padding: 6px;
+        
+        .left-io {
+            display: flex;
+            flex-direction: column;
+            
+            .nestable-container:nth-child(1) {
+                margin-bottom: 10px;
+            }
+            .nestable-container:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .data-item {
+            display: flex;
+            input {
+                width: 4em;
+            }
+        }
     }
 
     .children {

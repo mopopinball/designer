@@ -22,22 +22,33 @@
             <input type="number" [(ngModel)]="switchHoldTime" />
         </div>
     </div>
-    <h3>Action</h3>
     <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedActionTabIndex">
-        <mat-tab label="State Transition">
+        <mat-tab label="State Action">
             <div class="state-action">
                 From State: <input [(ngModel)]="from" />
                 To State: <input [(ngModel)]="to" />
             </div>        
         </mat-tab>
         <mat-tab label="Device Action">
-            <div>
+            <div class="device-action">
                 <button (click)="selectDevice()">Select Device</button>
+            </div>
+        </mat-tab>
+        <mat-tab label="Data Action">
+            <div class="data-action">
+                <button (click)="selectData()">Select Data</button>
+                {{dataActionKey}}
+                <select [(ngModel)]="dataActionOperation">
+                    <option [ngValue]="DataOperation.INCREMENT">Increment</option>
+                    <option [ngValue]="DataOperation.DECREMENT">Decrement</option>
+                    <option [ngValue]="DataOperation.ASSIGN">Set</option>
+                </select>
+                <input type="number" [(ngModel)]="dataActionOperand" />
             </div>
         </mat-tab>
       </mat-tab-group>
     
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button (click)="create()">Create</button>
+    <button mat-raised-button color="primary" (click)="create()">Create</button>
 </mat-dialog-actions>

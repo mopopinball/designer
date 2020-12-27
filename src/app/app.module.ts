@@ -12,6 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
 import {MatTabsModule} from '@angular/material/tabs';
 
 import { FormsModule } from '@angular/forms';
@@ -19,6 +20,8 @@ import { CreateDesiredOutputStateDialogComponent } from './create-desired-output
 import { CreateActionDialogComponent } from './create-action-dialog/create-action-dialog.component';
 import { SelectHardwareDialogComponent } from './select-hardware-dialog/select-hardware-dialog.component';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
+import { CreateDataDialogComponent } from './create-data-dialog/create-data-dialog.component';
+import { SelectDataDialogComponent } from './select-data-dialog/select-data-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,9 @@ import { ExportDialogComponent } from './export-dialog/export-dialog.component';
     CreateDesiredOutputStateDialogComponent,
     CreateActionDialogComponent,
     SelectHardwareDialogComponent,
-    ExportDialogComponent
+    ExportDialogComponent,
+    CreateDataDialogComponent,
+    SelectDataDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +46,7 @@ import { ExportDialogComponent } from './export-dialog/export-dialog.component';
     MatRadioModule,
     MatInputModule,
     MatToolbarModule,
+    MatSelectModule,
     NoopAnimationsModule
   ],
   providers: [],

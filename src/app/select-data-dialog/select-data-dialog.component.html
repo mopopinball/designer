@@ -1,0 +1,11 @@
+<h2>Select Available Data</h2>
+<mat-dialog-content>
+    <mat-form-field>
+        <select matNativeControl [(ngModel)]="selectedKey">
+            <option *ngFor="let dataKey of availableData" [ngValue]="dataKey">{{dataKey}}</option>
+        </select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="selectData()">Select</button>
+</mat-dialog-actions>

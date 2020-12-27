@@ -7,7 +7,16 @@ input {
     white-space: nowrap;
 }
 
+.state-action, .data-action, .device-action {
+    padding: 10px;
+}
+
 .state-action {
+    display: flex;
+    white-space: nowrap;
+}
+
+.data-action {
     display: flex;
     white-space: nowrap;
 }

@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result: HardwareConfig) => {
             if (result) {
                 this.hardwareConfig = result;
-                this.root = new RuleEngine('root', true);
+                this.root = new RuleEngine('root', true, null);
                 this.root.start();
                 this.gameService.setRoot(this.root);
             }

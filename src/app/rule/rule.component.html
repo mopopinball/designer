@@ -22,17 +22,45 @@
     </div>
     <div class="body" *ngIf="showBody">
         <div class="io">
-            <div class="nestable-container devices" [class.active]="ruleEngine.active">
-                <div class="header">
-                    <mat-icon>devices_other</mat-icon>
-                    <div class="title">Devices</div>
-                    <div class="spacer"></div>
-                    <button mat-icon-button title="Add new device">
-                        <mat-icon (click)="addDevice()">add_circle_outline</mat-icon>
-                    </button>
+            <div class="left-io">
+                <div class="nestable-container devices" [class.active]="ruleEngine.active">
+                    <div class="header">
+                        <mat-icon>devices_other</mat-icon>
+                        <div class="title">Devices</div>
+                        <div class="spacer"></div>
+                        <button mat-icon-button title="Add new device">
+                            <mat-icon (click)="addDevice()">add_circle_outline</mat-icon>
+                        </button>
+                    </div>
+                    <div class="body">
+                        <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" [parentActive]="ruleEngine.active"></app-desired-output-state>
+                    </div>
                 </div>
-                <div class="body">
-                    <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" [parentActive]="ruleEngine.active"></app-desired-output-state>
+                <div class="nestable-container devices" [class.active]="ruleEngine.active">
+                    <div class="header">
+                        <mat-icon>article</mat-icon>
+                        <div class="title">Data</div>
+                        <div class="spacer"></div>
+                        <button mat-icon-button title="Add new device">
+                            <mat-icon (click)="addData()">add_circle_outline</mat-icon>
+                        </button>
+                    </div>
+                    <div class="body">
+                        <div *ngFor="let d of ruleEngine.data | keyvalue" class="data-item">
+                            <div>
+                                <mat-icon>label</mat-icon>
+                                <span>
+                                    {{d.key}}
+                                </span>
+                                <input type="number" [(ngModel)]="d.value.value" (ngModelChange)="onDataChange()" />
+                            </div>
+                            <div class="spacer"></div>
+                            <button mat-icon-button>
+                                <mat-icon (click)="deleteData(d.key)">delete</mat-icon>
+                            </button>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="nestable-container" [class.active]="ruleEngine.active">
@@ -85,6 +113,18 @@
                                         <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
                                     </button>
                                 </div>
+                                <div *ngIf="action.toJSON().type === 'data'" class="action">
+                                    <div>
+                                        <mat-icon>label</mat-icon>
+                                        <span>
+                                            {{action.dataKey}}: {{action.operation}} {{action.operand}}
+                                        </span>
+                                    </div>
+                                    <div class="spacer"></div>
+                                    <button mat-icon-button>
+                                        <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,7 +132,7 @@
             </div>
         </div>
         <div>
-            <div class="nestable-container">
+            <div class="nestable-container" [class.active]="ruleEngine.active">
                 <div class="header">
                     <div class="title">Children</div>
                     <div class="spacer"></div>
