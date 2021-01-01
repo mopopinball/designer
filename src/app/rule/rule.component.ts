@@ -5,10 +5,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 import { GameService } from '../game.service';
 import { CreateActionData, CreateActionDialogComponent } from '../create-action-dialog/create-action-dialog.component';
-import { StateActionSchema, SwitchActionTriggerSchema } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
+import { StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 import { ThrowStmt } from '@angular/compiler';
 import { CreateDataDialogComponent } from '../create-data-dialog/create-data-dialog.component';
 import { RuleData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
+import { SwitchActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-action-trigger';
+import { IdActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-action-trigger';
 
 @Component({
     selector: 'app-rule',
@@ -53,7 +55,8 @@ export class RuleComponent implements OnInit {
         });
     }
 
-    onDataChange(): void {
+    onDataChange(data: RuleData): void {
+        data.initValue = data.value;
         this.gameService.update();
     }
 
@@ -90,18 +93,24 @@ export class RuleComponent implements OnInit {
         this.updateDevices();
     }
 
-    addTrigger(switchId: string): void {
+    addTrigger(existingTrigger: IdActionTrigger | SwitchActionTrigger): void {
+        let triggerInfo;
+        if (existingTrigger && existingTrigger.type === TriggerType.SWITCH) {
+            triggerInfo = {switchId: existingTrigger.switchId};
+        } else if (existingTrigger && existingTrigger.type === TriggerType.ID) {
+            triggerInfo = {id: existingTrigger.id};
+        }
         const data: CreateActionData = {
-            switchInfo: {id: switchId, name: null},
+            triggerInfo: triggerInfo,
             ruleEngine: this.ruleEngine
         };
         const dialogRef = this.dialog.open(CreateActionDialogComponent, {
-            width: '50%',
+            // width: '50%',
             data
         });
 
         dialogRef.afterClosed().subscribe((result: SwitchActionTriggerSchema) => {
-            this.ruleEngine.createAction(result);
+            this.ruleEngine.createTrigger(result);
             this.updateDevices();
         });
     }
@@ -119,15 +128,19 @@ export class RuleComponent implements OnInit {
     addAction(trigger): void {
         // todo: make better
         this.addTrigger(
-            trigger.switchId
+            trigger
         );
     }
 
-    activateTrigger(trigger): void {
+    activateTrigger(trigger: SwitchActionTrigger | IdActionTrigger): void {
         if (!this.ruleEngine.active) {
             return;
         }
-        this.gameService.onSwitch(trigger.switchId);
+        if (trigger.type === TriggerType.SWITCH) {
+            this.gameService.onSwitch(trigger.switchId);
+        } else if (trigger.type === TriggerType.ID) {
+            this.gameService.onTrigger(trigger.id);
+        }
         this.gameService.update();          
     }
 

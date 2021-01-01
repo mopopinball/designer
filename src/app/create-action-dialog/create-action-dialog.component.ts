@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActionType, CoilOutputState, DataActionSchema, DeviceActionSchema, LightOutputState, SoundOutputState, StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
+import { ActionType, CoilOutputState, ConditionalActionSchema, DataActionSchema, DeviceActionSchema, IdActionTriggerSchema, LightOutputState, SoundOutputState, StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 import { SwitchActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-action-trigger'
 import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
@@ -10,9 +10,13 @@ import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/d
 import { DataOperation } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
 import { SelectDataDialogComponent } from '../select-data-dialog/select-data-dialog.component';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
+import { Condition, Operator } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 
 export interface CreateActionData {
-    switchInfo: SwitchInfo,
+    triggerInfo: {
+        switchId?: string,
+        id?: string
+    },
     ruleEngine: RuleEngine
 }
 
@@ -32,10 +36,12 @@ export class CreateActionDialogComponent implements OnInit {
     from = '';
     to = '';
     switchId = '';
+    triggerId = '';
     selectedActionTabIndex: number = 0;
     switchHoldTime?: number = null;
     deviceOutputState: LightOutputState | CoilOutputState | SoundOutputState;
     DataOperation: typeof DataOperation = DataOperation;
+    readonly operators = ['>', '<', '<=', '>=', '===', '!='];
 
     filteredSwitches: SwitchInfo[];
 
@@ -43,12 +49,21 @@ export class CreateActionDialogComponent implements OnInit {
     dataActionOperand: number;
     dataActionOperation: DataOperation;
 
+    conditionalActionType: string = 'data';
+    conditionalActionOperator: string;
+    conditionalActionOperand: number;
+    conditionalActionTrueTriggerId: string;
+    conditionalActionFalseTriggerId: string;
+
     constructor(
         public dialog: MatDialog,
         public dialogRef: MatDialogRef<CreateActionDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: CreateActionData) {
-        if (data) {
-            this.switchId = data.switchInfo.id;
+        if (data?.triggerInfo?.switchId) {
+            this.switchId = data.triggerInfo.switchId;
+            this.mode = 'existing';
+        } else if (data?.triggerInfo?.id) {
+            this.triggerId = data.triggerInfo.id;
             this.mode = 'existing';
         }
     }
@@ -75,7 +90,7 @@ export class CreateActionDialogComponent implements OnInit {
     }
 
     create(): void {
-        let newAction: DeviceActionSchema | StateActionSchema | DataActionSchema = null;
+        let newAction: ConditionalActionSchema | DeviceActionSchema | StateActionSchema | DataActionSchema = null;
         if (this.selectedActionTabIndex === 0) {
             newAction = {
                 type: ActionType.STATE,
@@ -94,15 +109,36 @@ export class CreateActionDialogComponent implements OnInit {
                 operand: this.dataActionOperand,
                 operation: this.dataActionOperation
             };
+        } else if (this.selectedActionTabIndex === 3) {
+            newAction = {
+                type: ActionType.CONDITION,
+                condition: {
+                    conditionType: this.conditionalActionType,
+                    dataId: this.dataActionKey,
+                    operator: this.conditionalActionOperator as Operator,
+                    operand: this.conditionalActionOperand
+                },
+                trueTriggerId: this.conditionalActionTrueTriggerId,
+                falseTriggerId: this.conditionalActionFalseTriggerId
+            };
         }
         
-        const result: SwitchActionTriggerSchema = {
-            type: TriggerType.SWITCH,
-            switchId: this.switchId,
-            holdIntervalMs: this.switchHoldTime,
-            actions: [newAction]
-        };
-        this.dialogRef.close(result);
+        if (this.switchId) {
+            const result: SwitchActionTriggerSchema = {
+                type: TriggerType.SWITCH,
+                switchId: this.switchId,
+                holdIntervalMs: this.switchHoldTime,
+                actions: [newAction]
+            };
+            this.dialogRef.close(result);
+        } else if (this.triggerId) {
+            const result: IdActionTriggerSchema = {
+                type: TriggerType.ID,
+                id: this.triggerId,
+                actions: [newAction]
+            };
+            this.dialogRef.close(result);
+        }
     }
 
     selectDevice(): void {

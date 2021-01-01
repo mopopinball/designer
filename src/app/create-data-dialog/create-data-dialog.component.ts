@@ -21,7 +21,8 @@ export class CreateDataDialogComponent implements OnInit {
   create(): void {
     const result: RuleData = {
       id: this.dataId,
-      value: this.dataValue
+      value: this.dataValue,
+      initValue: this.dataValue
     };
     this.dialogRef.close(result);
   }

@@ -5,6 +5,7 @@
             Trigger Type:
             <mat-radio-group [(ngModel)]="mode">
                 <mat-radio-button value="switch">Switch</mat-radio-button>
+                <mat-radio-button value="named">Named</mat-radio-button>
             </mat-radio-group>
         </div>
         <div *ngIf="mode === 'switch'" class="switchSelect">
@@ -20,6 +21,9 @@
             </mat-autocomplete>
             Hold Time (ms):
             <input type="number" [(ngModel)]="switchHoldTime" />
+        </div>
+        <div *ngIf="mode === 'named'">
+            Trigger Name: <input [(ngModel)]="triggerId" />
         </div>
     </div>
     <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedActionTabIndex">
@@ -44,6 +48,21 @@
                     <option [ngValue]="DataOperation.ASSIGN">Set</option>
                 </select>
                 <input type="number" [(ngModel)]="dataActionOperand" />
+            </div>
+        </mat-tab>
+        <mat-tab label="Conditional Action">
+            <div class="data-action">
+                <select [(ngModel)]="conditionalActionType">
+                    <option [ngValue]="'data'">Data</option>
+                </select>
+                <button (click)="selectData()">Select Data</button>
+                {{dataActionKey}}
+                <select [(ngModel)]="conditionalActionOperator">
+                    <option *ngFor="let op of operators" [ngValue]="op">{{op}}</option>
+                </select>
+                <input type="number" [(ngModel)]="conditionalActionOperand" />
+                True Trigger: <input type="text" [(ngModel)]="conditionalActionTrueTriggerId" />
+                False Trigger: <input type="text" [(ngModel)]="conditionalActionFalseTriggerId" />
             </div>
         </mat-tab>
       </mat-tab-group>

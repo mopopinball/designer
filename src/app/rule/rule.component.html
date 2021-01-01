@@ -52,7 +52,7 @@
                                 <span>
                                     {{d.key}}
                                 </span>
-                                <input type="number" [(ngModel)]="d.value.value" (ngModelChange)="onDataChange()" />
+                                <input type="number" [(ngModel)]="d.value.value" (ngModelChange)="onDataChange(d.value)" />
                             </div>
                             <div class="spacer"></div>
                             <button mat-icon-button>
@@ -74,8 +74,14 @@
                 </div>
                 <div class="body">
                     <div *ngFor="let trigger of ruleEngine.triggers" class="nestable-container" [class.active]="ruleEngine.active">
-                        <div class="header" *ngIf="trigger.type === 'switch'">Switch Trigger: {{trigger.switchId}}
-                            <span *ngIf="trigger.holdIntervalMs">{{trigger.holdIntervalMs}}ms</span>
+                        <div class="header" >
+                            <div *ngIf="trigger.type === 'switch'">
+                                Switch Trigger: {{trigger.switchId}}
+                                <span *ngIf="trigger.holdIntervalMs">{{trigger.holdIntervalMs}}ms</span>
+                            </div>
+                            <div *ngIf="trigger.type === 'id'">
+                                Named Trigger: {{trigger.id}}
+                            </div>
                             <button mat-icon-button [disabled]="!ruleEngine.active" title="Activate trigger">
                                 <mat-icon (click)="activateTrigger(trigger)">play_arrow</mat-icon>
                             </button>
@@ -88,7 +94,7 @@
                             </button>
                         </div>
                         <div class="body">
-                            <div *ngFor="let action of trigger.actions">
+                            <div *ngFor="let action of trigger.actions" class="actions">
                                 <div *ngIf="action.toJSON().type === 'state'" class="action">
                                     <div>
                                         <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
@@ -118,6 +124,18 @@
                                         <mat-icon>label</mat-icon>
                                         <span>
                                             {{action.dataKey}}: {{action.operation}} {{action.operand}}
+                                        </span>
+                                    </div>
+                                    <div class="spacer"></div>
+                                    <button mat-icon-button>
+                                        <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
+                                    </button>
+                                </div>
+                                <div *ngIf="action.toJSON().type === 'condition'" class="action">
+                                    <div>
+                                        <mat-icon>call_split</mat-icon>
+                                        <span>
+                                            If "{{action.condition.dataId}}" {{action.condition.operator}} {{action.condition.operand}} then trigger {{action.trueTriggerId}} else trigger {{action.falseTriggerId}}  
                                         </span>
                                     </div>
                                     <div class="spacer"></div>

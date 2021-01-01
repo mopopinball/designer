@@ -43,5 +43,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         display: flex;
         flex-direction: column;
         padding: 6px;
+
+        .nestable-container {
+            margin-bottom: 6px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
     }
 }
