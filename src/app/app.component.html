@@ -1,15 +1,41 @@
 <mat-toolbar>
-    <span>Mopo Designer
-        <div *ngIf="hardwareConfig && root">
-            <span class="hardware-details" *ngIf="hardwareConfig">(Hardware: {{hardwareConfig.name}} - System
-                {{hardwareConfig.system}})
-            </span>
+    <img src="./assets/mopo-logo.svg" class="logo" />
+    <span>
+        <div *ngIf="hardwareConfig && root" class="hw-meta">
             <span class="metadata">
-                <input type="text" [(ngModel)]="root.name" />
+                <mat-form-field>
+                    <mat-label>Game Name</mat-label>
+                    <input matInput type="text" [(ngModel)]="root.name" />
+                    <mat-hint align="start" *ngIf="hardwareConfig">
+                        Hardware: {{hardwareConfig.name}} - System {{hardwareConfig.system}}
+                    </mat-hint>
+                </mat-form-field>
+                
             </span>
         </div>
     </span>
     <span class="spacer"></span>
+    <span class="remote-machine">
+        <mat-form-field>
+            <mat-label>Remote Machine</mat-label>
+            <input type="text" matInput placeholder="IP address" [(ngModel)]="remoteMachineAddress" />
+        </mat-form-field>
+        <button mat-icon-button title="Create New" (click)="selectRemoteMachine()" [disabled]="!remoteMachineAddress">
+            <mat-icon *ngIf="!remoteMachineReady">cast</mat-icon>
+            <mat-icon *ngIf="remoteMachineReady" class="connected">cast_connected</mat-icon>
+        </button>
+        <button mat-icon-button title="Upload" (click)="applyToRemoteMachine()" [disabled]="!remoteMachineAddress || !remoteMachineReady">
+            <mat-icon [class.complete]="uploadComplete">publish</mat-icon>
+        </button>
+    </span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <span mat-menu-item>
+            <mat-checkbox [(ngModel)]="autoCollapse" (ngModelChange)="onCollapseChange()">Collapse inactive states</mat-checkbox>
+        </span>
+    </mat-menu>
     <button mat-icon-button>
         <mat-icon (click)="test()">print</mat-icon>
     </button>
@@ -19,6 +45,7 @@
     <button mat-icon-button title="Save">
         <mat-icon (click)="save()">save</mat-icon>
     </button>
+    <a id="dl" style="display:none;" download="mopo.json" #dllink [href]="downloadHref">DL</a>
 </mat-toolbar>
 <mat-tab-group *ngIf="hardwareConfig && root" animationDuration="0ms" [selectedIndex]="selectedTabIndex">
     <mat-tab>

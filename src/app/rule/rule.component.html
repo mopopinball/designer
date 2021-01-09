@@ -2,7 +2,7 @@
     <div class="header">
         <mat-icon [class.active-icon]="ruleEngine.active">group_work</mat-icon>
         <div class="title">
-            <input type="text" [disabled]="ruleEngine.id === 'root'" [(ngModel)]="ruleEngine.id" (change)="onIdChange()" />
+            <input type="text" [disabled]="ruleEngine.id === 'root'" [ngModel]="ruleEngine.id" (ngModelChange)="onIdChange($event)" />
         </div>
         <div *ngIf="!isRoot">
             Auto start: <input type="checkbox" [(ngModel)]="ruleEngine.autoStart" (change)="onAutoStartChange()" />
@@ -15,12 +15,12 @@
         <button mat-icon-button *ngIf="ruleEngine.id !== 'root'">
             <mat-icon (click)="openInNewTab()">open_in_new</mat-icon>
         </button>
-        <button mat-icon-button (click)="showBody = !showBody">
-            <mat-icon *ngIf="showBody">keyboard_arrow_down</mat-icon>
-            <mat-icon *ngIf="!showBody">keyboard_arrow_up</mat-icon>
+        <button mat-icon-button (click)="toggleShow()">
+            <mat-icon *ngIf="showBody">keyboard_arrow_up</mat-icon>
+            <mat-icon *ngIf="!showBody">keyboard_arrow_down</mat-icon>
         </button>
     </div>
-    <div class="body" *ngIf="showBody">
+    <div class="body" *ngIf="showBody && !autoCollapse()">
         <div class="io">
             <div class="left-io">
                 <div class="nestable-container devices" [class.active]="ruleEngine.active">
@@ -28,12 +28,13 @@
                         <mat-icon>devices_other</mat-icon>
                         <div class="title">Devices</div>
                         <div class="spacer"></div>
-                        <button mat-icon-button title="Add new device">
-                            <mat-icon (click)="addDevice()">add_circle_outline</mat-icon>
+                        <button mat-icon-button title="Add new device" (click)="addDevice()" [disabled]="isRoot">
+                            <mat-icon>add_circle_outline</mat-icon>
                         </button>
                     </div>
-                    <div class="body">
-                        <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" [parentActive]="ruleEngine.active"></app-desired-output-state>
+                    <div class="body max-height">
+                        <span class="no-items" *ngIf="!devices.length">No devices</span>
+                        <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" [parentActive]="ruleEngine.active" [deleteable]="!isRoot"></app-desired-output-state>
                     </div>
                 </div>
                 <div class="nestable-container devices" [class.active]="ruleEngine.active">
@@ -46,13 +47,17 @@
                         </button>
                     </div>
                     <div class="body">
+                        <span class="no-items" *ngIf="ruleEngine.data.size === 0">No data</span>
                         <div *ngFor="let d of ruleEngine.data | keyvalue" class="data-item">
                             <div>
                                 <mat-icon>label</mat-icon>
-                                <span>
+                                <span class="data-key">
                                     {{d.key}}
                                 </span>
-                                <input type="number" [(ngModel)]="d.value.value" (ngModelChange)="onDataChange(d.value)" />
+                                Init:<input type="number" [(ngModel)]="d.value.initValue" (ngModelChange)="onDataChange()" />
+                                Curr:<input type="number" [(ngModel)]="d.value.value" (ngModelChange)="onDataChange()" />
+                                <mat-checkbox [ngModel]="d.value.attributes?.isWholeNumber" (ngModelChange)="setDataWhole(d.value, $event)">Whole</mat-checkbox>
+                                <mat-checkbox [ngModel]="d.value.attributes?.resetOnStateStop" (ngModelChange)="setDataRoS(d.value, $event)" title="Reset on Stop">RoS</mat-checkbox>
                             </div>
                             <div class="spacer"></div>
                             <button mat-icon-button>
@@ -68,24 +73,40 @@
                     <mat-icon>rule</mat-icon>
                     <div class="title">Triggers & Actions</div>
                     <div class="spacer"></div>
-                    <button mat-icon-button>
-                        <mat-icon (click)="addTrigger()">add_circle_outline</mat-icon>
+                    <button mat-icon-button (click)="addTrigger()">
+                        <mat-icon>add_circle_outline</mat-icon>
                     </button>
                 </div>
                 <div class="body">
+                    <span class="no-items" *ngIf="!ruleEngine.triggers.length">No triggers</span>
                     <div *ngFor="let trigger of ruleEngine.triggers" class="nestable-container" [class.active]="ruleEngine.active">
                         <div class="header" >
-                            <div *ngIf="trigger.type === 'switch'">
-                                Switch Trigger: {{trigger.switchId}}
-                                <span *ngIf="trigger.holdIntervalMs">{{trigger.holdIntervalMs}}ms</span>
-                            </div>
-                            <div *ngIf="trigger.type === 'id'">
-                                Named Trigger: {{trigger.id}}
-                            </div>
+                            <ng-container *ngIf="trigger.type === 'switch'">
+                                <mat-icon>close_fullscreen</mat-icon>
+                                <div class="title timer-title">
+                                    Switch Trigger: <span class="id">{{trigger.switchId}}</span>
+                                    <span *ngIf="trigger.holdIntervalMs">
+                                        <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="gameService.update()" />ms
+                                    </span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="trigger.type === 'id'">
+                                <mat-icon>title</mat-icon>
+                                <div class="title">
+                                    Named Trigger: <span class="id">{{trigger.id}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="trigger.type === 'timer'">
+                                <mat-icon>av_timer</mat-icon>
+                                <div class="title timer-title">
+                                    Timed Trigger: <span class="id">{{trigger.id}}</span> <input type="number" [(ngModel)]="trigger.valueMs" (ngModelChange)="gameService.update()" />ms
+                                    <mat-checkbox [ngModel]="trigger.mode === TimerActionTriggerMode.INTERVAL" (ngModelChange)="setTimerMode(trigger, $event)">Repeat</mat-checkbox>
+                                </div>
+                            </ng-container>
+                            <div class="spacer"></div>
                             <button mat-icon-button [disabled]="!ruleEngine.active" title="Activate trigger">
                                 <mat-icon (click)="activateTrigger(trigger)">play_arrow</mat-icon>
                             </button>
-                            <div class="spacer"></div>
                             <button mat-icon-button title="Add action">
                                 <mat-icon (click)="addAction(trigger)">add_circle_outline</mat-icon>
                             </button>
@@ -96,52 +117,46 @@
                         <div class="body">
                             <div *ngFor="let action of trigger.actions" class="actions">
                                 <div *ngIf="action.toJSON().type === 'state'" class="action">
-                                    <div>
+                                    <div class="title">State Action</div>
+                                    <span>
                                         <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
-                                    </div>
+                                    </span>
                                     <span>
                                         {{action.stopTargetId}} -> {{action.startTargetId}}
                                     </span>
                                     <div class="spacer"></div>
-                                    <button mat-icon-button>
-                                        <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
-                                    </button>
+                                    <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
                                 </div>
                                 <div *ngIf="action.toJSON().type === 'device'" class="action">
-                                    <div>
-                                        <mat-icon>devices_other</mat-icon>
-                                        <span>
-                                            {{action.state.id}} {{action.state.type}} {{action.state.initialState}}
-                                        </span>
-                                    </div>
+                                    <div class="title">Device Action</div>
+                                    <app-desired-output-state  [state]="action.state" [parentActive]="ruleEngine.active" [deleteable]="false"></app-desired-output-state>
                                     <div class="spacer"></div>
-                                    <button mat-icon-button>
-                                        <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
-                                    </button>
+                                    <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
                                 </div>
                                 <div *ngIf="action.toJSON().type === 'data'" class="action">
-                                    <div>
-                                        <mat-icon>label</mat-icon>
-                                        <span>
-                                            {{action.dataKey}}: {{action.operation}} {{action.operand}}
-                                        </span>
-                                    </div>
+                                    <div class="title">Data Action</div>
+                                    <mat-icon>label</mat-icon>
+                                    <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="action.dataKey" (key)="action.dataKey = $event"></app-data-key-selector>
+                                    <app-data-operation class="token" [operation]="action.operation" (changed)="action.operation = $event; gameService.update();"></app-data-operation>
+                                    <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="action.operand" (change)="gameService.update()"></app-operand-selector>
                                     <div class="spacer"></div>
-                                    <button mat-icon-button>
-                                        <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
-                                    </button>
+                                    <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
                                 </div>
                                 <div *ngIf="action.toJSON().type === 'condition'" class="action">
-                                    <div>
-                                        <mat-icon>call_split</mat-icon>
-                                        <span>
-                                            If "{{action.condition.dataId}}" {{action.condition.operator}} {{action.condition.operand}} then trigger {{action.trueTriggerId}} else trigger {{action.falseTriggerId}}  
-                                        </span>
-                                    </div>
+                                    <div class="title">Conditional Action</div>
+                                    <mat-icon>call_split</mat-icon>
+                                        <span class="token">If</span>    
+                                        <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="action.condition.dataId" (key)="action.condition.dataId = $event"></app-data-key-selector>
+                                        <select class="token" [(ngModel)]="action.condition.operator">
+                                            <option *ngFor="let op of operators" [ngValue]="op">{{op}}</option>
+                                        </select>
+                                        <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="action.condition.operand" (change)="gameService.update()"></app-operand-selector>
+                                        <span class="token">then trigger</span>
+                                        <input class="token" type="text" [(ngModel)]="action.trueTriggerId" />
+                                        <span class="token">else trigger</span>
+                                        <input type="text" [(ngModel)]="action.falseTriggerId" />
                                     <div class="spacer"></div>
-                                    <button mat-icon-button>
-                                        <mat-icon (click)="deleteAction(trigger, action)">delete</mat-icon>
-                                    </button>
+                                    <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
                                 </div>
                             </div>
                         </div>
@@ -152,13 +167,15 @@
         <div>
             <div class="nestable-container" [class.active]="ruleEngine.active">
                 <div class="header">
+                    <mat-icon>format_list_bulleted</mat-icon>
                     <div class="title">Children</div>
                     <div class="spacer"></div>
-                    <button mat-icon-button title="Add Child">
-                        <mat-icon (click)="addChild()">add_circle_outline</mat-icon>
+                    <button mat-icon-button title="Add Child" (click)="addChild()">
+                        <mat-icon>add_circle_outline</mat-icon>
                     </button>
                 </div>
                 <div class="body children">
+                    <span class="no-items" *ngIf="!ruleEngine.children.length">No children</span>
                     <app-rule *ngFor="let child of ruleEngine.children" (delete)="deleteChild(child)" [ruleEngine]="child"></app-rule>
                 </div>
             </div>

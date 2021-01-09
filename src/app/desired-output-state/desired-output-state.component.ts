@@ -16,6 +16,7 @@ export class DesiredOutputStateComponent implements OnInit {
 
   @Input() parentActive: boolean;
   @Input() state: DesiredOutputState;
+  @Input() deleteable: boolean;
   @Output() delete = new EventEmitter<void>();
   constructor(private gameService: GameService) { }
 

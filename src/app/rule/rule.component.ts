@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,11 +6,13 @@ import { CreateDesiredOutputStateDialogComponent } from '../create-desired-outpu
 import { GameService } from '../game.service';
 import { CreateActionData, CreateActionDialogComponent } from '../create-action-dialog/create-action-dialog.component';
 import { StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
-import { ThrowStmt } from '@angular/compiler';
 import { CreateDataDialogComponent } from '../create-data-dialog/create-data-dialog.component';
 import { RuleData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
 import { SwitchActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-action-trigger';
 import { IdActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-action-trigger';
+import { Operators } from '../operators';
+import { TimerActionTrigger, TimerActionTriggerMode } from '@mopopinball/engine/src/system/rule-engine/actions/timer-action-trigger';
+import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/action-trigger';
 
 @Component({
     selector: 'app-rule',
@@ -18,15 +20,26 @@ import { IdActionTrigger } from '@mopopinball/engine/src/system/rule-engine/acti
     styleUrls: ['./rule.component.scss']
 })
 export class RuleComponent implements OnInit {
+    TimerActionTriggerMode: typeof TimerActionTriggerMode = TimerActionTriggerMode;
     @Input() isRoot: boolean = false;
     @Input() ruleEngine: RuleEngine;
     @Output() delete = new EventEmitter<void>();
     devices: DesiredOutputState[];
     showBody = true;
-    constructor(public dialog: MatDialog, private gameService: GameService) { }
-
+    readonly operators = Object.values(Operators);
+    constructor(public dialog: MatDialog, protected gameService: GameService) { }
+    
     ngOnInit(): void {
         this.updateDevices();
+        const show = localStorage.getItem(`mopo-rule-${this.ruleEngine.id}`);
+        if (show?.length > 0) {
+            this.showBody = localStorage.getItem(`mopo-rule-${this.ruleEngine.id}`) === 'true';
+        }
+    }
+
+    toggleShow(): void {
+        this.showBody = !this.showBody;
+        localStorage.setItem(`mopo-rule-${this.ruleEngine.id}`, `${this.showBody}`);
     }
 
     openInNewTab() {
@@ -55,8 +68,7 @@ export class RuleComponent implements OnInit {
         });
     }
 
-    onDataChange(data: RuleData): void {
-        data.initValue = data.value;
+    onDataChange(): void {
         this.gameService.update();
     }
 
@@ -66,13 +78,13 @@ export class RuleComponent implements OnInit {
     }
 
     private updateDevices(): void {
-        this.devices = Array.from(this.ruleEngine.devices.values());
+        this.devices = Array.from(this.ruleEngine.devices.values()).sort((a, b) => a.id.localeCompare(b.id));
         this.gameService.update();
     }
 
     addChild() {
         this.ruleEngine.children.push(
-            new RuleEngine('new child', true, this.ruleEngine)
+            new RuleEngine('new child', false, this.ruleEngine)
         );
         if(this.ruleEngine.autoStart) {
             this.ruleEngine.start();
@@ -85,7 +97,9 @@ export class RuleComponent implements OnInit {
     }
 
     deleteChild(child: RuleEngine) {
+        localStorage.removeItem(`mopo-rule-${child.id}`);
         this.ruleEngine.children.splice(this.ruleEngine.children.indexOf(child), 1);
+        this.gameService.update();
     }
 
     deleteDevice(device: DesiredOutputState) {
@@ -93,15 +107,15 @@ export class RuleComponent implements OnInit {
         this.updateDevices();
     }
 
-    addTrigger(existingTrigger: IdActionTrigger | SwitchActionTrigger): void {
+    addTrigger(existingTrigger: IdActionTrigger | SwitchActionTrigger | TimerActionTrigger): void {
         let triggerInfo;
         if (existingTrigger && existingTrigger.type === TriggerType.SWITCH) {
-            triggerInfo = {switchId: existingTrigger.switchId};
-        } else if (existingTrigger && existingTrigger.type === TriggerType.ID) {
+            triggerInfo = {switchId: existingTrigger.switchId, holdIntervalMs: existingTrigger.holdIntervalMs};
+        } else if (existingTrigger && (existingTrigger.type === TriggerType.ID || existingTrigger.type === TriggerType.TIMER)) {
             triggerInfo = {id: existingTrigger.id};
         }
         const data: CreateActionData = {
-            triggerInfo: triggerInfo,
+            existingTrigger: existingTrigger,
             ruleEngine: this.ruleEngine
         };
         const dialogRef = this.dialog.open(CreateActionDialogComponent, {
@@ -110,8 +124,10 @@ export class RuleComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result: SwitchActionTriggerSchema) => {
-            this.ruleEngine.createTrigger(result);
-            this.updateDevices();
+            if(result) {
+                this.ruleEngine.createTrigger(result);
+                this.updateDevices();
+            }
         });
     }
 
@@ -120,10 +136,7 @@ export class RuleComponent implements OnInit {
         this.gameService.update();
     }
 
-    deleteAction(trigger, action): void {
-        trigger.actions.splice(trigger.actions.indexOf(action), 1);
-        this.gameService.update();
-    }
+    
 
     addAction(trigger): void {
         // todo: make better
@@ -132,13 +145,13 @@ export class RuleComponent implements OnInit {
         );
     }
 
-    activateTrigger(trigger: SwitchActionTrigger | IdActionTrigger): void {
+    activateTrigger(trigger: SwitchActionTrigger | IdActionTrigger | TimerActionTrigger): void {
         if (!this.ruleEngine.active) {
             return;
         }
         if (trigger.type === TriggerType.SWITCH) {
-            this.gameService.onSwitch(trigger.switchId);
-        } else if (trigger.type === TriggerType.ID) {
+            this.gameService.onSwitch(trigger.switchId, trigger.holdIntervalMs);
+        } else if (trigger.type === TriggerType.ID || trigger.type === TriggerType.TIMER) {
             this.gameService.onTrigger(trigger.id);
         }
         this.gameService.update();          
@@ -154,9 +167,41 @@ export class RuleComponent implements OnInit {
         this.gameService.update();
     }
 
-    onIdChange() {
-        if(this.ruleEngine.id) {
-            this.gameService.update();
+    onIdChange(val: string) {
+        if (val) {
+            localStorage.removeItem(`mopo-rule-${this.ruleEngine.id}`);
+            this.ruleEngine.id = val;
+            localStorage.setItem(`mopo-rule-${this.ruleEngine.id}`, `${this.showBody}`);
+            this.gameService.update(); 
+        }
+    }
+
+    setDataRoS(data: RuleData, val): void {
+        if (!data.attributes) {
+            data.attributes = {};
+        }
+        data.attributes.resetOnStateStop = val;
+        this.gameService.update();
+    }
+
+    setDataWhole(data: RuleData, val): void {
+        if (!data.attributes) {
+            data.attributes = {};
+        }
+        data.attributes.isWholeNumber = val;
+        this.gameService.update();
+    }
+
+    autoCollapse(): boolean {
+        return false;
+        // return this.gameService.autoCollapse && !this.ruleEngine.active;
+    }
+
+    setTimerMode(trigger: TimerActionTrigger, checked: boolean): void {
+        if (checked) {
+            trigger.mode = TimerActionTriggerMode.INTERVAL;
+        } else {
+            trigger.mode = TimerActionTriggerMode.TIMEOUT;
         }
     }
 

@@ -1,4 +1,31 @@
+.logo {
+  height: 48px;
+}
 
+.hw-meta {
+      margin-left: 1em;
+      font-size: initial;
+
+      .hardware-details {
+        font-size: small;
+        font-style: italic;
+      }
+    }    
+
+  .remote-machine {
+    display: flex;
+    align-items: center;
+    margin-right: 2em;
+    font-size: initial;
+
+    .connected {
+      color: green;
+    }
+
+    .complete {
+      color: green;
+    }
+  }
 
   .hardware-details {
       font-size: smaller;

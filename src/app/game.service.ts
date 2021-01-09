@@ -10,6 +10,7 @@ export class GameService {
     private root: RuleEngine;
     private tickSubject = new BehaviorSubject<Map<string, DesiredOutputState>>(new Map());
     tick = this.tickSubject.asObservable();
+    public autoCollapse: boolean;
 
     newTab: EventEmitter<RuleEngine> = new EventEmitter();
 
@@ -30,8 +31,8 @@ export class GameService {
         this.tickSubject.next(this.root.getDevices());
     }
 
-    onSwitch(id: string): void {
-        this.root.onSwitch(id);
+    onSwitch(id: string, holdIntervalMs?: number): void {
+        this.root.onSwitch(id, holdIntervalMs);
     }
 
     onTrigger(id: string): void {

@@ -1,6 +1,11 @@
 .rule {
+
     .active-icon {
         color: rgb(255, 165, 0);
+    }
+
+    .id {
+        font-family: monospace;
     }
 
     .io {
@@ -28,6 +33,10 @@
             input {
                 width: 4em;
             }
+
+            .data-key {
+                font-family: monospace;
+            }
         }
     }
 
@@ -41,13 +50,49 @@
         }
     }
 
+    .timer-title {
+        input[type=number] {
+            width: 4em;
+            margin-left: 2em;
+        }
+        
+    }
+
     .actions {
         .action {
             display: flex;
+            position: relative;
             align-items: center;
-            border: solid 1px white;
+            border: solid 1px rgba(255, 255, 255, 0.2);
+            padding: 0 6px;
             border-radius: 3px;
             margin-bottom: 6px;
+            flex-wrap: wrap;
+
+            .title {
+                position: absolute;
+                top: -6px;
+                left: 6px;
+                padding: 0 4px;
+                font-size: xx-small;
+                line-height: initial;
+                color: rgba(255, 255, 255, 0.2);
+                background: rgb(66, 66, 66);
+            }
+
+            .token {
+                white-space: nowrap;
+                margin-left: 0;
+                margin-right: 0.5em;
+            }
+
+            input[type=number] {
+                width: 5em;
+            }
+
+            button {
+                margin-right: 0;
+            }
     
             // &:last-child {
             //     margin-bottom: 0;

@@ -6,10 +6,12 @@ import { RuleComponent } from './rule/rule.component';
 import { DesiredOutputStateComponent } from './desired-output-state/desired-output-state.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
@@ -22,6 +24,11 @@ import { SelectHardwareDialogComponent } from './select-hardware-dialog/select-h
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { CreateDataDialogComponent } from './create-data-dialog/create-data-dialog.component';
 import { SelectDataDialogComponent } from './select-data-dialog/select-data-dialog.component';
+import { HttpClientModule } from '@angular/common/http';
+import { DataKeySelectorComponent } from './data-key-selector/data-key-selector.component';
+import { DataOperationComponent } from './data-operation/data-operation.component';
+import { OperandSelectorComponent } from './operand-selector/operand-selector.component';
+import { ActionActionsComponent } from './action-actions/action-actions.component';
 
 @NgModule({
   declarations: [
@@ -33,16 +40,23 @@ import { SelectDataDialogComponent } from './select-data-dialog/select-data-dial
     SelectHardwareDialogComponent,
     ExportDialogComponent,
     CreateDataDialogComponent,
-    SelectDataDialogComponent
+    SelectDataDialogComponent,
+    DataKeySelectorComponent,
+    DataOperationComponent,
+    OperandSelectorComponent,
+    ActionActionsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     MatButtonModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatTabsModule,
     MatIconModule,
     MatAutocompleteModule,
+    MatMenuModule,
     MatRadioModule,
     MatInputModule,
     MatToolbarModule,

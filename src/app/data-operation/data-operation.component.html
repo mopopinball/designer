@@ -1,0 +1,7 @@
+<select [(ngModel)]="operation" (change)="onChange()">
+    <option [ngValue]="DataOperation.INCREMENT">Increment</option>
+    <option [ngValue]="DataOperation.DECREMENT">Decrement</option>
+    <option [ngValue]="DataOperation.MULTIPLY">Multiply</option>
+    <option [ngValue]="DataOperation.DIVIDE">Divide</option>
+    <option [ngValue]="DataOperation.ASSIGN">Assign</option>
+</select>

@@ -1,11 +1,11 @@
-<h2>Create new Action</h2>
+<h2>Create new Trigger & Action</h2>
 <mat-dialog-content>
-    <div>
-        <div *ngIf="mode !== 'existing'">
-            Trigger Type:
-            <mat-radio-group [(ngModel)]="mode">
+    <div *ngIf="!existing" class="trigger">
+        <div class="trigger-type">
+            <mat-radio-group [(ngModel)]="mode" (ngModelChange)="onTriggerTypeChange()">
                 <mat-radio-button value="switch">Switch</mat-radio-button>
                 <mat-radio-button value="named">Named</mat-radio-button>
+                <mat-radio-button value="timed">Timed</mat-radio-button>
             </mat-radio-group>
         </div>
         <div *ngIf="mode === 'switch'" class="switchSelect">
@@ -25,6 +25,14 @@
         <div *ngIf="mode === 'named'">
             Trigger Name: <input [(ngModel)]="triggerId" />
         </div>
+        <div *ngIf="mode === 'timed'">
+            Trigger Name: <input [(ngModel)]="triggerId" />
+            Time (ms): <input [(ngModel)]="triggerTimerMs" />
+            <mat-radio-group [(ngModel)]="triggerTimerMode">
+                <mat-radio-button [value]="TimerActionTriggerMode.INTERVAL">Interval</mat-radio-button>
+                <mat-radio-button [value]="TimerActionTriggerMode.TIMEOUT">Timeout</mat-radio-button>
+            </mat-radio-group>
+        </div>
     </div>
     <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedActionTabIndex">
         <mat-tab label="State Action">
@@ -40,14 +48,16 @@
         </mat-tab>
         <mat-tab label="Data Action">
             <div class="data-action">
-                <button (click)="selectData()">Select Data</button>
-                {{dataActionKey}}
                 <select [(ngModel)]="dataActionOperation">
                     <option [ngValue]="DataOperation.INCREMENT">Increment</option>
                     <option [ngValue]="DataOperation.DECREMENT">Decrement</option>
+                    <option [ngValue]="DataOperation.MULTIPLY">Multiply</option>
+                    <option [ngValue]="DataOperation.DIVIDE">Divide</option>
                     <option [ngValue]="DataOperation.ASSIGN">Set</option>
                 </select>
-                <input type="number" [(ngModel)]="dataActionOperand" />
+                <app-data-key-selector [ruleEngine]="this.data.ruleEngine" (key)="this.dataActionKey = $event"></app-data-key-selector>
+                by/to
+                <app-operand-selector [ruleEngine]="this.data.ruleEngine" [(operand)]="dataActionOperand"></app-operand-selector>
             </div>
         </mat-tab>
         <mat-tab label="Conditional Action">
@@ -55,14 +65,13 @@
                 <select [(ngModel)]="conditionalActionType">
                     <option [ngValue]="'data'">Data</option>
                 </select>
-                <button (click)="selectData()">Select Data</button>
-                {{dataActionKey}}
+                <app-data-key-selector [ruleEngine]="this.data.ruleEngine" (key)="this.dataActionKey = $event"></app-data-key-selector>
                 <select [(ngModel)]="conditionalActionOperator">
                     <option *ngFor="let op of operators" [ngValue]="op">{{op}}</option>
                 </select>
                 <input type="number" [(ngModel)]="conditionalActionOperand" />
-                True Trigger: <input type="text" [(ngModel)]="conditionalActionTrueTriggerId" />
-                False Trigger: <input type="text" [(ngModel)]="conditionalActionFalseTriggerId" />
+                then Trigger: <input type="text" [(ngModel)]="conditionalActionTrueTriggerId" />
+                else Trigger: <input type="text" [(ngModel)]="conditionalActionFalseTriggerId" />
             </div>
         </mat-tab>
       </mat-tab-group>
