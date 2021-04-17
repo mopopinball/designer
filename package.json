@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "pubilsh": "aws s3 cp ./dist/designer s3://mopo-designer --recursive"
+    "publish": "aws s3 cp ./dist/designer s3://mopo-designer --recursive"
   },
   "private": false,
   "repository": {
