@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { RuleComponent } from './rule/rule.component';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { GameService } from './game.service';
@@ -21,6 +21,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 export class AppComponent implements OnInit {
     @ViewChild('dllink') el: ElementRef;
+    @ViewChild('fileload') uploadInput: ElementRef;
     root: RuleEngine;
     hardwareConfig: HardwareConfig;
     selectedTabIndex = 0;
@@ -119,14 +120,30 @@ export class AppComponent implements OnInit {
         localStorage.setItem('mopo-rules', JSON.stringify(this.root));
     }
 
+    preLoad(): void {
+        this.uploadInput.nativeElement.click();
+    }
+
+    load(files: FileList): void {
+        const file = files.item(0);
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+            this.root = RuleEngine.load(JSON.parse(fileReader.result.toString()));
+            this.root.start();
+            this.save();
+            this.uploadInput.nativeElement.value = '';
+        };
+        fileReader.readAsText(file)
+    }
+
     test() {
         const dialogRef = this.dialog.open(ExportDialogComponent, {
-            width: '75%',
-            height: '75%'
+            // width: '75%',
+            // height: '75%'
         });
 
-        this.downloadHref = this.domSanatizer.bypassSecurityTrustUrl("data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.root)));
-        this.el.nativeElement.click();
+        // this.downloadHref = this.domSanatizer.bypassSecurityTrustUrl("data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.root)));
+        // this.el.nativeElement.click();
     }
 
     closeTab(engine: RuleEngine) {

@@ -5,12 +5,12 @@
             <input type="text" [disabled]="ruleEngine.id === 'root'" [ngModel]="ruleEngine.id" (ngModelChange)="onIdChange($event)" />
         </div>
         <div *ngIf="!isRoot">
-            Auto start: <input type="checkbox" [(ngModel)]="ruleEngine.autoStart" (change)="onAutoStartChange()" />
+            <mat-checkbox [(ngModel)]="ruleEngine.autoStart" (ngModelChange)="onAutoStartChange()">Auto start</mat-checkbox>
         </div>
         <span class="spacer"></span>
         
         <button mat-icon-button *ngIf="!isRoot">
-            <mat-icon (click)="delete.emit()">delete</mat-icon>
+            <mat-icon (click)="deleteRule()">delete</mat-icon>
         </button>
         <button mat-icon-button *ngIf="ruleEngine.id !== 'root'">
             <mat-icon (click)="openInNewTab()">open_in_new</mat-icon>
@@ -50,6 +50,7 @@
                         <span class="no-items" *ngIf="ruleEngine.data.size === 0">No data</span>
                         <div *ngFor="let d of ruleEngine.data | keyvalue" class="data-item">
                             <div>
+                                <a id="{{d.key}}"></a>
                                 <mat-icon>label</mat-icon>
                                 <span class="data-key">
                                     {{d.key}}
@@ -85,8 +86,8 @@
                                 <mat-icon>close_fullscreen</mat-icon>
                                 <div class="title timer-title">
                                     Switch Trigger: <span class="id">{{trigger.switchId}}</span>
-                                    <span *ngIf="trigger.holdIntervalMs">
-                                        <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="gameService.update()" />ms
+                                    <span >
+                                        <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="onSwitchTriggerHoldTimeChange(trigger)" />ms
                                     </span>
                                 </div>
                             </ng-container>
@@ -122,7 +123,7 @@
                                         <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
                                     </span>
                                     <span>
-                                        {{action.stopTargetId}} -> {{action.startTargetId}}
+                                        Stop: <input type="text" [(ngModel)]="action.stopTargetId" /> -> Start: <input type="text" [(ngModel)]="action.startTargetId" />
                                     </span>
                                     <div class="spacer"></div>
                                     <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
@@ -138,7 +139,7 @@
                                     <mat-icon>label</mat-icon>
                                     <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="action.dataKey" (key)="action.dataKey = $event"></app-data-key-selector>
                                     <app-data-operation class="token" [operation]="action.operation" (changed)="action.operation = $event; gameService.update();"></app-data-operation>
-                                    <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="action.operand" (change)="gameService.update()"></app-operand-selector>
+                                    <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="action.operand" (operandChange)="gameService.update()"></app-operand-selector>
                                     <div class="spacer"></div>
                                     <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
                                 </div>

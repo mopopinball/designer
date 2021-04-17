@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/action-trigger';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
 
 @Component({
@@ -12,14 +14,25 @@ export class ActionActionsComponent implements OnInit {
     @Input()trigger: ActionTriggerType;
     @Input()action: Action;
 
-    constructor(protected gameService: GameService) { }
+    constructor(protected gameService: GameService, public dialog: MatDialog) { }
 
     ngOnInit(): void {
     }
 
     deleteAction(trigger, action): void {
-        trigger.actions.splice(trigger.actions.indexOf(action), 1);
-        this.gameService.update();
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                action: 'Delete',
+                prompt: `Are you sure you want to delete this action?`
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                trigger.actions.splice(trigger.actions.indexOf(action), 1);
+                this.gameService.update();
+            }
+        });
     }
 
     moveUp(trigger: ActionTriggerType, action): void {

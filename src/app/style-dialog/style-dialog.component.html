@@ -1,0 +1,18 @@
+<h2>{{data.type}} Style</h2>
+
+<mat-dialog-content>
+    <select [(ngModel)]="selectedOption" (ngModelChange)="onStyleChange($event)">
+        <option [ngValue]="'none'">None</option>
+        <option [ngValue]="'blink'">Blink</option>
+    </select>
+
+    <div>
+        <div *ngIf="selectedOption === 'blink'">
+            Interval (ms): <input type="number" [(ngModel)]="style.interval" />
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button (click)="confirm()">Update Style</button>
+</mat-dialog-actions>

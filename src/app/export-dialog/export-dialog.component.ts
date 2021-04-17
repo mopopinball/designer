@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { GameService } from '../game.service';
 
 @Component({
@@ -9,14 +10,18 @@ import { GameService } from '../game.service';
 })
 export class ExportDialogComponent implements OnInit {
   ruleConfigString: string;
+  downloadHref: SafeUrl;
 
   constructor(
+    private domSanatizer: DomSanitizer,
     public dialogRef: MatDialogRef<ExportDialogComponent>,
     private gameService: GameService) {
-    this.ruleConfigString = JSON.stringify(gameService.getRoot(), null, 4);
   }
 
   ngOnInit(): void {
+    this.ruleConfigString = JSON.stringify(this.gameService.getRoot(), null, 4);
+    this.downloadHref = this.domSanatizer.bypassSecurityTrustUrl("data:text/json;charset=utf-8," + encodeURIComponent(this.ruleConfigString));
+        
   }
 
 }

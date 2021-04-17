@@ -13,7 +13,10 @@
     </select>
     <input type="text" *ngIf="state.type === OutputDeviceType.DISPLAY" [ngModel]="state.getState()" (ngModelChange)="onChangeState($event)">
     <div class="spacer"></div>
+    <button *ngIf="state.type === OutputDeviceType.LIGHT || state.type === OutputDeviceType.DISPLAY" mat-icon-button [disabled]="state.getState() === LightState.ON" (click)="showStyleDialog(state)">
+        <mat-icon [matBadge]="getStyleCount()">invert_colors</mat-icon>
+    </button>
     <button mat-icon-button *ngIf="deleteable" (click)="delete.emit()">
-        <mat-icon >delete</mat-icon>
+        <mat-icon>delete</mat-icon>
     </button>
 </div>

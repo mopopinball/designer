@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { RuleComponent } from './rule/rule.component';
 import { DesiredOutputStateComponent } from './desired-output-state/desired-output-state.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {MatBadgeModule} from '@angular/material/badge';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -29,6 +30,8 @@ import { DataKeySelectorComponent } from './data-key-selector/data-key-selector.
 import { DataOperationComponent } from './data-operation/data-operation.component';
 import { OperandSelectorComponent } from './operand-selector/operand-selector.component';
 import { ActionActionsComponent } from './action-actions/action-actions.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { StyleDialogComponent } from './style-dialog/style-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,12 +47,15 @@ import { ActionActionsComponent } from './action-actions/action-actions.componen
     DataKeySelectorComponent,
     DataOperationComponent,
     OperandSelectorComponent,
-    ActionActionsComponent
+    ActionActionsComponent,
+    ConfirmDialogComponent,
+    StyleDialogComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    MatBadgeModule,
     MatButtonModule,
     MatCheckboxModule,
     MatDialogModule,

@@ -1,4 +1,4 @@
 <span class="operand-selector">
-    <input type="number" [class.inactive]="numOperand === null" [(ngModel)]="numOperand" (change)="onNumChange()" />
-    <app-data-key-selector [class.inactive]="keyOperand === null" [ruleEngine]="ruleEngine" [dataKey]="keyOperand" (key)="onKeyChange($event)"></app-data-key-selector>
+    <input type="text" [(ngModel)]="operand" (ngModelChange)="operandChange.emit(operand)" />
+    <app-data-key-selector [ruleEngine]="ruleEngine" [dataKey]="keyOperand" (key)="onKeySelected($event)"></app-data-key-selector>
 </span>

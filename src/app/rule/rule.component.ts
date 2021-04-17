@@ -13,6 +13,7 @@ import { IdActionTrigger } from '@mopopinball/engine/src/system/rule-engine/acti
 import { Operators } from '../operators';
 import { TimerActionTrigger, TimerActionTriggerMode } from '@mopopinball/engine/src/system/rule-engine/actions/timer-action-trigger';
 import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/action-trigger';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-rule',
@@ -73,8 +74,19 @@ export class RuleComponent implements OnInit {
     }
 
     deleteData(key: string): void {
-        this.ruleEngine.data.delete(key);
-        this.gameService.update();
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                action: 'Delete',
+                prompt: `Are you sure you want to delete the data item "${key}"?`
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                this.ruleEngine.data.delete(key);
+                this.gameService.update();
+            }
+        });
     }
 
     private updateDevices(): void {
@@ -97,14 +109,36 @@ export class RuleComponent implements OnInit {
     }
 
     deleteChild(child: RuleEngine) {
-        localStorage.removeItem(`mopo-rule-${child.id}`);
-        this.ruleEngine.children.splice(this.ruleEngine.children.indexOf(child), 1);
-        this.gameService.update();
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                action: 'Delete',
+                prompt: `Are you sure you want to delete the rule "${child.id}"?`
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                localStorage.removeItem(`mopo-rule-${child.id}`);
+                this.ruleEngine.children.splice(this.ruleEngine.children.indexOf(child), 1);
+                this.gameService.update();
+            }
+        });
     }
 
     deleteDevice(device: DesiredOutputState) {
-        this.ruleEngine.devices.delete(device.id);
-        this.updateDevices();
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                action: 'Delete',
+                prompt: `Are you sure you want to delete the device "${device.id}"?`
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                this.ruleEngine.devices.delete(device.id);
+                this.updateDevices();
+            }
+        });
     }
 
     addTrigger(existingTrigger: IdActionTrigger | SwitchActionTrigger | TimerActionTrigger): void {
@@ -132,11 +166,20 @@ export class RuleComponent implements OnInit {
     }
 
     deleteTrigger(trigger): void {
-        this.ruleEngine.triggers.splice(this.ruleEngine.triggers.indexOf(trigger), 1);
-        this.gameService.update();
-    }
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                action: 'Delete',
+                prompt: `Are you sure you want to delete the trigger "${trigger.id}"?`
+            }
+        });
 
-    
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                this.ruleEngine.triggers.splice(this.ruleEngine.triggers.indexOf(trigger), 1);
+                this.gameService.update();
+            }
+        });
+    }
 
     addAction(trigger): void {
         // todo: make better
@@ -203,6 +246,17 @@ export class RuleComponent implements OnInit {
         } else {
             trigger.mode = TimerActionTriggerMode.TIMEOUT;
         }
+    }
+
+    deleteRule(): void {
+        this.delete.emit();
+    }
+
+    onSwitchTriggerHoldTimeChange(trigger: SwitchActionTrigger): void {
+        if (!trigger.holdIntervalMs) {
+            trigger.holdIntervalMs = null;
+        }
+        this.gameService.update();
     }
 
 }

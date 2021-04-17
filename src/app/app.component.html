@@ -42,6 +42,13 @@
     <button mat-icon-button title="Create New">
         <mat-icon (click)="new()">create</mat-icon>
     </button>
+    <input type="file"
+           #fileload
+           style="display:none;"
+           (change)="load($event.target.files)">
+    <button mat-icon-button title="Load">
+        <mat-icon (click)="preLoad()">publish</mat-icon>
+    </button>
     <button mat-icon-button title="Save">
         <mat-icon (click)="save()">save</mat-icon>
     </button>
