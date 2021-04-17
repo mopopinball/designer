@@ -10,7 +10,7 @@
     "e2e": "ng e2e",
     "publish": "aws s3 cp ./dist/designer s3://mopo-designer --recursive"
   },
-  "private": false,
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/mopopinball/designer.git"

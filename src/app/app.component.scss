@@ -1,5 +1,16 @@
-.logo {
-  height: 48px;
+.logo-version {
+  display: flex;
+  flex-direction: column;
+
+  .logo {
+    height: 48px;
+  }
+
+  .version {
+    font-size: xx-small;
+    line-height: initial;
+    opacity: 0.5;
+  }
 }
 
 .hw-meta {

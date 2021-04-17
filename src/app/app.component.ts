@@ -12,6 +12,7 @@ import { OutputDeviceType } from '@mopopinball/engine/src/system/devices/output-
 import { LightState } from '@mopopinball/engine/src/system/devices/light';
 import { LampRole } from '@mopopinball/engine/src/system/devices/lamp-role';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { version } from '../../package.json';
 
 @Component({
     selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
     uploadComplete = false;
     autoCollapse: boolean = true;
     downloadHref: SafeUrl = '';
+    appVersion: string = version;
 
     constructor(
         public dialog: MatDialog, private gameService: GameService, private http: HttpClient,

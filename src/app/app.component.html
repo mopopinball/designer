@@ -1,5 +1,9 @@
 <mat-toolbar>
-    <img src="./assets/mopo-logo.svg" class="logo" />
+    <div class="logo-version">
+        <img src="./assets/mopo-logo.svg" class="logo" />
+        <span class="version">{{appVersion}}</span>
+    </div>
+    
     <span>
         <div *ngIf="hardwareConfig && root" class="hw-meta">
             <span class="metadata">
