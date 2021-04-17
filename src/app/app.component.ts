@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { RuleComponent } from './rule/rule.component';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { GameService } from './game.service';
 import { MatDialog } from '@angular/material/dialog';
