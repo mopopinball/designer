@@ -21,6 +21,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.S3_PUBLISH_KEY }}
+        aws-secret-access-key: ${{ secrets.S3_PUBLISH }}
+        aws-region: us-east-1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
@@ -35,3 +41,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npx semantic-release
+    - run: npm run publish
