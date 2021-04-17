@@ -1,0 +1,4 @@
+<span class="operand-selector">
+    <input type="text" [(ngModel)]="operand" (ngModelChange)="operandChange.emit(operand)" />
+    <app-data-key-selector [ruleEngine]="ruleEngine" [dataKey]="keyOperand" (key)="onKeySelected($event)"></app-data-key-selector>
+</span>

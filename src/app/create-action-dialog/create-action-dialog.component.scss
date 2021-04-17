@@ -1,0 +1,38 @@
+input {
+    width: 100%;
+}
+
+.trigger {
+    margin-bottom: 20px;
+}
+
+.trigger-type {
+    padding: 12px 0;
+
+    mat-radio-button {
+        margin-right: 10px;
+    }
+}
+
+.switchSelect {
+    display: flex;
+    white-space: nowrap;
+}
+
+.state-action, .data-action, .device-action {
+    padding: 10px;
+}
+
+.state-action {
+    display: flex;
+    white-space: nowrap;
+}
+
+.data-action {
+    display: flex;
+    white-space: nowrap;
+}
+
+mat-radio-group {
+    margin-bottom: 1em;
+}

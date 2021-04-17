@@ -1,0 +1,9 @@
+<button mat-icon-button title="Move up" (click)="moveUp(trigger, action)" [disabled]="trigger.actions.indexOf(action) === 0">
+    <mat-icon>vertical_align_top</mat-icon>
+</button>
+<button mat-icon-button title="Move down" (click)="moveDown(trigger, action)" [disabled]="trigger.actions.indexOf(action) === trigger.actions.length - 1">
+    <mat-icon>vertical_align_bottom</mat-icon>
+</button>
+<button mat-icon-button title="Delete action" (click)="deleteAction(trigger, action)">
+    <mat-icon>delete</mat-icon>
+</button>

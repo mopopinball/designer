@@ -1,0 +1,6 @@
+<h1 mat-dialog-title>Confirm {{action}}</h1>
+<div mat-dialog-content>{{prompt}}</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="confirm()">{{action}}</button>
+  <button mat-button (click)="cancel()">Cancel</button>
+</div>

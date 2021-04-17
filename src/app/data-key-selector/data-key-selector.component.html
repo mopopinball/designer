@@ -1,0 +1,7 @@
+<span class="key-selector">
+    <span><a href="#{{dataKey}}">{{dataKey}}</a></span>
+    <span *ngIf="!dataKey" class="placeholder">Select data key</span>
+    <button mat-icon-button title="Select Data" (click)="selectData()">
+        <mat-icon >more_horiz</mat-icon>
+    </button>
+</span>          

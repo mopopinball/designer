@@ -1,0 +1,47 @@
+<div>
+    <mat-dialog-content>
+        <div class="header">
+            <input type="text"
+            class="search"
+            placeholder="Search for a device"
+            (input)="onSwitchChange($event)"
+            >
+        </div>
+        
+
+        <h2><mat-icon>compare_arrows</mat-icon>Coils</h2>
+        <div *ngFor="let coil of filteredCoils" class="hw-item">
+            {{coil.value.name}}
+            <button (click)="newCoil(coil, true)">On</button>
+            <button (click)="newCoil(coil, false)">Off</button>
+        </div>
+        <span class="no-results" *ngIf="!filteredCoils.length">No coils match your search</span>
+        
+        <h2><mat-icon>highlight</mat-icon>Lamps</h2>
+        <div *ngFor="let lamp of filteredLamps" class="hw-item">
+            {{lamp.value.name}}
+            <button (click)="newLamp(lamp, 1)">On</button>
+            <button (click)="newLamp(lamp, 0)">Off</button>
+            <button (click)="newLamp(lamp, 2)">Blink</button>
+        </div>
+        <span class="no-results" *ngIf="!filteredLamps.length">No lamps match your search</span>
+
+        <h2><mat-icon>tv</mat-icon>Displays</h2>
+        <div *ngFor="let disp of filteredDisplays" class="hw-item">
+            {{disp.value.name}}
+            <button (click)="newDisplay(disp)">Select</button>
+        </div>
+        <span class="no-results" *ngIf="!filteredDisplays.length">No displays match your search</span>
+
+        <h2><mat-icon>volume_up</mat-icon>Sounds</h2>
+        <div *ngFor="let sound of filteredSounds" class="hw-item">
+            {{sound.value.description}}
+            <button (click)="newSound(sound)">Select</button>
+        </div>
+        <span class="no-results" *ngIf="!filteredSounds.length">No sounds match your search</span>
+        
+    </mat-dialog-content>
+    
+
+    
+</div>
