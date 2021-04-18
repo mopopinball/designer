@@ -120,14 +120,17 @@
                             <button mat-icon-button title="Add action">
                                 <mat-icon (click)="addAction(trigger)">add_circle_outline</mat-icon>
                             </button>
-                            <button mat-icon-button>
+                            <button mat-icon-button title="Delete Trigger">
                                 <mat-icon (click)="deleteTrigger(trigger)">delete</mat-icon>
                             </button>
                         </div>
                         <div class="body">
                             <div *ngFor="let action of trigger.actions" class="actions">
                                 <div *ngIf="action.toJSON().type === 'state'" class="action">
-                                    <div class="title">State Action</div>
+                                    <div class="title">
+                                        <span *ngIf="!action.stopTargetId && action.startTargetId">Start </span>
+                                        <span *ngIf="action.stopTargetId && !action.startTargetId">Stop </span>
+                                        State Action</div>
                                     <span>
                                         <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
                                     </span>
