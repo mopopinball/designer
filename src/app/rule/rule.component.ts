@@ -259,4 +259,18 @@ export class RuleComponent implements OnInit {
         this.gameService.update();
     }
 
+    moveUp(trigger): void {
+        const currentPosition = this.ruleEngine.triggers.indexOf(trigger);
+        this.ruleEngine.triggers.splice(currentPosition, 1);
+        this.ruleEngine.triggers.splice(currentPosition - 1, 0, trigger);
+        this.gameService.update();
+    }
+
+    moveDown(trigger): void {
+        const currentPosition = this.ruleEngine.triggers.indexOf(trigger);
+        this.ruleEngine.triggers.splice(currentPosition, 1);
+        this.ruleEngine.triggers.splice(currentPosition + 1, 0, trigger);
+        this.gameService.update();
+    }
+
 }

@@ -4,6 +4,9 @@
         <div class="title">
             <input type="text" [disabled]="ruleEngine.id === 'root'" [ngModel]="ruleEngine.id" (ngModelChange)="onIdChange($event)" />
         </div>
+        <div>
+            ({{ruleEngine.children.length}} Children)
+        </div>
         <div *ngIf="!isRoot">
             <mat-checkbox [(ngModel)]="ruleEngine.autoStart" (ngModelChange)="onAutoStartChange()">Auto start</mat-checkbox>
         </div>
@@ -81,7 +84,7 @@
                 <div class="body">
                     <span class="no-items" *ngIf="!ruleEngine.triggers.length">No triggers</span>
                     <div *ngFor="let trigger of ruleEngine.triggers" class="nestable-container" [class.active]="ruleEngine.active">
-                        <div class="header" >
+                        <div class="header">
                             <ng-container *ngIf="trigger.type === 'switch'">
                                 <mat-icon>close_fullscreen</mat-icon>
                                 <div class="title timer-title">
@@ -107,6 +110,12 @@
                             <div class="spacer"></div>
                             <button mat-icon-button [disabled]="!ruleEngine.active" title="Activate trigger">
                                 <mat-icon (click)="activateTrigger(trigger)">play_arrow</mat-icon>
+                            </button>
+                            <button mat-icon-button title="Move up" (click)="moveUp(trigger)" [disabled]="ruleEngine.triggers.indexOf(trigger) === 0">
+                                <mat-icon>vertical_align_top</mat-icon>
+                            </button>
+                            <button mat-icon-button title="Move down" (click)="moveDown(trigger)" [disabled]="ruleEngine.triggers.indexOf(trigger) === ruleEngine.triggers.length - 1">
+                                <mat-icon>vertical_align_bottom</mat-icon>
                             </button>
                             <button mat-icon-button title="Add action">
                                 <mat-icon (click)="addAction(trigger)">add_circle_outline</mat-icon>
