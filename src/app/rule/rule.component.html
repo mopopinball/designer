@@ -90,7 +90,7 @@
                                 <div class="title timer-title">
                                     Switch Trigger: <span class="id">{{trigger.switchId}}</span>
                                     <span >
-                                        <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="onSwitchTriggerHoldTimeChange(trigger)" />ms
+                                        <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="onSwitchTriggerHoldTimeChange(trigger)" /> hold ms
                                     </span>
                                 </div>
                             </ng-container>
@@ -103,8 +103,11 @@
                             <ng-container *ngIf="trigger.type === 'timer'">
                                 <mat-icon>av_timer</mat-icon>
                                 <div class="title timer-title">
-                                    Timed Trigger: <span class="id">{{trigger.id}}</span> <input type="number" [(ngModel)]="trigger.valueMs" (ngModelChange)="gameService.update()" />ms
-                                    <mat-checkbox [ngModel]="trigger.mode === TimerActionTriggerMode.INTERVAL" (ngModelChange)="setTimerMode(trigger, $event)">Repeat</mat-checkbox>
+                                    Timed Trigger: <span class="id">{{trigger.id}}</span> <input type="number" [(ngModel)]="trigger.valueMs" (ngModelChange)="gameService.update()" />
+                                    <span *ngIf="trigger.mode === TimerActionTriggerMode.TIMEOUT">timeout </span>
+                                    <span *ngIf="trigger.mode === TimerActionTriggerMode.INTERVAL">interval </span>
+                                    ms
+                                    <mat-checkbox [ngModel]="trigger.mode === TimerActionTriggerMode.INTERVAL" [disabled]="!trigger.valueMs" (ngModelChange)="setTimerMode(trigger, $event)">Repeat</mat-checkbox>
                                 </div>
                             </ng-container>
                             <div class="spacer"></div>
@@ -181,7 +184,7 @@
             <div class="nestable-container" [class.active]="ruleEngine.active">
                 <div class="header">
                     <mat-icon>format_list_bulleted</mat-icon>
-                    <div class="title">Children</div>
+                    <div class="title"><span class="id">{{ruleEngine.id}}</span> Children</div>
                     <div class="spacer"></div>
                     <button mat-icon-button title="Add Child" (click)="addChild()">
                         <mat-icon>add_circle_outline</mat-icon>
