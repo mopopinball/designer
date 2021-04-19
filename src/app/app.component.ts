@@ -49,18 +49,41 @@ export class AppComponent implements OnInit {
         this.root = RuleEngine.load(workingRules);
         this.root.start();
         this.gameService.setRoot(this.root);
+        
         this.gameService.newTab.subscribe((engine) => {
             if (this.engineTabs.indexOf(engine) < 0) {
                 this.engineTabs.push(engine);
+                this.saveTabs();
             }
             this.selectedTabIndex = this.engineTabs.indexOf(engine) + 1;
+            this.saveToLocalStorage('selectedTabIndex', this.selectedTabIndex);
         });
+        const savedTabs = this.getSavedTabs();
+        for (const tab of savedTabs) {
+            const matchingEngine = Array.from(this.root.getAllEngines().values()).find((e) => e.id === tab);
+            this.engineTabs.push(matchingEngine);
+        }
+        this.selectedTabIndex = this.loadFromLocalStorage('selectedTabIndex') || 0;
 
         // auto save
         this.gameService.tick.subscribe(() => this.save());
 
         this.updateRemoteStatus();
         this.onCollapseChange();
+    }
+
+    onSelectedTabIndexChange(tabIndex: number): void {
+        this.selectedTabIndex = tabIndex;
+        this.saveToLocalStorage('selectedTabIndex', this.selectedTabIndex);
+    }
+
+    private getSavedTabs(): string[] {
+        return JSON.parse(localStorage.getItem('openTabs')) || [];
+    }
+
+    private saveTabs(): void {
+        const tabs = this.engineTabs.map((et) => et.id);
+        localStorage.setItem('openTabs', JSON.stringify(tabs));
     }
 
     onCollapseChange(): void {
@@ -149,6 +172,7 @@ export class AppComponent implements OnInit {
 
     closeTab(engine: RuleEngine) {
         this.engineTabs.splice(this.engineTabs.indexOf(engine), 1);
+        this.saveTabs();
     }
 
     selectRemoteMachine(): void {
@@ -179,5 +203,14 @@ export class AppComponent implements OnInit {
                         }, 2000);
                     });
             });
+    }
+
+    private saveToLocalStorage(key: string, obj: any): void {
+        localStorage.setItem(key, JSON.stringify(obj));
+    }
+
+    private loadFromLocalStorage<T>(key: string): T {
+        const obj: T = JSON.parse(localStorage.getItem(key));
+        return obj;
     }
 }
