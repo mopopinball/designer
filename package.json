@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "publish": "aws s3 sync ./dist/designer s3://mopo-designer --delete --cache-control max-age=31536000"
+    "publish": "aws s3 sync ./dist/designer s3://mopo-designer --delete --cache-control max-age=86400 must-revalidate"
   },
   "private": true,
   "repository": {
