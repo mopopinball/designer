@@ -41,4 +41,3 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npx semantic-release
-    - run: rm -rf dist && npm run build && npm run publish
