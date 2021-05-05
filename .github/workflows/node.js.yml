@@ -36,9 +36,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MOPOPACKAGES: ${{ secrets.MOPOPAK }}
     - run: npm run build --if-present
     - name: Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MOPOPACKAGES: ${{ secrets.MOPOPAK }}
       run: npx semantic-release
