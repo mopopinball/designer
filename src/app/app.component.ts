@@ -6,7 +6,6 @@ import { SelectHardwareDialogComponent } from './select-hardware-dialog/select-h
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { HttpClient } from '@angular/common/http';
-import { CoilType } from '@mopopinball/engine/src/system/devices/coil-type';
 import { DesiredOutputState, DesiredOutputStateType } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { OutputDeviceType } from '@mopopinball/engine/src/system/devices/output-device-type';
 import { LightState } from '@mopopinball/engine/src/system/devices/light';
