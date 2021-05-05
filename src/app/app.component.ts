@@ -185,7 +185,7 @@ export class AppComponent implements OnInit {
             return;
         }
 
-        this.http.get(`/update/ruleEngine/status`).subscribe(
+        this.http.get(`http://${this.remoteMachineAddress}/update/ruleEngine/status`).subscribe(
             (res: any) => {
                 this.remoteMachineReady = res.debugEnabled;
             }
@@ -193,7 +193,7 @@ export class AppComponent implements OnInit {
     }
 
     applyToRemoteMachine(): void {
-        this.http.get(`/update/ruleEngine/status`)
+        this.http.get(`http://${this.remoteMachineAddress}/update/ruleEngine/status`)
             .subscribe(() => {
                 this.http.post<void>(`/update/ruleEngine/schema`, this.root)
                     .subscribe(() => {
