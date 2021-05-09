@@ -7,7 +7,7 @@ import { GameService } from '../game.service';
 import { CreateActionData, CreateActionDialogComponent } from '../create-action-dialog/create-action-dialog.component';
 import { StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 import { CreateDataDialogComponent } from '../create-data-dialog/create-data-dialog.component';
-import { RuleData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
+import { DataItem, NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
 import { SwitchActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-action-trigger';
 import { IdActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-action-trigger';
 import { Operators } from '../operators';
@@ -63,7 +63,7 @@ export class RuleComponent implements OnInit {
         const dialogRef = this.dialog.open(CreateDataDialogComponent, {
         });
 
-        dialogRef.afterClosed().subscribe((result: RuleData) => {
+        dialogRef.afterClosed().subscribe((result: DataItem) => {
             this.ruleEngine.data.set(result.id, result);
             this.gameService.update();
         });
@@ -219,7 +219,7 @@ export class RuleComponent implements OnInit {
         }
     }
 
-    setDataRoS(data: RuleData, val): void {
+    setDataRoS(data: DataItem, val): void {
         if (!data.attributes) {
             data.attributes = {};
         }
@@ -227,7 +227,7 @@ export class RuleComponent implements OnInit {
         this.gameService.update();
     }
 
-    setDataWhole(data: RuleData, val): void {
+    setDataWhole(data: NumberData, val): void {
         if (!data.attributes) {
             data.attributes = {};
         }

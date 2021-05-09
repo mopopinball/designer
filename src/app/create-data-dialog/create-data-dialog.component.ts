@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { RuleData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
+import { NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
 
 @Component({
   selector: 'app-create-data-dialog',
@@ -19,7 +19,8 @@ export class CreateDataDialogComponent implements OnInit {
   }
 
   create(): void {
-    const result: RuleData = {
+    const result: NumberData = {
+      type: 'number',
       id: this.dataId,
       value: this.dataValue,
       initValue: this.dataValue

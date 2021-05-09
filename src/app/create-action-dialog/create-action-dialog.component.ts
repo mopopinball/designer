@@ -54,7 +54,7 @@ export class CreateActionDialogComponent implements OnInit {
     dataActionOperand: number | string;
     dataActionOperation: DataOperation;
 
-    conditionalActionType: string = 'data';
+    conditionalActionType = 'data';
     conditionalActionOperator: string;
     conditionalActionOperand: number;
     conditionalActionTrueTriggerId: string;
@@ -136,12 +136,12 @@ export class CreateActionDialogComponent implements OnInit {
         } else if (this.selectedActionTabIndex === 3) {
             newAction = {
                 type: ActionType.CONDITION,
-                condition: {
-                    conditionType: this.conditionalActionType,
+                condition: [{
+                    conditionType: 'data',
                     dataId: this.dataActionKey,
                     operator: this.conditionalActionOperator as Operator,
                     operand: this.conditionalActionOperand
-                },
+                }],
                 trueTriggerId: this.conditionalActionTrueTriggerId,
                 falseTriggerId: this.conditionalActionFalseTriggerId
             };
