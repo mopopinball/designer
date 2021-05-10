@@ -51,23 +51,9 @@
                     </div>
                     <div class="body">
                         <span class="no-items" *ngIf="ruleEngine.data.size === 0">No data</span>
-                        <div *ngFor="let d of ruleEngine.data | keyvalue" class="data-item">
-                            <div>
-                                <a id="{{d.key}}"></a>
-                                <mat-icon>label</mat-icon>
-                                <span class="data-key">
-                                    {{d.key}}
-                                </span>
-                                Init:<input type="number" [(ngModel)]="d.value.initValue" (ngModelChange)="onDataChange()" />
-                                Curr:<input type="number" [(ngModel)]="d.value.value" (ngModelChange)="onDataChange()" />
-                                <mat-checkbox [ngModel]="d.value.attributes?.isWholeNumber" (ngModelChange)="setDataWhole(d.value, $event)">Whole</mat-checkbox>
-                                <mat-checkbox [ngModel]="d.value.attributes?.resetOnStateStop" (ngModelChange)="setDataRoS(d.value, $event)" title="Reset on Stop">RoS</mat-checkbox>
-                            </div>
-                            <div class="spacer"></div>
-                            <button mat-icon-button>
-                                <mat-icon (click)="deleteData(d.key)">delete</mat-icon>
-                            </button>
-                            
+                        <div *ngFor="let d of ruleEngine.data | keyvalue" >
+                            <number-data [id]="d.key" [numberData]="d.value" [ruleEngine]="ruleEngine" *ngIf="d.value.type === 'number'"></number-data>
+                            <string-data [id]="d.key" [data]="d.value" [ruleEngine]="ruleEngine" *ngIf="d.value.type === 'string'"></string-data>
                         </div>
                     </div>
                 </div>
@@ -162,11 +148,11 @@
                                     <div class="title">Conditional Action</div>
                                     <mat-icon>call_split</mat-icon>
                                         <span class="token">If</span>    
-                                        <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="action.condition.dataId" (key)="action.condition.dataId = $event"></app-data-key-selector>
-                                        <select class="token" [(ngModel)]="action.condition.operator">
+                                        <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="action.conditions[0].dataId" (key)="action.conditions[0].dataId = $event"></app-data-key-selector>
+                                        <select class="token" [(ngModel)]="action.conditions[0].operator">
                                             <option *ngFor="let op of operators" [ngValue]="op">{{op}}</option>
                                         </select>
-                                        <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="action.condition.operand" (change)="gameService.update()"></app-operand-selector>
+                                        <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="action.conditions[0].operand" (change)="gameService.update()"></app-operand-selector>
                                         <span class="token">then trigger</span>
                                         <input class="token" type="text" [(ngModel)]="action.trueTriggerId" />
                                         <span class="token">else trigger</span>

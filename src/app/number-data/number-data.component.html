@@ -1,0 +1,17 @@
+<div class="data-item">
+    <div>
+        <a id="{{id}}"></a>
+        <mat-icon>label</mat-icon>
+        <span class="data-key">
+            {{id}}
+        </span>
+        Init:<input type="number" [(ngModel)]="numberData.initValue" (ngModelChange)="onDataChange()" />
+        Curr:<input type="number" [(ngModel)]="numberData.value" (ngModelChange)="onDataChange()" />
+        <mat-checkbox [ngModel]="numberData.attributes?.isWholeNumber" (ngModelChange)="setDataWhole(numberData, $event)">Whole</mat-checkbox>
+        <mat-checkbox [ngModel]="numberData.attributes?.resetOnStateStop" (ngModelChange)="setDataRoS(numberData, $event)" title="Reset on Stop">RoS</mat-checkbox>
+    </div>
+    <div class="spacer"></div>
+    <button mat-icon-button>
+        <mat-icon (click)="deleteData(id)">delete</mat-icon>
+    </button>
+</div>

@@ -9,7 +9,7 @@ import { NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data
 })
 export class CreateDataDialogComponent implements OnInit {
   dataId: string;
-  dataValue: number;
+  dataValue: string;
 
   constructor(
     public dialogRef: MatDialogRef<CreateDataDialogComponent>
@@ -19,13 +19,25 @@ export class CreateDataDialogComponent implements OnInit {
   }
 
   create(): void {
-    const result: NumberData = {
-      type: 'number',
-      id: this.dataId,
-      value: this.dataValue,
-      initValue: this.dataValue
-    };
-    this.dialogRef.close(result);
+    const numberRegex = /^\d+$/;
+    if (numberRegex.test(this.dataValue)) {
+      this.dialogRef.close(
+      {
+        type: 'number',
+        id: this.dataId,
+        value: this.dataValue,
+        initValue: this.dataValue
+      });
+    }
+    else {
+      this.dialogRef.close(
+        {
+          type: 'string',
+          id: this.dataId,
+          value: this.dataValue,
+          initValue: this.dataValue
+        });
+      }
   }
 
 }

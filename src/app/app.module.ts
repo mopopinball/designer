@@ -32,6 +32,8 @@ import { OperandSelectorComponent } from './operand-selector/operand-selector.co
 import { ActionActionsComponent } from './action-actions/action-actions.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { StyleDialogComponent } from './style-dialog/style-dialog.component';
+import { NumberDataComponent } from './number-data/number-data.component';
+import { StringDataComponent } from './string-data/string-data.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { StyleDialogComponent } from './style-dialog/style-dialog.component';
     OperandSelectorComponent,
     ActionActionsComponent,
     ConfirmDialogComponent,
-    StyleDialogComponent
+    StyleDialogComponent,
+    NumberDataComponent,
+    StringDataComponent
   ],
   imports: [
     BrowserModule,

@@ -69,26 +69,6 @@ export class RuleComponent implements OnInit {
         });
     }
 
-    onDataChange(): void {
-        this.gameService.update();
-    }
-
-    deleteData(key: string): void {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            data: {
-                action: 'Delete',
-                prompt: `Are you sure you want to delete the data item "${key}"?`
-            }
-        });
-
-        dialogRef.afterClosed().subscribe((result: boolean) => {
-            if (result) {
-                this.ruleEngine.data.delete(key);
-                this.gameService.update();
-            }
-        });
-    }
-
     private updateDevices(): void {
         this.devices = Array.from(this.ruleEngine.devices.values()).sort((a, b) => a.id.localeCompare(b.id));
         this.gameService.update();
@@ -217,22 +197,6 @@ export class RuleComponent implements OnInit {
             localStorage.setItem(`mopo-rule-${this.ruleEngine.id}`, `${this.showBody}`);
             this.gameService.update(); 
         }
-    }
-
-    setDataRoS(data: DataItem, val): void {
-        if (!data.attributes) {
-            data.attributes = {};
-        }
-        data.attributes.resetOnStateStop = val;
-        this.gameService.update();
-    }
-
-    setDataWhole(data: NumberData, val): void {
-        if (!data.attributes) {
-            data.attributes = {};
-        }
-        data.attributes.isWholeNumber = val;
-        this.gameService.update();
     }
 
     autoCollapse(): boolean {
