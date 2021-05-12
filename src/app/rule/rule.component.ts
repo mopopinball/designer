@@ -5,15 +5,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 import { GameService } from '../game.service';
 import { CreateActionData, CreateActionDialogComponent } from '../create-action-dialog/create-action-dialog.component';
-import { StateActionSchema, SwitchActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 import { CreateDataDialogComponent } from '../create-data-dialog/create-data-dialog.component';
 import { DataItem, NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
-import { SwitchActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-action-trigger';
-import { IdActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-action-trigger';
 import { Operators } from '../operators';
-import { TimerActionTrigger, TimerActionTriggerMode } from '@mopopinball/engine/src/system/rule-engine/actions/timer-action-trigger';
-import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/action-trigger';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { SwitchTriggerSchema, TimerTriggerMode, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
+import { IdTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-trigger';
+import { SwitchTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-trigger';
+import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
+import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
+import { ActionType, NamedTriggerActionSchema } from '@mopopinball/engine/src/system/rule-engine/schema/actions.schema';
+import {NamedTriggerAction} from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
 
 @Component({
     selector: 'app-rule',
@@ -21,7 +23,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
     styleUrls: ['./rule.component.scss']
 })
 export class RuleComponent implements OnInit {
-    TimerActionTriggerMode: typeof TimerActionTriggerMode = TimerActionTriggerMode;
+    TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
     @Input() isRoot: boolean = false;
     @Input() ruleEngine: RuleEngine;
     @Output() delete = new EventEmitter<void>();
@@ -121,7 +123,7 @@ export class RuleComponent implements OnInit {
         });
     }
 
-    addTrigger(existingTrigger: IdActionTrigger | SwitchActionTrigger | TimerActionTrigger): void {
+    addTrigger(existingTrigger: IdTrigger | SwitchTrigger | TimerTrigger): void {
         let triggerInfo;
         if (existingTrigger && existingTrigger.type === TriggerType.SWITCH) {
             triggerInfo = {switchId: existingTrigger.switchId, holdIntervalMs: existingTrigger.holdIntervalMs};
@@ -137,7 +139,7 @@ export class RuleComponent implements OnInit {
             data
         });
 
-        dialogRef.afterClosed().subscribe((result: SwitchActionTriggerSchema) => {
+        dialogRef.afterClosed().subscribe((result: SwitchTriggerSchema) => {
             if(result) {
                 this.ruleEngine.createTrigger(result);
                 this.updateDevices();
@@ -168,7 +170,18 @@ export class RuleComponent implements OnInit {
         );
     }
 
-    activateTrigger(trigger: SwitchActionTrigger | IdActionTrigger | TimerActionTrigger): void {
+    addNamedAction(trigger: ActionTriggerType): void {
+        // const newNamedAction: NamedTriggerActionSchema = {
+        //     type: ActionType.NAMED,
+        //     triggerId: ''
+        // };
+
+        const newAction = new NamedTriggerAction('');
+        trigger.actions.push(newAction);
+        this.updateDevices();
+    }
+
+    activateTrigger(trigger: SwitchTrigger | IdTrigger | TimerTrigger): void {
         if (!this.ruleEngine.active) {
             return;
         }
@@ -204,11 +217,11 @@ export class RuleComponent implements OnInit {
         // return this.gameService.autoCollapse && !this.ruleEngine.active;
     }
 
-    setTimerMode(trigger: TimerActionTrigger, checked: boolean): void {
+    setTimerMode(trigger: TimerTrigger, checked: boolean): void {
         if (checked) {
-            trigger.mode = TimerActionTriggerMode.INTERVAL;
+            trigger.mode = TimerTriggerMode.INTERVAL;
         } else {
-            trigger.mode = TimerActionTriggerMode.TIMEOUT;
+            trigger.mode = TimerTriggerMode.TIMEOUT;
         }
     }
 
@@ -216,7 +229,7 @@ export class RuleComponent implements OnInit {
         this.delete.emit();
     }
 
-    onSwitchTriggerHoldTimeChange(trigger: SwitchActionTrigger): void {
+    onSwitchTriggerHoldTimeChange(trigger: SwitchTrigger): void {
         if (!trigger.holdIntervalMs) {
             trigger.holdIntervalMs = null;
         }

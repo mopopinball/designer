@@ -109,6 +109,15 @@
                             <button mat-icon-button title="Add action">
                                 <mat-icon (click)="addAction(trigger)">add_circle_outline</mat-icon>
                             </button>
+                            <button mat-icon-button [matMenuTriggerFor]="addactionmenu">
+                                <mat-icon>add_circle_outline</mat-icon>
+                            </button>
+                            <mat-menu #addactionmenu="matMenu">
+                                <button mat-menu-item (click)="addNamedAction(trigger)">
+                                    <mat-icon>title</mat-icon>
+                                    <span>Named Action</span>
+                                </button> 
+                            </mat-menu>
                             <button mat-icon-button title="Delete Trigger">
                                 <mat-icon (click)="deleteTrigger(trigger)">delete</mat-icon>
                             </button>
@@ -129,6 +138,7 @@
                                     <div class="spacer"></div>
                                     <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
                                 </div>
+                                <named-action *ngIf="action.toJSON().type === 'named'" [trigger]="trigger" [action]="action"></named-action>
                                 <div *ngIf="action.toJSON().type === 'device'" class="action">
                                     <div class="title">Device Action</div>
                                     <app-desired-output-state  [state]="action.state" [parentActive]="ruleEngine.active" [deleteable]="false"></app-desired-output-state>

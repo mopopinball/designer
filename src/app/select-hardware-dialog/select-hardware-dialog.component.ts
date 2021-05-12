@@ -1,10 +1,8 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
 import { RuleSchema } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
-// import { readdirSync } from 'fs';
 
 @Component({
   selector: 'app-select-hardware-dialog',

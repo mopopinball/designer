@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
-import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/action-trigger';
+import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
 

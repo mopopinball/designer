@@ -1,10 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActionType, CoilOutputState, ConditionalActionSchema, DataActionSchema, DeviceActionSchema, IdActionTriggerSchema, LightOutputState, OutputStateType, SoundOutputState, StateActionSchema, SwitchActionTriggerSchema, TimerActionTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
-import { SwitchActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-action-trigger'
 import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
-import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
 import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { DataOperation } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
@@ -12,11 +9,15 @@ import { SelectDataDialogComponent } from '../select-data-dialog/select-data-dia
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { Condition, Operator } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 import { Operators } from '../operators';
-import { TimerActionTrigger, TimerActionTriggerMode } from '@mopopinball/engine/src/system/rule-engine/actions/timer-action-trigger';
-import { IdActionTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-action-trigger';
+import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
+import { IdTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-trigger';
+import { SwitchTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-trigger';
+import { ConditionalActionSchema, DeviceActionSchema, StateActionSchema, DataActionSchema, ActionType } from '@mopopinball/engine/src/system/rule-engine/schema/actions.schema';
+import { OutputStateType } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
+import { IdTriggerSchema, SwitchTriggerSchema, TimerTriggerMode, TimerTriggerSchema, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 
 export interface CreateActionData {
-    existingTrigger: SwitchActionTrigger | IdActionTrigger |TimerActionTrigger
+    existingTrigger: SwitchTrigger | IdTrigger |TimerTrigger
     ruleEngine: RuleEngine
 }
 
@@ -31,7 +32,7 @@ interface SwitchInfo {
     styleUrls: ['./create-action-dialog.component.scss']
 })
 export class CreateActionDialogComponent implements OnInit {
-    TimerActionTriggerMode: typeof TimerActionTriggerMode = TimerActionTriggerMode;
+    TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
     hardwareConfig: HardwareConfig;
     mode: string;
     existing: boolean = false;
@@ -41,7 +42,7 @@ export class CreateActionDialogComponent implements OnInit {
     triggerId = '';
 
     triggerTimerMs: number;
-    triggerTimerMode: TimerActionTriggerMode = TimerActionTriggerMode.TIMEOUT;
+    triggerTimerMode: TimerTriggerMode = TimerTriggerMode.TIMEOUT;
 
     selectedActionTabIndex: number = 0;
     switchHoldTime?: number = null;
@@ -151,7 +152,7 @@ export class CreateActionDialogComponent implements OnInit {
         //     this.dialogRef.close();
         // }
         if (this.mode === 'switch') {
-            const result: SwitchActionTriggerSchema = {
+            const result: SwitchTriggerSchema = {
                 type: TriggerType.SWITCH,
                 switchId: this.switchId,
                 holdIntervalMs: this.switchHoldTime,
@@ -159,14 +160,14 @@ export class CreateActionDialogComponent implements OnInit {
             };
             this.dialogRef.close(result);
         } else if (this.mode === 'named') {
-            const result: IdActionTriggerSchema = {
+            const result: IdTriggerSchema = {
                 type: TriggerType.ID,
                 id: this.triggerId,
                 actions: [newAction]
             };
             this.dialogRef.close(result);
         } else if (this.mode === 'timed') {
-            const result: TimerActionTriggerSchema = {
+            const result: TimerTriggerSchema = {
                 type: TriggerType.TIMER,
                 id: this.triggerId,
                 valueMs: this.triggerTimerMs,

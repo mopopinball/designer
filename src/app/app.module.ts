@@ -34,6 +34,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { StyleDialogComponent } from './style-dialog/style-dialog.component';
 import { NumberDataComponent } from './number-data/number-data.component';
 import { StringDataComponent } from './string-data/string-data.component';
+import { NamedActionComponent } from './named-action/named-action.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { StringDataComponent } from './string-data/string-data.component';
     ConfirmDialogComponent,
     StyleDialogComponent,
     NumberDataComponent,
-    StringDataComponent
+    StringDataComponent,
+    NamedActionComponent
   ],
   imports: [
     BrowserModule,
