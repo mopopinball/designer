@@ -60,20 +60,6 @@
                 <app-operand-selector [ruleEngine]="this.data.ruleEngine" [(operand)]="dataActionOperand"></app-operand-selector>
             </div>
         </mat-tab>
-        <mat-tab label="Conditional Action">
-            <div class="data-action">
-                <select [(ngModel)]="conditionalActionType">
-                    <option [ngValue]="'data'">Data</option>
-                </select>
-                <app-data-key-selector [ruleEngine]="this.data.ruleEngine" (key)="this.dataActionKey = $event"></app-data-key-selector>
-                <select [(ngModel)]="conditionalActionOperator">
-                    <option *ngFor="let op of operators" [ngValue]="op">{{op}}</option>
-                </select>
-                <input type="number" [(ngModel)]="conditionalActionOperand" />
-                then Trigger: <input type="text" [(ngModel)]="conditionalActionTrueTriggerId" />
-                else Trigger: <input type="text" [(ngModel)]="conditionalActionFalseTriggerId" />
-            </div>
-        </mat-tab>
       </mat-tab-group>
     
 </mat-dialog-content>

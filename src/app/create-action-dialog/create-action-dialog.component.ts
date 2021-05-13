@@ -7,7 +7,6 @@ import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/d
 import { DataOperation } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
 import { SelectDataDialogComponent } from '../select-data-dialog/select-data-dialog.component';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
-import { Condition, Operator } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 import { Operators } from '../operators';
 import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
 import { IdTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-trigger';
@@ -54,12 +53,6 @@ export class CreateActionDialogComponent implements OnInit {
     dataActionKey: string;
     dataActionOperand: number | string;
     dataActionOperation: DataOperation;
-
-    conditionalActionType = 'data';
-    conditionalActionOperator: string;
-    conditionalActionOperand: number;
-    conditionalActionTrueTriggerId: string;
-    conditionalActionFalseTriggerId: string;
 
     constructor(
         public dialog: MatDialog,
@@ -133,18 +126,6 @@ export class CreateActionDialogComponent implements OnInit {
                 dataId: this.dataActionKey,
                 operand: this.dataActionOperand,
                 operation: this.dataActionOperation
-            };
-        } else if (this.selectedActionTabIndex === 3) {
-            newAction = {
-                type: ActionType.CONDITION,
-                condition: [{
-                    conditionType: 'data',
-                    dataId: this.dataActionKey,
-                    operator: this.conditionalActionOperator as Operator,
-                    operand: this.conditionalActionOperand
-                }],
-                trueTriggerId: this.conditionalActionTrueTriggerId,
-                falseTriggerId: this.conditionalActionFalseTriggerId
             };
         }
         // if (this.data.existingTrigger) {

@@ -13,9 +13,11 @@ import { SwitchTriggerSchema, TimerTriggerMode, TriggerType } from '@mopopinball
 import { IdTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-trigger';
 import { SwitchTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-trigger';
 import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
-import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
+import { ActionTriggerType, Trigger } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { ActionType, NamedTriggerActionSchema } from '@mopopinball/engine/src/system/rule-engine/schema/actions.schema';
 import {NamedTriggerAction} from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
+import { Condition, ConditionalAction, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
+import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 
 @Component({
     selector: 'app-rule',
@@ -171,12 +173,13 @@ export class RuleComponent implements OnInit {
     }
 
     addNamedAction(trigger: ActionTriggerType): void {
-        // const newNamedAction: NamedTriggerActionSchema = {
-        //     type: ActionType.NAMED,
-        //     triggerId: ''
-        // };
-
         const newAction = new NamedTriggerAction('');
+        trigger.actions.push(newAction);
+        this.updateDevices();
+    }
+
+    addConditionalAction(trigger: ActionTriggerType): void {
+        const newAction = new ConditionalAction([], '', '');
         trigger.actions.push(newAction);
         this.updateDevices();
     }
@@ -247,6 +250,30 @@ export class RuleComponent implements OnInit {
         const currentPosition = this.ruleEngine.triggers.indexOf(trigger);
         this.ruleEngine.triggers.splice(currentPosition, 1);
         this.ruleEngine.triggers.splice(currentPosition + 1, 0, trigger);
+        this.gameService.update();
+    }
+
+    addDataCondition(action): void {
+        const dataCondition: DataCondition = {
+            conditionType: 'data',
+            expression: ''
+        };
+        action.conditions.push(dataCondition);
+        this.gameService.update();
+    }
+
+    addSwitchCondition(action): void {
+        const swCondition: SwitchCondition = {
+            activated: true,
+            switchId: '',
+            conditionType: 'switch'
+        };
+        action.conditions.push(swCondition);
+        this.gameService.update();
+    }
+
+    deleteCondition(action, condition: Condition): void {
+        action.conditions.splice(action.conditions.indexOf(condition), 1);
         this.gameService.update();
     }
 

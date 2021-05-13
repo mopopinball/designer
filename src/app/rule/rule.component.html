@@ -113,9 +113,13 @@
                                 <mat-icon>add_circle_outline</mat-icon>
                             </button>
                             <mat-menu #addactionmenu="matMenu">
-                                <button mat-menu-item (click)="addNamedAction(trigger)">
+                                <button mat-menu-item (click)="addNamedAction(trigger)" title="Calls a named Trigger">
                                     <mat-icon>title</mat-icon>
                                     <span>Named Action</span>
+                                </button>
+                                <button mat-menu-item (click)="addConditionalAction(trigger)" title="Calls a Trigger if all conditions are true, otherwise calls another Trigger">
+                                    <mat-icon>call_split</mat-icon>
+                                    <span>Conditional Action</span>
                                 </button> 
                             </mat-menu>
                             <button mat-icon-button title="Delete Trigger">
@@ -157,17 +161,49 @@
                                 <div *ngIf="action.toJSON().type === 'condition'" class="action">
                                     <div class="title">Conditional Action</div>
                                     <mat-icon>call_split</mat-icon>
-                                        <span class="token">If</span>    
-                                        <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="action.conditions[0].dataId" (key)="action.conditions[0].dataId = $event"></app-data-key-selector>
-                                        <select class="token" [(ngModel)]="action.conditions[0].operator">
-                                            <option *ngFor="let op of operators" [ngValue]="op">{{op}}</option>
-                                        </select>
-                                        <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="action.conditions[0].operand" (change)="gameService.update()"></app-operand-selector>
+                                    <span class="token">If</span>
+                                    <div>
+                                        <div *ngFor="let condition of action.conditions">
+                                            <div *ngIf="condition.conditionType === 'data' && condition.expression === undefined" class="condition">
+                                                Data:
+                                                <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="condition.dataId" (key)="condition.dataId = $event"></app-data-key-selector>
+                                                <select class="token" [(ngModel)]="condition.operator">
+                                                    <option *ngFor="let op of operators" [ngValue]="op">{{op}}</option>
+                                                </select>
+                                                <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="condition.operand" (change)="gameService.update()"></app-operand-selector>
+                                                <button (click)="deleteCondition(action, condition)">X</button>
+                                            </div>
+                                            <div *ngIf="condition.conditionType === 'data' && condition.expression !== undefined" class="condition">
+                                                Data:
+                                                <input type="text" [(ngModel)]="condition.expression" (ngModelChange)="gameService.update()" placeholder="Enter an expression" />
+                                                <button (click)="deleteCondition(action, condition)">X</button>
+                                            </div>
+                                            <div *ngIf="condition.conditionType === 'switch'" class="condition">
+                                                Switch:
+                                                <input type="text" [(ngModel)]="condition.switchId" placeholder="Enter switch id" (ngModelChange)="gameService.update()" />
+                                                <input type="checkbox" [(ngModel)]="condition.activated" /> Activated
+                                                <button (click)="deleteCondition(action, condition)" (ngModelChange)="gameService.update()">X</button>
+                                            </div>
+                                        </div>
                                         <span class="token">then trigger</span>
-                                        <input class="token" type="text" [(ngModel)]="action.trueTriggerId" />
+                                        <input class="token" type="text" [(ngModel)]="action.trueTriggerId" (ngModelChange)="gameService.update()" placeholder="Enter a Trigger id" />
                                         <span class="token">else trigger</span>
-                                        <input type="text" [(ngModel)]="action.falseTriggerId" />
+                                        <input type="text" [(ngModel)]="action.falseTriggerId" (ngModelChange)="gameService.update()" placeholder="Enter a Trigger id" />
+                                    </div>
                                     <div class="spacer"></div>
+                                    <button mat-icon-button [matMenuTriggerFor]="addcondition" title="Add Condition">
+                                        <mat-icon>call_split</mat-icon>
+                                    </button>
+                                    <mat-menu #addcondition="matMenu">
+                                        <button mat-menu-item (click)="addDataCondition(action)">
+                                            <mat-icon>label</mat-icon>
+                                            <span>Data Condition</span>
+                                        </button>
+                                        <button mat-menu-item (click)="addSwitchCondition(action)">
+                                            <mat-icon>bolt</mat-icon>
+                                            <span>Switch Condition</span>
+                                        </button>
+                                    </mat-menu>
                                     <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
                                 </div>
                             </div>
