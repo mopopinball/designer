@@ -109,25 +109,12 @@ export class CreateActionDialogComponent implements OnInit {
 
     create(): void {
         let newAction: ConditionalActionSchema | DeviceActionSchema | StateActionSchema | DataActionSchema = null;
-        if (this.selectedActionTabIndex === 0) {
-            newAction = {
-                type: ActionType.STATE,
-                startTargetId: this.to,
-                stopTargetId: this.from,
-            };
-        } else if (this.selectedActionTabIndex === 1) {
-            newAction = {
-                type: ActionType.DEVICE,
-                state: this.deviceOutputState
-            };
-        } else if (this.selectedActionTabIndex === 2) {
-            newAction = {
-                type: ActionType.DATA,
-                dataId: this.dataActionKey,
-                operand: this.dataActionOperand,
-                operation: this.dataActionOperation
-            };
-        }
+        // if (this.selectedActionTabIndex === 1) {
+        //     newAction = {
+        //         type: ActionType.DEVICE,
+        //         state: this.deviceOutputState
+        //     };
+        // }
         // if (this.data.existingTrigger) {
         //     this.data.existingTrigger.actions.push(newAction);
         //     this.dialogRef.close();
@@ -159,16 +146,16 @@ export class CreateActionDialogComponent implements OnInit {
         }
     }
 
-    selectDevice(): void {
-        const dialogRef = this.dialog.open(CreateDesiredOutputStateDialogComponent, {
-            width: '50%',
-            height: '75%'
-        });
+    // selectDevice(): void {
+    //     const dialogRef = this.dialog.open(CreateDesiredOutputStateDialogComponent, {
+    //         width: '50%',
+    //         height: '75%'
+    //     });
 
-        dialogRef.afterClosed().subscribe((result: DesiredOutputState) => {
-            this.deviceOutputState = result.toJSON();
-        });
-    }
+    //     dialogRef.afterClosed().subscribe((result: DesiredOutputState) => {
+    //         this.deviceOutputState = result.toJSON();
+    //     });
+    // }
 
     // selectData(): void {
     //     const dialogRef = this.dialog.open(SelectDataDialogComponent, {

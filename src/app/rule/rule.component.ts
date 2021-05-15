@@ -18,6 +18,9 @@ import { ActionType, NamedTriggerActionSchema } from '@mopopinball/engine/src/sy
 import {NamedTriggerAction} from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
 import { Condition, ConditionalAction, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
+import { DataAction } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
+import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
+import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
 
 @Component({
     selector: 'app-rule',
@@ -165,13 +168,6 @@ export class RuleComponent implements OnInit {
         });
     }
 
-    addAction(trigger): void {
-        // todo: make better
-        this.addTrigger(
-            trigger
-        );
-    }
-
     addNamedAction(trigger: ActionTriggerType): void {
         const newAction = new NamedTriggerAction('');
         trigger.actions.push(newAction);
@@ -180,6 +176,24 @@ export class RuleComponent implements OnInit {
 
     addConditionalAction(trigger: ActionTriggerType): void {
         const newAction = new ConditionalAction([], '', '');
+        trigger.actions.push(newAction);
+        this.updateDevices();
+    }
+
+    addDataAction(trigger: ActionTriggerType): void {
+        const newAction = new DataAction('', null, null, '');
+        trigger.actions.push(newAction);
+        this.updateDevices();
+    }
+
+    addStateAction(trigger: ActionTriggerType): void {
+        const newAction = new StateAction('', '');
+        trigger.actions.push(newAction);
+        this.updateDevices();
+    }
+
+    addDeviceAction(trigger: ActionTriggerType): void {
+        const newAction = new DeviceAction(null);
         trigger.actions.push(newAction);
         this.updateDevices();
     }

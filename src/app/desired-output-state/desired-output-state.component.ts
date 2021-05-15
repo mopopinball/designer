@@ -5,6 +5,8 @@ import { OutputDeviceType } from '@mopopinball/engine/src/system/devices/output-
 import { LightState } from '@mopopinball/engine/src/system/devices/light';
 import { MatDialog } from '@angular/material/dialog';
 import { StyleDialogComponent } from '../style-dialog/style-dialog.component';
+import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
+import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 
 @Component({
     selector: 'app-desired-output-state',
@@ -18,6 +20,7 @@ export class DesiredOutputStateComponent implements OnInit {
 
     @Input() parentActive: boolean;
     @Input() state: DesiredOutputState;
+    @Output() stateChange = new EventEmitter<DesiredOutputState>();
     @Input() deleteable: boolean;
     @Output() delete = new EventEmitter<void>();
     constructor(
@@ -27,6 +30,19 @@ export class DesiredOutputStateComponent implements OnInit {
         this.gameService.tick.subscribe((deviceStates) => {
             if (deviceStates.has(this.state.id)) {
                 this.engineState = deviceStates.get(this.state.id).getState();
+            }
+        });
+    }
+
+    selectDevice(): void {
+        const dialogRef = this.dialog.open(CreateDesiredOutputStateDialogComponent, {
+            width: '50%',
+            height: '75%'
+        });
+
+        dialogRef.afterClosed().subscribe((result: DesiredOutputState) => {
+            if (result) {
+                this.stateChange.emit(result);
             }
         });
     }

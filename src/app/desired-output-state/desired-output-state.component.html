@@ -16,6 +16,9 @@
     <button *ngIf="state.type === OutputDeviceType.LIGHT || state.type === OutputDeviceType.DISPLAY" mat-icon-button [disabled]="state.getState() === LightState.ON" (click)="showStyleDialog(state)">
         <mat-icon [matBadge]="getStyleCount()">invert_colors</mat-icon>
     </button>
+    <button mat-icon-button (click)="selectDevice()" title="Change Device">
+        <mat-icon>edit</mat-icon>
+    </button>
     <button mat-icon-button *ngIf="deleteable" (click)="delete.emit()">
         <mat-icon>delete</mat-icon>
     </button>
