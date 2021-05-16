@@ -152,63 +152,7 @@ export class RuleComponent implements OnInit {
         });
     }
 
-    deleteTrigger(trigger): void {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            data: {
-                action: 'Delete',
-                prompt: `Are you sure you want to delete the trigger "${trigger.id}"?`
-            }
-        });
-
-        dialogRef.afterClosed().subscribe((result: boolean) => {
-            if (result) {
-                this.ruleEngine.triggers.splice(this.ruleEngine.triggers.indexOf(trigger), 1);
-                this.gameService.update();
-            }
-        });
-    }
-
-    addNamedAction(trigger: ActionTriggerType): void {
-        const newAction = new NamedTriggerAction('');
-        trigger.actions.push(newAction);
-        this.updateDevices();
-    }
-
-    addConditionalAction(trigger: ActionTriggerType): void {
-        const newAction = new ConditionalAction([], '', '');
-        trigger.actions.push(newAction);
-        this.updateDevices();
-    }
-
-    addDataAction(trigger: ActionTriggerType): void {
-        const newAction = new DataAction('', null, null, '');
-        trigger.actions.push(newAction);
-        this.updateDevices();
-    }
-
-    addStateAction(trigger: ActionTriggerType): void {
-        const newAction = new StateAction('', '');
-        trigger.actions.push(newAction);
-        this.updateDevices();
-    }
-
-    addDeviceAction(trigger: ActionTriggerType): void {
-        const newAction = new DeviceAction(null);
-        trigger.actions.push(newAction);
-        this.updateDevices();
-    }
-
-    activateTrigger(trigger: SwitchTrigger | IdTrigger | TimerTrigger): void {
-        if (!this.ruleEngine.active) {
-            return;
-        }
-        if (trigger.type === TriggerType.SWITCH) {
-            this.gameService.onSwitch(trigger.switchId, trigger.holdIntervalMs);
-        } else if (trigger.type === TriggerType.ID || trigger.type === TriggerType.TIMER) {
-            this.gameService.onTrigger(trigger.id);
-        }
-        this.gameService.update();          
-    }
+    
 
     onAutoStartChange() {
         if(this.ruleEngine.autoStart) {
@@ -250,20 +194,6 @@ export class RuleComponent implements OnInit {
         if (!trigger.holdIntervalMs) {
             trigger.holdIntervalMs = null;
         }
-        this.gameService.update();
-    }
-
-    moveUp(trigger): void {
-        const currentPosition = this.ruleEngine.triggers.indexOf(trigger);
-        this.ruleEngine.triggers.splice(currentPosition, 1);
-        this.ruleEngine.triggers.splice(currentPosition - 1, 0, trigger);
-        this.gameService.update();
-    }
-
-    moveDown(trigger): void {
-        const currentPosition = this.ruleEngine.triggers.indexOf(trigger);
-        this.ruleEngine.triggers.splice(currentPosition, 1);
-        this.ruleEngine.triggers.splice(currentPosition + 1, 0, trigger);
         this.gameService.update();
     }
 

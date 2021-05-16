@@ -41,23 +41,4 @@
         }
     }
 
-    .timer-title {
-        input[type=number] {
-            width: 4em;
-            margin-left: 2em;
-        }
-        
-    }
-
-    .condition {
-        border: solid 1px rgba(255, 255, 255, 0.2);
-        padding: 0 6px;
-        border-radius: 3px;       
-    }
-
-    .trigger-count {
-        font-size: smaller;
-        opacity: 0.5;
-    }
-    
 }
