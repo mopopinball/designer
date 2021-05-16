@@ -61,15 +61,33 @@
             <div class="nestable-container" [class.active]="ruleEngine.active">
                 <div class="header">
                     <mat-icon>rule</mat-icon>
-                    <div class="title"><span class="id">{{ruleEngine.id}}</span> Triggers & Actions</div>
+                    <div class="title">Triggers <span class="trigger-count">({{ruleEngine.triggers.length}})</span></div>
                     <div class="spacer"></div>
                     <button mat-icon-button (click)="addTrigger()">
                         <mat-icon>add_circle_outline</mat-icon>
                     </button>
+                    <button mat-icon-button title="Add Trigger" [matMenuTriggerFor]="addtriggermenu">
+                        <mat-icon>add_circle_outline</mat-icon>
+                    </button>
+                    <mat-menu #addtriggermenu="matMenu">
+                        <button mat-menu-item title="Triggers when a given switch is activated">
+                            <mat-icon>close_fullscreen</mat-icon>
+                            <span>Switch Trigger</span>
+                        </button>
+                        <button mat-menu-item  title="Triggers only when 'called' by an Action">
+                            <mat-icon>title</mat-icon>
+                            <span>Named Trigger</span>
+                        </button>
+                        <button mat-menu-item  title="Triggers after the given timeout or interval">
+                            <mat-icon>av_timer</mat-icon>
+                            <span>Timed Trigger</span>
+                        </button>
+                    </mat-menu>
                 </div>
                 <div class="body">
                     <span class="no-items" *ngIf="!ruleEngine.triggers.length">No triggers</span>
                     <div *ngFor="let trigger of ruleEngine.triggers" class="nestable-container" [class.active]="ruleEngine.active">
+                        <trigger></trigger>
                         <div class="header">
                             <ng-container *ngIf="trigger.type === 'switch'">
                                 <mat-icon>close_fullscreen</mat-icon>
@@ -192,14 +210,18 @@
                                             </div>
                                             <div *ngIf="condition.conditionType === 'data' && condition.expression !== undefined" class="condition">
                                                 Data:
-                                                <input type="text" [(ngModel)]="condition.expression" (ngModelChange)="gameService.update()" placeholder="Enter an expression" />
-                                                <button (click)="deleteCondition(action, condition)">X</button>
+                                                <input type="text" [(ngModel)]="condition.expression" (ngModelChange)="gameService.update()" placeholder="Enter an expression" spellcheck="false" />
+                                                <button mat-icon-button title="Delete condition" (click)="deleteCondition(action, condition)" (ngModelChange)="gameService.update()">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
                                             </div>
                                             <div *ngIf="condition.conditionType === 'switch'" class="condition">
                                                 Switch:
                                                 <input type="text" [(ngModel)]="condition.switchId" placeholder="Enter switch id" (ngModelChange)="gameService.update()" />
                                                 <input type="checkbox" [(ngModel)]="condition.activated" /> Activated
-                                                <button (click)="deleteCondition(action, condition)" (ngModelChange)="gameService.update()">X</button>
+                                                <button mat-icon-button title="Delete condition" (click)="deleteCondition(action, condition)" (ngModelChange)="gameService.update()">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
                                             </div>
                                         </div>
                                         <span class="token">then trigger</span>

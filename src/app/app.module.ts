@@ -35,6 +35,7 @@ import { StyleDialogComponent } from './style-dialog/style-dialog.component';
 import { NumberDataComponent } from './number-data/number-data.component';
 import { StringDataComponent } from './string-data/string-data.component';
 import { NamedActionComponent } from './named-action/named-action.component';
+import { TriggerComponent } from './trigger/trigger.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { NamedActionComponent } from './named-action/named-action.component';
     StyleDialogComponent,
     NumberDataComponent,
     StringDataComponent,
-    NamedActionComponent
+    NamedActionComponent,
+    TriggerComponent
   ],
   imports: [
     BrowserModule,
