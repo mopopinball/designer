@@ -74,7 +74,7 @@
                             <mat-icon>close_fullscreen</mat-icon>
                             <span>Switch Trigger</span>
                         </button>
-                        <button mat-menu-item  title="Triggers only when 'called' by an Action">
+                        <button mat-menu-item (click)="addNamedTrigger()"  title="Triggers only when 'called' by an Action">
                             <mat-icon>title</mat-icon>
                             <span>Named Trigger</span>
                         </button>

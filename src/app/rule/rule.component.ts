@@ -152,7 +152,11 @@ export class RuleComponent implements OnInit {
         });
     }
 
-    
+    addNamedTrigger(): void {
+        const namedTrigger = new IdTrigger('');
+        this.ruleEngine.triggers.push(namedTrigger);
+        this.gameService.update();
+    }
 
     onAutoStartChange() {
         if(this.ruleEngine.autoStart) {

@@ -12,7 +12,7 @@
         <ng-container *ngIf="trigger.type === 'id'">
             <mat-icon>title</mat-icon>
             <div class="title">
-                Named Trigger: <span class="id">{{trigger.id}}</span>
+                Named Trigger: <input [(ngModel)]="trigger.id" (ngModelChange)="gameService.update()" placeholder="Enter triger name" />
             </div>
         </ng-container>
         <ng-container *ngIf="trigger.type === 'timer'">
