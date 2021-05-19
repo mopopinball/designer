@@ -169,40 +169,10 @@ export class RuleComponent implements OnInit {
         // return this.gameService.autoCollapse && !this.ruleEngine.active;
     }
 
-    setTimerMode(trigger: TimerTrigger, checked: boolean): void {
-        if (checked) {
-            trigger.mode = TimerTriggerMode.INTERVAL;
-        } else {
-            trigger.mode = TimerTriggerMode.TIMEOUT;
-        }
-    }
-
     deleteRule(): void {
         this.delete.emit();
     }
 
-    addDataCondition(action): void {
-        const dataCondition: DataCondition = {
-            conditionType: 'data',
-            expression: ''
-        };
-        action.conditions.push(dataCondition);
-        this.gameService.update();
-    }
-
-    addSwitchCondition(action): void {
-        const swCondition: SwitchCondition = {
-            activated: true,
-            switchId: '',
-            conditionType: 'switch'
-        };
-        action.conditions.push(swCondition);
-        this.gameService.update();
-    }
-
-    deleteCondition(action, condition: Condition): void {
-        action.conditions.splice(action.conditions.indexOf(condition), 1);
-        this.gameService.update();
-    }
+    
 
 }

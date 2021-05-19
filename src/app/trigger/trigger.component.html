@@ -3,7 +3,7 @@
         <ng-container *ngIf="trigger.type === 'switch'">
             <mat-icon>close_fullscreen</mat-icon>
             <div class="title timer-title">
-                Switch Trigger:
+                <span class="title-text">Switch Trigger</span>
                 <input type="text"
                     (input)="onSwitchChange($event)"
                     [ngModel]="trigger.switchId"
@@ -22,16 +22,15 @@
         <ng-container *ngIf="trigger.type === 'id'">
             <mat-icon>title</mat-icon>
             <div class="title">
-                Named Trigger: <input [(ngModel)]="trigger.id" (ngModelChange)="gameService.update()" placeholder="Enter triger name" />
+                <span class="title-text">Named Trigger</span> <input [(ngModel)]="trigger.id" (ngModelChange)="gameService.update()" placeholder="Enter triger name" />
             </div>
         </ng-container>
         <ng-container *ngIf="trigger.type === 'timer'">
             <mat-icon>av_timer</mat-icon>
             <div class="title timer-title">
-                Timed Trigger: <span class="id">{{trigger.id}}</span> <input type="number" [(ngModel)]="trigger.valueMs" (ngModelChange)="gameService.update()" />
-                <span *ngIf="trigger.mode === TimerActionTriggerMode.TIMEOUT">timeout </span>
-                <span *ngIf="trigger.mode === TimerActionTriggerMode.INTERVAL">interval </span>
-                ms
+                <span class="title-text">Timer Trigger</span> <span class="id">{{trigger.id}}</span> <input type="number" [(ngModel)]="trigger.valueMs" (ngModelChange)="gameService.update()" />
+                <span class="timer-mode" *ngIf="trigger.mode === TimerActionTriggerMode.TIMEOUT">timeout ms</span>
+                <span class="timer-mode" *ngIf="trigger.mode === TimerActionTriggerMode.INTERVAL">interval ms</span>
                 <mat-checkbox [ngModel]="trigger.mode === TimerActionTriggerMode.INTERVAL" [disabled]="!trigger.valueMs" (ngModelChange)="setTimerMode(trigger, $event)">Repeat</mat-checkbox>
             </div>
         </ng-container>
@@ -153,7 +152,7 @@
                 </div>
                 <div class="spacer"></div>
                 <button mat-icon-button [matMenuTriggerFor]="addcondition" title="Add Condition">
-                    <mat-icon>call_split</mat-icon>
+                    <mat-icon>add_circle_outline</mat-icon>
                 </button>
                 <mat-menu #addcondition="matMenu">
                     <button mat-menu-item (click)="addDataCondition(action)">

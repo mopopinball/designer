@@ -29,7 +29,7 @@
                 <div class="nestable-container devices" [class.active]="ruleEngine.active">
                     <div class="header">
                         <mat-icon>devices_other</mat-icon>
-                        <div class="title">Devices</div>
+                        <div class="title"><span class="title-text">Devices</span></div>
                         <div class="spacer"></div>
                         <button mat-icon-button title="Add new device" (click)="addDevice()" [disabled]="isRoot">
                             <mat-icon>add_circle_outline</mat-icon>
@@ -43,7 +43,7 @@
                 <div class="nestable-container devices" [class.active]="ruleEngine.active">
                     <div class="header">
                         <mat-icon>article</mat-icon>
-                        <div class="title">Data</div>
+                        <div class="title"><span class="title-text">Data</span></div>
                         <div class="spacer"></div>
                         <button mat-icon-button title="Add new device">
                             <mat-icon (click)="addData()">add_circle_outline</mat-icon>
@@ -61,7 +61,7 @@
             <div class="nestable-container" [class.active]="ruleEngine.active">
                 <div class="header">
                     <mat-icon>rule</mat-icon>
-                    <div class="title">Triggers <span class="trigger-count">({{ruleEngine.triggers.length}})</span></div>
+                    <div class="title"><span class="title-text">Triggers</span> <span class="trigger-count">({{ruleEngine.triggers.length}})</span></div>
                     <div class="spacer"></div>
                     <button mat-icon-button title="Add Trigger" [matMenuTriggerFor]="addtriggermenu">
                         <mat-icon>add_circle_outline</mat-icon>
@@ -91,7 +91,7 @@
             <div class="nestable-container" [class.active]="ruleEngine.active">
                 <div class="header">
                     <mat-icon>format_list_bulleted</mat-icon>
-                    <div class="title"><span class="id">{{ruleEngine.id}}</span> Children</div>
+                    <div class="title"><span class="title-text">Children</span></div>
                     <div class="spacer"></div>
                     <button mat-icon-button title="Add Child" (click)="addChild()">
                         <mat-icon>add_circle_outline</mat-icon>
