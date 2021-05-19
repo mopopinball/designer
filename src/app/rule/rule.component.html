@@ -63,22 +63,19 @@
                     <mat-icon>rule</mat-icon>
                     <div class="title">Triggers <span class="trigger-count">({{ruleEngine.triggers.length}})</span></div>
                     <div class="spacer"></div>
-                    <button mat-icon-button (click)="addTrigger()">
-                        <mat-icon>add_circle_outline</mat-icon>
-                    </button>
                     <button mat-icon-button title="Add Trigger" [matMenuTriggerFor]="addtriggermenu">
                         <mat-icon>add_circle_outline</mat-icon>
                     </button>
                     <mat-menu #addtriggermenu="matMenu">
-                        <button mat-menu-item title="Triggers when a given switch is activated">
-                            <mat-icon>close_fullscreen</mat-icon>
-                            <span>Switch Trigger</span>
-                        </button>
                         <button mat-menu-item (click)="addNamedTrigger()"  title="Triggers only when 'called' by an Action">
                             <mat-icon>title</mat-icon>
                             <span>Named Trigger</span>
                         </button>
-                        <button mat-menu-item  title="Triggers after the given timeout or interval">
+                        <button mat-menu-item (click)="addSwitchTrigger()" title="Triggers when a given switch is activated">
+                            <mat-icon>close_fullscreen</mat-icon>
+                            <span>Switch Trigger</span>
+                        </button>
+                        <button mat-menu-item (click)="addTimedTrigger()" title="Triggers after the given timeout or interval">
                             <mat-icon>av_timer</mat-icon>
                             <span>Timed Trigger</span>
                         </button>

@@ -44,7 +44,8 @@ export class AppComponent implements OnInit {
         if (!workingHardware || !workingRules) {
             return;
         }
-        this.hardwareConfig = workingHardware
+        this.hardwareConfig = workingHardware;
+        this.gameService.setHardwareConfig(this.hardwareConfig);
         this.root = RuleEngine.load(workingRules);
         this.root.start();
         this.gameService.setRoot(this.root);

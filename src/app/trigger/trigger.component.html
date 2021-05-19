@@ -3,10 +3,20 @@
         <ng-container *ngIf="trigger.type === 'switch'">
             <mat-icon>close_fullscreen</mat-icon>
             <div class="title timer-title">
-                Switch Trigger: <span class="id">{{trigger.switchId}}</span>
-                <span >
-                    <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="onSwitchTriggerHoldTimeChange(trigger)" /> hold ms
-                </span>
+                Switch Trigger:
+                <input type="text"
+                    (input)="onSwitchChange($event)"
+                    [ngModel]="trigger.switchId"
+                    [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption panelWidth="auto"
+                        (optionSelected)="onSwSelected($event)"
+                        (closed)="onSwClosed()"
+                    >
+                        <mat-option *ngFor="let sw of filteredSwitches" [value]="sw.id">
+                            {{sw.name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="onSwitchTriggerHoldTimeChange(trigger)" /> hold ms
             </div>
         </ng-container>
         <ng-container *ngIf="trigger.type === 'id'">
@@ -65,6 +75,7 @@
         </button>
     </div>
     <div class="body">
+        <span class="no-items" *ngIf="!trigger.actions.length">No actions</span>
         <div *ngFor="let action of trigger.actions" class="actions">
             <div *ngIf="action.type === 'state'" class="action">
                 <div class="title">

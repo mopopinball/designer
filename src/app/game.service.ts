@@ -1,7 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, VirtualTimeScheduler } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ export class GameService {
     private tickSubject = new BehaviorSubject<Map<string, DesiredOutputState>>(new Map());
     tick = this.tickSubject.asObservable();
     public autoCollapse: boolean;
+    private hardwareConfig: HardwareConfig;
 
     newTab: EventEmitter<RuleEngine> = new EventEmitter();
 
@@ -37,5 +39,13 @@ export class GameService {
 
     onTrigger(id: string): void {
         this.root.onTrigger(id);
+    }
+
+    setHardwareConfig(hwConfig: HardwareConfig): void {
+        this.hardwareConfig = hwConfig;
+    }
+
+    getHardwareConfig(): HardwareConfig {
+        return this.hardwareConfig;
     }
 }

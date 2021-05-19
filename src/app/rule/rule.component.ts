@@ -4,7 +4,6 @@ import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engi
 import { MatDialog } from '@angular/material/dialog';
 import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 import { GameService } from '../game.service';
-import { CreateActionData, CreateActionDialogComponent } from '../create-action-dialog/create-action-dialog.component';
 import { CreateDataDialogComponent } from '../create-data-dialog/create-data-dialog.component';
 import { DataItem, NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
 import { Operators } from '../operators';
@@ -128,33 +127,21 @@ export class RuleComponent implements OnInit {
         });
     }
 
-    addTrigger(existingTrigger: IdTrigger | SwitchTrigger | TimerTrigger): void {
-        let triggerInfo;
-        if (existingTrigger && existingTrigger.type === TriggerType.SWITCH) {
-            triggerInfo = {switchId: existingTrigger.switchId, holdIntervalMs: existingTrigger.holdIntervalMs};
-        } else if (existingTrigger && (existingTrigger.type === TriggerType.ID || existingTrigger.type === TriggerType.TIMER)) {
-            triggerInfo = {id: existingTrigger.id};
-        }
-        const data: CreateActionData = {
-            existingTrigger: existingTrigger,
-            ruleEngine: this.ruleEngine
-        };
-        const dialogRef = this.dialog.open(CreateActionDialogComponent, {
-            // width: '50%',
-            data
-        });
-
-        dialogRef.afterClosed().subscribe((result: SwitchTriggerSchema) => {
-            if(result) {
-                this.ruleEngine.createTrigger(result);
-                this.updateDevices();
-            }
-        });
-    }
-
     addNamedTrigger(): void {
         const namedTrigger = new IdTrigger('');
         this.ruleEngine.triggers.push(namedTrigger);
+        this.gameService.update();
+    }
+
+    addSwitchTrigger(): void {
+        const swTrigger = new SwitchTrigger('');
+        this.ruleEngine.triggers.push(swTrigger);
+        this.gameService.update();
+    }
+
+    addTimedTrigger(): void {
+        const timedTrigger = new TimerTrigger('', 0, TimerTriggerMode.TIMEOUT);
+        this.ruleEngine.triggers.push(timedTrigger);
         this.gameService.update();
     }
 
@@ -192,13 +179,6 @@ export class RuleComponent implements OnInit {
 
     deleteRule(): void {
         this.delete.emit();
-    }
-
-    onSwitchTriggerHoldTimeChange(trigger: SwitchTrigger): void {
-        if (!trigger.holdIntervalMs) {
-            trigger.holdIntervalMs = null;
-        }
-        this.gameService.update();
     }
 
     addDataCondition(action): void {
