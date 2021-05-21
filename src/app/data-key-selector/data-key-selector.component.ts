@@ -20,7 +20,8 @@ export class DataKeySelectorComponent implements OnInit {
 
   selectData(): void {
     const dialogRef = this.dialog.open(SelectDataDialogComponent, {
-        data: this.ruleEngine
+        data: this.ruleEngine,
+        autoFocus: true
     });
 
     dialogRef.afterClosed().subscribe((selectedKey: string) => {

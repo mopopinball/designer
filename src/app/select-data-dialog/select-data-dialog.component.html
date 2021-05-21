@@ -1,8 +1,20 @@
-<h2>Select Available Data</h2>
+<h2>Select Data Item</h2>
 <mat-dialog-content>
-    <mat-form-field>
-        <select matNativeControl [(ngModel)]="selectedKey" (change)="selectData()">
-            <option *ngFor="let dataKey of availableData" [ngValue]="dataKey">{{dataKey}}</option>
-        </select>
-    </mat-form-field>
+    <div class="dataItems">
+        <span class="dataItem" *ngFor="let d of allData">{{d}}</span>
+    </div>
+    <input type="text"
+        matInput
+        (input)="onSwitchChange($event)"
+        [ngModel]="selectedKey"
+        [matAutocomplete]="auto"
+        placeholder="Type data id"
+    >
+    <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption panelWidth="auto"
+        (optionSelected)="selectData($event)"
+    >
+        <mat-option *ngFor="let dataKey of availableData" [value]="dataKey">
+            {{dataKey}}
+        </mat-option>
+    </mat-autocomplete>
 </mat-dialog-content>
