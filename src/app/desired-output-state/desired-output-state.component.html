@@ -1,19 +1,21 @@
 <div class="device" [class.active-device]="parentActive && state.getState() === engineState">
-    <mat-icon *ngIf="state.type === OutputDeviceType.LIGHT">highlight</mat-icon>
-    <mat-icon *ngIf="state.type === OutputDeviceType.COIL">compare_arrows</mat-icon>
-    <mat-icon *ngIf="state.type === OutputDeviceType.DISPLAY">tv</mat-icon>
-    <mat-icon *ngIf="state.type === OutputDeviceType.SOUND">volume_up</mat-icon>
-    <span class="device-id">{{state.id}}</span>
-    <select *ngIf="state.type === OutputDeviceType.COIL || state.type === OutputDeviceType.LIGHT" (ngModelChange)="onChangeState($event)" [ngModel]="state.getState()">
-        <option *ngIf="state.type === OutputDeviceType.LIGHT" [ngValue]="LightState.ON">On</option>
-        <option *ngIf="state.type === OutputDeviceType.LIGHT" [ngValue]="LightState.OFF">Off</option>
-        <option *ngIf="state.type === OutputDeviceType.LIGHT" [ngValue]="LightState.BLINK">Blink</option>
-        <option *ngIf="state.type === OutputDeviceType.COIL" [ngValue]="true">On/Fire</option>
-        <option *ngIf="state.type === OutputDeviceType.COIL" [ngValue]="false">Off</option>
-    </select>
-    <input type="text" *ngIf="state.type === OutputDeviceType.DISPLAY" [ngModel]="state.getState()" (ngModelChange)="onChangeState($event)">
+    <div *ngIf="state">
+        <mat-icon *ngIf="state.type === OutputDeviceType.LIGHT">highlight</mat-icon>
+        <mat-icon *ngIf="state.type === OutputDeviceType.COIL">compare_arrows</mat-icon>
+        <mat-icon *ngIf="state.type === OutputDeviceType.DISPLAY">tv</mat-icon>
+        <mat-icon *ngIf="state.type === OutputDeviceType.SOUND">volume_up</mat-icon>
+        <span class="device-id">{{state.id}}</span>
+        <select *ngIf="state.type === OutputDeviceType.COIL || state.type === OutputDeviceType.LIGHT" (ngModelChange)="onChangeState($event)" [ngModel]="state.getState()">
+            <option *ngIf="state.type === OutputDeviceType.LIGHT" [ngValue]="LightState.ON">On</option>
+            <option *ngIf="state.type === OutputDeviceType.LIGHT" [ngValue]="LightState.OFF">Off</option>
+            <option *ngIf="state.type === OutputDeviceType.LIGHT" [ngValue]="LightState.BLINK">Blink</option>
+            <option *ngIf="state.type === OutputDeviceType.COIL" [ngValue]="true">On/Fire</option>
+            <option *ngIf="state.type === OutputDeviceType.COIL" [ngValue]="false">Off</option>
+        </select>
+        <input type="text" *ngIf="state.type === OutputDeviceType.DISPLAY" [ngModel]="state.getState()" (ngModelChange)="onChangeState($event)">
+    </div>
     <div class="spacer"></div>
-    <button *ngIf="state.type === OutputDeviceType.LIGHT || state.type === OutputDeviceType.DISPLAY" mat-icon-button [disabled]="state.getState() === LightState.ON" (click)="showStyleDialog(state)">
+    <button *ngIf="state && (state.type === OutputDeviceType.LIGHT || state.type === OutputDeviceType.DISPLAY)" mat-icon-button [disabled]="state.getState() === LightState.ON" (click)="showStyleDialog(state)">
         <mat-icon [matBadge]="getStyleCount()">invert_colors</mat-icon>
     </button>
     <button mat-icon-button (click)="selectDevice()" title="Change Device">

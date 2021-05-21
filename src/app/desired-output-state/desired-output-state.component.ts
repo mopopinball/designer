@@ -28,7 +28,7 @@ export class DesiredOutputStateComponent implements OnInit {
 
     ngOnInit(): void {
         this.gameService.tick.subscribe((deviceStates) => {
-            if (deviceStates.has(this.state.id)) {
+            if (this.state && deviceStates.has(this.state.id)) {
                 this.engineState = deviceStates.get(this.state.id).getState();
             }
         });
@@ -43,6 +43,7 @@ export class DesiredOutputStateComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result: DesiredOutputState) => {
             if (result) {
                 this.stateChange.emit(result);
+                this.gameService.update();
             }
         });
     }

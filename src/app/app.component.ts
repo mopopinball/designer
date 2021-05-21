@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
         // auto save
         this.gameService.tick.subscribe(() => this.save());
 
-        this.updateRemoteStatus();
+        // this.updateRemoteStatus();
         this.onCollapseChange();
     }
 

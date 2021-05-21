@@ -24,8 +24,10 @@ export class DataKeySelectorComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((selectedKey: string) => {
-      this.dataKey = selectedKey;  
-      this.key.emit(this.dataKey);
+      if (selectedKey) {
+        this.dataKey = selectedKey;  
+        this.key.emit(this.dataKey);
+      }
     });
 }
 

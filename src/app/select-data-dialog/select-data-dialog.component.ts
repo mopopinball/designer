@@ -17,7 +17,7 @@ export class SelectDataDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: RuleEngine) { }
 
   ngOnInit(): void {
-    this.availableData = Array.from(this.data.getInheritedData().keys());
+    this.availableData = Array.from(this.data.getInheritedData().keys()).sort();
   }
 
   selectData(): void {

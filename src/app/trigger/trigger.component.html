@@ -78,14 +78,14 @@
         <div *ngFor="let action of trigger.actions" class="actions">
             <div *ngIf="action.type === 'state'" class="action">
                 <div class="title">
-                    <span *ngIf="!action.stopTargetId && action.startTargetId">Start </span>
-                    <span *ngIf="action.stopTargetId && !action.startTargetId">Stop </span>
-                    State Action</div>
+                    <ng-container *ngIf="!action.stopTargetId && action.startTargetId">Start State Action</ng-container>
+                    <ng-container *ngIf="action.stopTargetId && !action.startTargetId">Stop State Action</ng-container>
+                </div>
                 <span>
                     <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
                 </span>
                 <span>
-                    Stop: <input type="text" [(ngModel)]="action.stopTargetId" spellcheck="false" /> -> Start: <input type="text" [(ngModel)]="action.startTargetId" spellcheck="false" />
+                    Stop: <input type="text" [(ngModel)]="action.stopTargetId" (ngModelChange)="gameService.update()" spellcheck="false" /> -> Start: <input type="text" [(ngModel)]="action.startTargetId" (ngModelChange)="gameService.update()" spellcheck="false" />
                 </span>
                 <div class="spacer"></div>
                 <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>

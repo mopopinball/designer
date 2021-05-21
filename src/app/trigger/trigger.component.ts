@@ -10,6 +10,7 @@ import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/
 import { SwitchTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-trigger';
 import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
 import { ActionTriggerType, Trigger } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
+import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { TimerTriggerMode, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -81,7 +82,7 @@ export class TriggerComponent implements OnInit {
   }
 
   addDeviceAction(trigger: ActionTriggerType): void {
-    const newAction = new DeviceAction(null);
+    const newAction = new DeviceAction(new DesiredOutputState('', null, null));
     trigger.actions.push(newAction);
     this.gameService.update();
   }
