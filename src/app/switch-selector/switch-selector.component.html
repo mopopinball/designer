@@ -1,0 +1,13 @@
+<input type="text"
+    (input)="onSwitchChange($event)"
+    [ngModel]="switchId"
+    [matAutocomplete]="auto"
+    placeholder="Select a switch">
+<mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption panelWidth="auto"
+    (optionSelected)="onSwSelected($event)"
+    (closed)="onSwClosed()"
+>
+    <mat-option *ngFor="let sw of filteredSwitches" [value]="sw.id">
+        {{sw.name}}
+    </mat-option>
+</mat-autocomplete>

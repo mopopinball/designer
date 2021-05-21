@@ -4,18 +4,19 @@
             <mat-icon>close_fullscreen</mat-icon>
             <div class="title timer-title">
                 <span class="title-text">Switch Trigger</span>
-                <input type="text"
+                <switch-selector [switchId]="trigger.switchId" (switchSelect)="trigger.switchId = $event"></switch-selector>
+                <!-- <input type="text"
                     (input)="onSwitchChange($event)"
                     [ngModel]="trigger.switchId"
                     [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption panelWidth="auto"
-                        (optionSelected)="onSwSelected($event)"
-                        (closed)="onSwClosed()"
-                    >
-                        <mat-option *ngFor="let sw of filteredSwitches" [value]="sw.id">
-                            {{sw.name}}
-                        </mat-option>
-                    </mat-autocomplete>
+                <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption panelWidth="auto"
+                    (optionSelected)="onSwSelected($event)"
+                    (closed)="onSwClosed()"
+                >
+                    <mat-option *ngFor="let sw of filteredSwitches" [value]="sw.id">
+                        {{sw.name}}
+                    </mat-option>
+                </mat-autocomplete> -->
                 <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="onSwitchTriggerHoldTimeChange(trigger)" /> hold ms
             </div>
         </ng-container>
@@ -138,7 +139,8 @@
                         </div>
                         <div *ngIf="condition.conditionType === 'switch'" class="condition">
                             Switch:
-                            <input type="text" [(ngModel)]="condition.switchId" placeholder="Enter switch id" (ngModelChange)="gameService.update()" />
+                            <!-- <input type="text" [(ngModel)]="condition.switchId" placeholder="Enter switch id" (ngModelChange)="gameService.update()" /> -->
+                            <switch-selector [switchId]="condition.switchId" (switchSelect)="onSwitchConditionChanged(condition, $event)"></switch-selector>
                             <input type="checkbox" [(ngModel)]="condition.activated" /> Activated
                             <button mat-icon-button title="Delete condition" (click)="deleteCondition(action, condition)" (ngModelChange)="gameService.update()">
                                 <mat-icon>delete</mat-icon>

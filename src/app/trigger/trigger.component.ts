@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, throwMatDialogContentAlreadyAttachedError } from '@angular/material/dialog';
 import { Condition, ConditionalAction, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 import { DataAction } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
 import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
@@ -16,11 +16,6 @@ import { TimerTriggerMode, TriggerType } from '@mopopinball/engine/src/system/ru
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
 
-interface SwitchInfo {
-  id: string;
-  name: string;
-}
-
 @Component({
   selector: 'trigger',
   templateUrl: './trigger.component.html',
@@ -30,7 +25,6 @@ export class TriggerComponent implements OnInit {
   TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
   @Input() ruleEngine: RuleEngine;
   @Input() trigger: ActionTriggerType;
-  filteredSwitches: SwitchInfo[];
 
   constructor(private gameService: GameService, public dialog: MatDialog) { }
 
@@ -109,29 +103,6 @@ export class TriggerComponent implements OnInit {
     });
   }
 
-  onSwitchChange(evt): void {
-    this.filteredSwitches = Object.entries(this.gameService.getHardwareConfig().devices.switches)
-      .map((entry) => {
-        return { id: entry[0], name: entry[1].name };
-      })
-      .filter((details) => {
-        return details.name.toLowerCase().indexOf(evt.target.value?.toLowerCase()) >= 0;
-      }).sort((a, b) => {
-        return a.name.localeCompare(b.name);
-      });
-  }
-
-  onSwSelected(evt: MatAutocompleteSelectedEvent): void {
-    console.log(evt.option.value);
-    (this.trigger as any).switchId = evt.option.value;
-    this.gameService.update();
-  }
-
-  onSwClosed(): void {
-    // TODO: When closing without a selection somehow restore orig value in the text box.
-    // (this.trigger as any).switchId =(this.trigger as any).switchId;
-  }
-
   onSwitchTriggerHoldTimeChange(trigger: SwitchTrigger): void {
     if (!trigger.holdIntervalMs) {
       trigger.holdIntervalMs = null;
@@ -169,6 +140,11 @@ setTimerMode(trigger: TimerTrigger, checked: boolean): void {
   } else {
       trigger.mode = TimerTriggerMode.TIMEOUT;
   }
+  this.gameService.update();
+}
+
+onSwitchConditionChanged(condition: SwitchCondition, switchId: string): void {
+  condition.switchId = switchId;
   this.gameService.update();
 }
 

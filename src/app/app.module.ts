@@ -35,6 +35,7 @@ import { NumberDataComponent } from './number-data/number-data.component';
 import { StringDataComponent } from './string-data/string-data.component';
 import { NamedActionComponent } from './named-action/named-action.component';
 import { TriggerComponent } from './trigger/trigger.component';
+import { SwitchSelectorComponent } from './switch-selector/switch-selector.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { TriggerComponent } from './trigger/trigger.component';
     NumberDataComponent,
     StringDataComponent,
     NamedActionComponent,
-    TriggerComponent
+    TriggerComponent,
+    SwitchSelectorComponent
   ],
   imports: [
     BrowserModule,
