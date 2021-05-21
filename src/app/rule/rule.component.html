@@ -10,6 +10,9 @@
         <div *ngIf="!isRoot">
             <mat-checkbox [(ngModel)]="ruleEngine.autoStart" (ngModelChange)="onAutoStartChange()">Auto start</mat-checkbox>
         </div>
+        <div>
+            Description <input [(ngModel)]="ruleEngine.description" (ngModelChange)="gameService.update()" />
+        </div>
         <span class="spacer"></span>
         
         <button mat-icon-button *ngIf="!isRoot">

@@ -34,7 +34,7 @@ export class RuleComponent implements OnInit {
     devices: DesiredOutputState[];
     showBody = true;
     readonly operators = Object.values(Operators);
-    constructor(public dialog: MatDialog, protected gameService: GameService) { }
+    constructor(protected dialog: MatDialog, public gameService: GameService) { }
     
     ngOnInit(): void {
         this.updateDevices();
