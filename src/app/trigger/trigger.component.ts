@@ -4,6 +4,7 @@ import { MatDialog, throwMatDialogContentAlreadyAttachedError } from '@angular/m
 import { Condition, ConditionalAction, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 import { DataAction } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
 import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
+import { RandomAction, RandomActionCandidate } from '@mopopinball/engine/src/system/rule-engine/actions/random-action';
 import { IdTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-trigger';
 import { NamedTriggerAction } from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
 import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
@@ -87,6 +88,12 @@ export class TriggerComponent implements OnInit {
     this.gameService.update();
   }
 
+  addRandomAction(trigger: ActionTriggerType): void {
+    const newAction = new RandomAction([]);
+    trigger.actions.push(newAction);
+    this.gameService.update();
+  }
+
   deleteTrigger(trigger): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -117,6 +124,20 @@ export class TriggerComponent implements OnInit {
     };
     action.conditions.push(dataCondition);
     this.gameService.update();
+}
+
+addRandomId(action: RandomAction): void {
+  const randomCandidate: RandomActionCandidate = {
+    triggerId: '',
+    weight: 1
+  };
+  action.candidates.push(randomCandidate);
+  this.gameService.update();
+}
+
+deleteCandidate(action: RandomAction, candidate: RandomActionCandidate): void {
+  action.candidates.splice(action.candidates.indexOf(candidate), 1);
+  this.gameService.update();
 }
 
 addSwitchCondition(action): void {
