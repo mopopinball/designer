@@ -1,9 +1,10 @@
 @import '../actions.scss';
+@import '../engine-models.scss';
 
 .actions {
 
     .action-row {
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }
     .action-row:last-child {
         margin-bottom: 0;
@@ -18,10 +19,28 @@
     
 }
 
-.condition {
+.clause {
     border: solid 1px rgba(255, 255, 255, 0.2);
-    padding: 0 6px;
-    border-radius: 3px;       
+    border-radius: 3px;
+    margin-bottom: 6px;
+
+    .if-description, .else-hint {
+        font-size: smaller;
+        opacity: 0.5;
+        font-style: italic;
+    }
+
+    .ifelse {
+        
+    }
+
+    .condition {
+        // display: flex;
+        // align-items: center;
+        // border: solid 1px rgba(255, 255, 255, 0.2);
+        // padding: 0 6px;
+        // border-radius: 3px;       
+    }
 }
 
 .timer-mode {

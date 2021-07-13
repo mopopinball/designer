@@ -2,6 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
+import { TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 import { BehaviorSubject, VirtualTimeScheduler } from 'rxjs';
 
 @Injectable({
@@ -48,4 +49,13 @@ export class GameService {
     getHardwareConfig(): HardwareConfig {
         return this.hardwareConfig;
     }
+
+    doesTriggerExist(triggerId: string, ruleEngine: RuleEngine): boolean {
+        if (!triggerId) {
+          return true;
+        }
+        
+        return ruleEngine.triggers
+          .some((trigger) => trigger.type === TriggerType.ID && trigger.id === triggerId);
+      }
 }

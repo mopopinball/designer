@@ -15,6 +15,9 @@
         </div>
         <span class="spacer"></span>
         
+        <button mat-icon-button *ngIf="!isRoot" title="Copy">
+            <mat-icon (click)="copy()">copy_all</mat-icon>
+        </button>
         <button mat-icon-button *ngIf="!isRoot">
             <mat-icon (click)="deleteRule()">delete</mat-icon>
         </button>
@@ -102,7 +105,7 @@
                 </div>
                 <div class="body children">
                     <span class="no-items" *ngIf="!ruleEngine.children.length">No children</span>
-                    <app-rule *ngFor="let child of ruleEngine.children" (delete)="deleteChild(child)" [ruleEngine]="child"></app-rule>
+                    <app-rule *ngFor="let child of ruleEngine.children" (delete)="deleteChild(child)" [ruleEngine]="child" [parent]="ruleEngine"></app-rule>
                 </div>
             </div>
         </div>

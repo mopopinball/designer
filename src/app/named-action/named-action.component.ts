@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 import { NamedTriggerAction } from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
 import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
+import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { GameService } from '../game.service';
 
 @Component({
@@ -12,6 +13,7 @@ import { GameService } from '../game.service';
 export class NamedActionComponent implements OnInit {
   @Input()trigger: ActionTriggerType;
   @Input()action: NamedTriggerAction;
+  @Input()ruleEngine: RuleEngine;
 
   constructor(private gameService: GameService) { }
 
@@ -20,6 +22,10 @@ export class NamedActionComponent implements OnInit {
 
   onChange(): void {
     this.gameService.update();
+  }
+
+  doesTriggerExist(triggerId: string): boolean {
+    return this.gameService.doesTriggerExist(triggerId, this.ruleEngine);
   }
 
 }

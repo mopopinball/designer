@@ -1,0 +1,25 @@
+@mixin container-mixin {
+    display: flex;
+    align-items: center;
+    padding: 2px;
+}
+
+.data-container {
+    background: rgba(0, 0, 255, 0.15);
+    @include container-mixin();
+}
+
+.switch-container {
+    background: rgba(0, 255, 0, 0.15);
+    @include container-mixin();
+}
+
+.trigger-container {
+    background: rgba(255, 255, 0, 0.15);
+    @include container-mixin();
+}
+
+.bad-id {
+    background-color: red !important;
+    border-color: darkred !important;
+}

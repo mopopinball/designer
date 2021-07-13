@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, throwMatDialogContentAlreadyAttachedError } from '@angular/material/dialog';
-import { Condition, ConditionalAction, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
+import { ConditionalAction } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 import { DataAction } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
 import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
 import { RandomAction, RandomActionCandidate } from '@mopopinball/engine/src/system/rule-engine/actions/random-action';
@@ -16,6 +16,7 @@ import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engi
 import { TimerTriggerMode, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
+import { Condition, ConditionClause, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/condition-clause';
 
 @Component({
   selector: 'trigger',
@@ -59,7 +60,7 @@ export class TriggerComponent implements OnInit {
   }
 
   addConditionalAction(trigger: ActionTriggerType): void {
-    const newAction = new ConditionalAction([], '', '');
+    const newAction = new ConditionalAction([], {});
     trigger.actions.push(newAction);
     this.gameService.update();
   }
@@ -117,56 +118,90 @@ export class TriggerComponent implements OnInit {
     this.gameService.update();
   }
 
-  addDataCondition(action): void {
-    const dataCondition: DataCondition = {
-        conditionType: 'data',
-        expression: ''
-    };
-    action.conditions.push(dataCondition);
+  addClause(action): void {
+    const clause: ConditionClause = new ConditionClause([], {});
+    action.clauses.push(clause);
     this.gameService.update();
-}
-
-addRandomId(action: RandomAction): void {
-  const randomCandidate: RandomActionCandidate = {
-    triggerId: '',
-    weight: 1
-  };
-  action.candidates.push(randomCandidate);
-  this.gameService.update();
-}
-
-deleteCandidate(action: RandomAction, candidate: RandomActionCandidate): void {
-  action.candidates.splice(action.candidates.indexOf(candidate), 1);
-  this.gameService.update();
-}
-
-addSwitchCondition(action): void {
-    const swCondition: SwitchCondition = {
-        activated: true,
-        switchId: '',
-        conditionType: 'switch'
-    };
-    action.conditions.push(swCondition);
-    this.gameService.update();
-}
-
-deleteCondition(action, condition: Condition): void {
-    action.conditions.splice(action.conditions.indexOf(condition), 1);
-    this.gameService.update();
-}
-
-setTimerMode(trigger: TimerTrigger, checked: boolean): void {
-  if (checked) {
-      trigger.mode = TimerTriggerMode.INTERVAL;
-  } else {
-      trigger.mode = TimerTriggerMode.TIMEOUT;
   }
-  this.gameService.update();
-}
 
-onSwitchConditionChanged(condition: SwitchCondition, switchId: string): void {
-  condition.switchId = switchId;
-  this.gameService.update();
-}
+  removeClause(action, clause): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        action: 'Delete',
+        prompt: `Are you sure you want to delete this clause?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        action.clauses.splice(action.clauses.indexOf(clause), 1);
+        this.gameService.update();
+      }
+    });
+  }
+
+  addDataCondition(clause): void {
+    const dataCondition: DataCondition = {
+      conditionType: 'data',
+      expression: ''
+    };
+    clause.conditions.push(dataCondition);
+    this.gameService.update();
+  }
+
+  addRandomId(action: RandomAction): void {
+    const randomCandidate: RandomActionCandidate = {
+      clause: new ConditionClause([], {
+        triggerId: null
+      }),
+      weight: 0
+    };
+    action.candidates.push(randomCandidate);
+    this.gameService.update();
+  }
+
+  deleteCandidate(action: RandomAction, candidate: RandomActionCandidate): void {
+    action.candidates.splice(action.candidates.indexOf(candidate), 1);
+    this.gameService.update();
+  }
+
+  addSwitchCondition(clause): void {
+    const swCondition: SwitchCondition = {
+      activated: true,
+      switchId: '',
+      conditionType: 'switch'
+    };
+    clause.conditions.push(swCondition);
+    this.gameService.update();
+  }
+
+  deleteCondition(clause, condition: Condition): void {
+    clause.conditions.splice(clause.conditions.indexOf(condition), 1);
+    this.gameService.update();
+  }
+
+  setTimerMode(trigger: TimerTrigger, checked: boolean): void {
+    if (checked) {
+      trigger.mode = TimerTriggerMode.INTERVAL;
+    } else {
+      trigger.mode = TimerTriggerMode.TIMEOUT;
+    }
+    this.gameService.update();
+  }
+
+  onSwitchConditionChanged(condition: SwitchCondition, switchId: string): void {
+    condition.switchId = switchId;
+    this.gameService.update();
+  }
+
+  doesTriggerExist(triggerId: string): boolean {
+    return this.gameService.doesTriggerExist(triggerId, this.ruleEngine);
+  }
+
+  copyClause(action: ConditionalAction, clause: ConditionClause): void {
+    const copied = clause.toJSON();
+    const back = ConditionClause.fromJSON(copied);
+    action.clauses.push(back);
+  }
 
 }

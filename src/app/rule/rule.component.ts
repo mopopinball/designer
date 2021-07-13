@@ -15,11 +15,12 @@ import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions
 import { ActionTriggerType, Trigger } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { ActionType, NamedTriggerActionSchema } from '@mopopinball/engine/src/system/rule-engine/schema/actions.schema';
 import {NamedTriggerAction} from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
-import { Condition, ConditionalAction, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
+import { ConditionalAction } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 import { DataAction } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
 import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
 import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
+import { RuleSchema } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 
 @Component({
     selector: 'app-rule',
@@ -30,6 +31,7 @@ export class RuleComponent implements OnInit {
     TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
     @Input() isRoot: boolean = false;
     @Input() ruleEngine: RuleEngine;
+    @Input() parent?: RuleEngine;
     @Output() delete = new EventEmitter<void>();
     devices: DesiredOutputState[];
     showBody = true;
@@ -87,6 +89,14 @@ export class RuleComponent implements OnInit {
         if(this.ruleEngine.autoStart) {
             this.ruleEngine.start();
         }
+        this.gameService.update();
+    }
+
+    copy(): void {
+        const serialization = this.ruleEngine.toJSON() as unknown as RuleSchema;
+
+        const copied = RuleEngine.load(serialization);
+        this.parent.children.push(copied);
         this.gameService.update();
     }
 
