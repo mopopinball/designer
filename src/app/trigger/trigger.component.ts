@@ -198,6 +198,15 @@ export class TriggerComponent implements OnInit {
     return this.gameService.doesTriggerExist(triggerId, this.ruleEngine);
   }
 
+  doesEngineExist(targetId: string, action: StateAction): boolean {
+    if (!targetId) {
+      return true;
+    }
+    else {
+      return this.ruleEngine.id == targetId || action.doesEngineExist(targetId);
+    }
+  }
+
   copyClause(action: ConditionalAction, clause: ConditionClause): void {
     const copied = clause.toJSON();
     const back = ConditionClause.fromJSON(copied);

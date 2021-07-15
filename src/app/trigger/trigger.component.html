@@ -79,7 +79,7 @@
                         <mat-icon>group_work</mat-icon><mat-icon>arrow_right_alt</mat-icon><mat-icon>group_work</mat-icon>
                     </span>
                     <span>
-                        Stop: <input type="text" [(ngModel)]="action.stopTargetId" (ngModelChange)="gameService.update()" spellcheck="false" /> -> Start: <input type="text" [(ngModel)]="action.startTargetId" (ngModelChange)="gameService.update()" spellcheck="false" />
+                        Stop: <input type="text" [(ngModel)]="action.stopTargetId" [class.bad-id]="!doesEngineExist(action.stopTargetId, action)" (ngModelChange)="gameService.update()" spellcheck="false" /> -> Start: <input type="text" [(ngModel)]="action.startTargetId" [class.bad-id]="!doesEngineExist(action.startTargetId, action)" (ngModelChange)="gameService.update()" spellcheck="false" />
                     </span>
                     <div class="spacer"></div>
                     <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>

@@ -5,7 +5,6 @@ import { OutputDeviceType } from '@mopopinball/engine/src/system/devices/output-
 import { LightState } from '@mopopinball/engine/src/system/devices/light';
 import { MatDialog } from '@angular/material/dialog';
 import { StyleDialogComponent } from '../style-dialog/style-dialog.component';
-import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
 import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 
 @Component({

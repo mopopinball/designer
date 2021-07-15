@@ -137,6 +137,12 @@ export class RuleComponent implements OnInit {
         });
     }
 
+    changeDevice(existingDevice: DesiredOutputState, device: DesiredOutputState): void {
+        this.ruleEngine.devices.delete(existingDevice.id);
+        this.ruleEngine.devices.set(device.id, device);
+        this.updateDevices();
+    }
+
     addNamedTrigger(): void {
         const namedTrigger = new IdTrigger('');
         this.ruleEngine.triggers.push(namedTrigger);

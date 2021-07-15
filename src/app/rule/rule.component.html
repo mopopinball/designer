@@ -43,7 +43,7 @@
                     </div>
                     <div class="body max-height">
                         <span class="no-items" *ngIf="!devices.length">No devices</span>
-                        <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" [parentActive]="ruleEngine.active" [deleteable]="!isRoot"></app-desired-output-state>
+                        <app-desired-output-state *ngFor="let device of devices" (delete)="deleteDevice(device)" [state]="device" (stateChange)="changeDevice(device, $event)" [parentActive]="ruleEngine.active" [deleteable]="!isRoot"></app-desired-output-state>
                     </div>
                 </div>
                 <div class="nestable-container devices" [class.active]="ruleEngine.active">
