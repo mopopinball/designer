@@ -4,22 +4,32 @@
     padding: 2px;
 }
 
+$DATA_COLOR: rgba(0, 0, 255, 0.15);
 .data-container {
-    background: rgba(0, 0, 255, 0.15);
+    background: $DATA_COLOR;
     @include container-mixin();
 }
 
+$DEVICE_COLOR: rgba(255, 192, 203, 0.45);
+.device-container {
+    background: $DEVICE_COLOR;
+    @include container-mixin();
+}
+
+$SWITCH_COLOR: rgba(0, 255, 0, 0.15);
 .switch-container {
-    background: rgba(0, 255, 0, 0.15);
+    background: $SWITCH_COLOR;
     @include container-mixin();
 }
 
+$TRIGGER_COLOR: rgba(255, 255, 0, 0.15);
 .trigger-container {
-    background: rgba(255, 255, 0, 0.15);
+    background: $TRIGGER_COLOR;
     @include container-mixin();
 }
 
+$BAD_ID_COLOR: red;
 .bad-id {
-    background-color: red !important;
+    background-color: $BAD_ID_COLOR !important;
     border-color: darkred !important;
 }

@@ -1,4 +1,4 @@
-<div class="device" [class.active-device]="parentActive && state.getState() === engineState">
+<div class="device" [class.active-device]="parentActive && state.getState() === engineState" class="device-container">
     <div *ngIf="state">
         <mat-icon *ngIf="state.type === OutputDeviceType.LIGHT">highlight</mat-icon>
         <mat-icon *ngIf="state.type === OutputDeviceType.COIL">compare_arrows</mat-icon>
