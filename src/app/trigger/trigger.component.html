@@ -1,28 +1,18 @@
 <div class="nestable-container" [class.active]="ruleEngine.active">
     <div class="header" [ngSwitch]="trigger.type">
-        <ng-container *ngSwitchCase="'switch'">
-            <mat-icon>close_fullscreen</mat-icon>
-            <div class="title timer-title">
-                <span class="title-text">Switch Trigger</span>
-                <switch-selector [switchId]="trigger.switchId" (switchSelect)="trigger.switchId = $event"></switch-selector>
-                <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="onSwitchTriggerHoldTimeChange(trigger)" /> hold ms
-            </div>
-        </ng-container>
-        <ng-container *ngSwitchCase="'id'">
-            <mat-icon>title</mat-icon>
-            <div class="title">
-                <span class="title-text">Named Trigger</span> <input [(ngModel)]="trigger.id" (ngModelChange)="gameService.update()" placeholder="Enter triger name" />
-            </div>
-        </ng-container>
-        <ng-container *ngSwitchCase="'timer'">
-            <mat-icon>av_timer</mat-icon>
-            <div class="title timer-title">
-                <span class="title-text">Timer Trigger</span> <span class="id">{{trigger.id}}</span> <input type="number" [(ngModel)]="trigger.valueMs" (ngModelChange)="gameService.update()" />
-                <span class="timer-mode" *ngIf="trigger.mode === TimerActionTriggerMode.TIMEOUT">timeout ms</span>
-                <span class="timer-mode" *ngIf="trigger.mode === TimerActionTriggerMode.INTERVAL">interval ms</span>
-                <mat-checkbox [ngModel]="trigger.mode === TimerActionTriggerMode.INTERVAL" [disabled]="!trigger.valueMs" (ngModelChange)="setTimerMode(trigger, $event)">Repeat</mat-checkbox>
-            </div>
-        </ng-container>
+        <trigger-header *ngSwitchCase="'switch'" [icon]="'close_fullscreen'" [name]="'Switch'">
+            <switch-selector [switchId]="trigger.switchId" (switchSelect)="trigger.switchId = $event"></switch-selector>
+            <input type="number" [(ngModel)]="trigger.holdIntervalMs" (ngModelChange)="onSwitchTriggerHoldTimeChange(trigger)" /> hold ms
+        </trigger-header>
+        <trigger-header *ngSwitchCase="'id'" [icon]="'title'" [name]="'Named'">
+            <input [(ngModel)]="trigger.id" (ngModelChange)="gameService.update()" placeholder="Enter triger name" />
+        </trigger-header>
+        <trigger-header *ngSwitchCase="'timer'" [icon]="'av_timer'" [name]="'Timer'">
+            <span class="id">{{trigger.id}}</span> <input type="number" [(ngModel)]="trigger.valueMs" (ngModelChange)="gameService.update()" />
+            <span class="timer-mode" *ngIf="trigger.mode === TimerActionTriggerMode.TIMEOUT">timeout ms</span>
+            <span class="timer-mode" *ngIf="trigger.mode === TimerActionTriggerMode.INTERVAL">interval ms</span>
+            <mat-checkbox [ngModel]="trigger.mode === TimerActionTriggerMode.INTERVAL" [disabled]="!trigger.valueMs" (ngModelChange)="setTimerMode(trigger, $event)">Repeat</mat-checkbox>
+        </trigger-header>
         <ng-container *ngSwitchDefault>
             <div class="title">
                 <span class="title-text bad">UNKNOWN TRIGGER TYPE</span>

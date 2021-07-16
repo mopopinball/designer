@@ -36,6 +36,7 @@ import { StringDataComponent } from './string-data/string-data.component';
 import { NamedActionComponent } from './named-action/named-action.component';
 import { TriggerComponent } from './trigger/trigger.component';
 import { SwitchSelectorComponent } from './switch-selector/switch-selector.component';
+import { HeaderComponent } from './trigger/header/header.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { SwitchSelectorComponent } from './switch-selector/switch-selector.compo
     StringDataComponent,
     NamedActionComponent,
     TriggerComponent,
-    SwitchSelectorComponent
+    SwitchSelectorComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
