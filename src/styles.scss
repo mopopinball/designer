@@ -69,6 +69,10 @@ mat-icon {
 
             .title-text {
                 font-weight: 500;
+
+                &.bad {
+                    color: red;
+                }
             }
         }
     }

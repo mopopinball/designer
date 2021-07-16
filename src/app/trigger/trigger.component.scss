@@ -1,5 +1,6 @@
 @import '../actions.scss';
 @import '../engine-models.scss';
+@import '../colors.scss';
 
 .actions {
 
@@ -8,6 +9,20 @@
     }
     .action-row:last-child {
         margin-bottom: 0;
+    }
+}
+
+.action-menu {
+    .conditional {
+        mat-icon: {
+            // color: $CON
+        }
+    }
+
+    .data {
+        mat-icon {
+            color: $DATA_COLOR !important;
+        }
     }
 }
 
