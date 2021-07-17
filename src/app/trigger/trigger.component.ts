@@ -17,6 +17,7 @@ import { TimerTriggerMode, TriggerType } from '@mopopinball/engine/src/system/ru
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
 import { Condition, ConditionClause, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/condition-clause';
+import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 
 @Component({
   selector: 'trigger',
@@ -211,6 +212,37 @@ export class TriggerComponent implements OnInit {
     const copied = clause.toJSON();
     const back = ConditionClause.fromJSON(copied);
     action.clauses.push(back);
+  }
+
+  getActionTitle(action: Action): string {
+    // if (action.type === 'state') {
+
+    // }
+    if (action instanceof StateAction) {
+      if (!action.stopTargetId && action.startTargetId) {
+        return 'Start State Action';
+      }
+      if (action.stopTargetId && !action.startTargetId) {
+        return 'Stop State Action';
+      }
+      if (action.stopTargetId && action.startTargetId) {
+        return 'State Action';
+      }
+    }
+    else if (action instanceof DeviceAction) {
+      return 'Device Action';
+    }
+    else if (action instanceof DataAction) {
+      return action.expression === undefined ? 'Data Action (Deprecated)' : 'Data Action';
+    }
+    else if (action instanceof RandomAction) {
+      return 'Random Action';
+    }
+    else if (action instanceof ConditionalAction) {
+      return 'Conditional Action';
+    }
+
+    return 'Unknown Action'
   }
 
 }

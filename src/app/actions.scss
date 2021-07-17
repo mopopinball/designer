@@ -12,9 +12,9 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: -8px;
-        left: 6px;
-        padding: 0 4px;
+        top: -7px;
+        left: 3px;
+        padding: 0 2px;
         font-size: xx-small;
         line-height: initial;
         color: rgba(255, 255, 255, 0.2);
@@ -22,6 +22,7 @@
         
         mat-icon {
             margin-right: 3px;
+            font-size: small !important;
         }
     }
 

@@ -37,6 +37,7 @@ import { NamedActionComponent } from './named-action/named-action.component';
 import { TriggerComponent } from './trigger/trigger.component';
 import { SwitchSelectorComponent } from './switch-selector/switch-selector.component';
 import { HeaderComponent } from './trigger/header/header.component';
+import { ActionComponent } from './trigger/action/action.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { HeaderComponent } from './trigger/header/header.component';
     NamedActionComponent,
     TriggerComponent,
     SwitchSelectorComponent,
-    HeaderComponent
+    HeaderComponent,
+    ActionComponent
   ],
   imports: [
     BrowserModule,
