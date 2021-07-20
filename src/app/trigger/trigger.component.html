@@ -22,6 +22,9 @@
         <button mat-icon-button [disabled]="!ruleEngine.active" title="Activate trigger">
             <mat-icon (click)="activateTrigger(trigger)">play_arrow</mat-icon>
         </button>
+        <button mat-icon-button title="Copy">
+            <mat-icon (click)="copyTrigger(trigger)">copy_all</mat-icon>
+        </button>
         <button mat-icon-button title="Move up" (click)="moveUp(trigger)" [disabled]="ruleEngine.triggers.indexOf(trigger) === 0">
             <mat-icon>vertical_align_top</mat-icon>
         </button>
@@ -167,14 +170,14 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="ifelse header">THEN</div>
+                            <div class="ifelse header">THEN <span class="if-description">(trigger)</span></div>
                             <div class="trigger-container">
                                 <mat-icon>title</mat-icon>
                                 <input type="text" [disabled]="!clause.conditions?.length" [(ngModel)]="clause.trueResult.triggerId" [class.bad-id]="!doesTriggerExist(clause.trueResult.triggerId)" (ngModelChange)="gameService.update()" spellcheck="false" placeholder="Enter trigger id" />
                             </div>
                         </div>
                         <div class="clause">
-                            <div class="header">ELSE
+                            <div class="header">ELSE <span class="if-description">(trigger)</span>
                                 <span *ngIf="!action.falseResult.triggerId" class="else-hint">(do nothing)</span>
                             </div>
                             <div class="trigger-container">

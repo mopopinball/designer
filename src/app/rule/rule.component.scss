@@ -3,6 +3,16 @@
 
 .rule {
 
+    .description {
+        margin-left: 2em;
+        width: 50%;
+        input {
+            width: 100%;
+            background: transparent;
+            color: white;
+        }
+    }
+
     .active-icon {
         color: rgb(255, 165, 0);
     }

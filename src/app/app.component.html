@@ -9,12 +9,11 @@
             <span class="metadata">
                 <mat-form-field>
                     <mat-label>Game Name</mat-label>
-                    <input matInput type="text" [(ngModel)]="root.name" />
+                    <input matInput type="text" [(ngModel)]="root.name" (ngModelChange)="gameService.update()" />
                     <mat-hint align="start" *ngIf="hardwareConfig">
                         Hardware: {{hardwareConfig.name}} - System {{hardwareConfig.system}}
                     </mat-hint>
                 </mat-form-field>
-                
             </span>
         </div>
     </span>
@@ -41,10 +40,10 @@
         </span>
     </mat-menu>
     <button mat-icon-button title="Download Rule File">
-        <mat-icon (click)="test()">print</mat-icon>
+        <mat-icon (click)="test()">download</mat-icon>
     </button>
     <button mat-icon-button title="Create New">
-        <mat-icon (click)="new()">create</mat-icon>
+        Create New
     </button>
     <input type="file"
            #fileload
@@ -53,9 +52,9 @@
     <button mat-icon-button title="Load">
         <mat-icon (click)="preLoad()">publish</mat-icon>
     </button>
-    <button mat-icon-button title="Save">
+    <!-- <button mat-icon-button title="Save">
         <mat-icon (click)="save()">save</mat-icon>
-    </button>
+    </button> -->
     <a id="dl" style="display:none;" download="mopo.json" #dllink [href]="downloadHref">DL</a>
 </mat-toolbar>
 <mat-tab-group *ngIf="hardwareConfig && root" animationDuration="0ms" [selectedIndex]="selectedTabIndex" (selectedIndexChange)="onSelectedTabIndexChange($event)">
@@ -72,7 +71,7 @@
     </mat-tab>
     <mat-tab *ngFor="let engine of engineTabs">
         <ng-template mat-tab-label>
-            <div class="tab-content">
+            <div class="tab-content" title="{{engine.description}}">
                 <mat-icon [class.active-icon]="engine.active">group_work</mat-icon>
                 {{engine.id}}
                 <button mat-icon-button>
@@ -81,7 +80,7 @@
             </div>
         </ng-template>
         <div class="editor">
-            <app-rule [ruleEngine]="engine"></app-rule>
+            <app-rule [ruleEngine]="engine" [isTabRoot]="true"></app-rule>
         </div>        
     </mat-tab>
 </mat-tab-group>

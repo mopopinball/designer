@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, throwMatDialogContentAlreadyAttachedError } from '@angular/material/dialog';
@@ -13,9 +14,10 @@ import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions
 import { ActionTriggerType, Trigger } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
-import { TimerTriggerMode, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
+import { TimerTriggerMode, TriggerSchemasType, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
+import { TriggerFactory} from '@mopopinball/engine/src/system/rule-engine/trigger-factory';
 import { Condition, ConditionClause, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/condition-clause';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 
@@ -43,6 +45,13 @@ export class TriggerComponent implements OnInit {
     } else if (trigger.type === TriggerType.ID || trigger.type === TriggerType.TIMER) {
       this.gameService.onTrigger(trigger.id);
     }
+    this.gameService.update();
+  }
+
+  copyTrigger(trigger: Trigger): void {
+    
+    const serialization = trigger.toJSON() as TriggerSchemasType;
+    TriggerFactory.copyTrigger(serialization, uuidv4(), this.ruleEngine);
     this.gameService.update();
   }
 

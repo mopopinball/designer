@@ -32,6 +32,7 @@ export class RuleComponent implements OnInit {
     @Input() isRoot: boolean = false;
     @Input() ruleEngine: RuleEngine;
     @Input() parent?: RuleEngine;
+    @Input() isTabRoot = false;
     @Output() delete = new EventEmitter<void>();
     devices: DesiredOutputState[];
     showBody = true;
@@ -42,7 +43,7 @@ export class RuleComponent implements OnInit {
         this.updateDevices();
         const show = localStorage.getItem(`mopo-rule-${this.ruleEngine.id}`);
         if (show?.length > 0) {
-            this.showBody = localStorage.getItem(`mopo-rule-${this.ruleEngine.id}`) === 'true';
+            this.showBody = this.isTabRoot || localStorage.getItem(`mopo-rule-${this.ruleEngine.id}`) === 'true';
         }
     }
 
