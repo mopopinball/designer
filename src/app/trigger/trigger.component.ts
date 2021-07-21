@@ -48,10 +48,10 @@ export class TriggerComponent implements OnInit {
     this.gameService.update();
   }
 
-  copyTrigger(trigger: Trigger): void {
-    
+  copyTrigger(trigger: ActionTriggerType): void {
     const serialization = trigger.toJSON() as TriggerSchemasType;
-    TriggerFactory.copyTrigger(serialization, uuidv4(), this.ruleEngine);
+    const index = this.ruleEngine.triggers.indexOf(trigger) + 1;
+    TriggerFactory.copyTrigger(serialization, uuidv4(), this.ruleEngine, index);
     this.gameService.update();
   }
 

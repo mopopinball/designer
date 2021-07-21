@@ -22,7 +22,7 @@
         <button mat-icon-button [disabled]="!ruleEngine.active" title="Activate trigger">
             <mat-icon (click)="activateTrigger(trigger)">play_arrow</mat-icon>
         </button>
-        <button mat-icon-button title="Copy">
+        <button mat-icon-button title="Copy Trigger">
             <mat-icon (click)="copyTrigger(trigger)">copy_all</mat-icon>
         </button>
         <button mat-icon-button title="Move up" (click)="moveUp(trigger)" [disabled]="ruleEngine.triggers.indexOf(trigger) === 0">
