@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
         fileReader.readAsText(file)
     }
 
-    test() {
+    showDownloadDialog() {
         const dialogRef = this.dialog.open(ExportDialogComponent, {
             // width: '75%',
             // height: '75%'
