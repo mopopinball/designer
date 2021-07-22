@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
+import { MatSelectionListChange } from '@angular/material/list/selection-list';
+import gameMars from '@mopopinball/engine/src/games/mars/hardware-config.json';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
-import { RuleSchema } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 
 @Component({
-  selector: 'app-select-hardware-dialog',
+  selector: 'select-hardware-dialog',
   templateUrl: './select-hardware-dialog.component.html',
   styleUrls: ['./select-hardware-dialog.component.scss']
 })
@@ -15,14 +15,30 @@ export class SelectHardwareDialogComponent implements OnInit {
 
   ngOnInit(): void {
     // TODO: Load all hardware files.
-    this.hardwareFiles.push(hardware as unknown as HardwareConfig);
+    this.addGame(gameMars);
     
     // const dir = readdirSync('@mopopinball/engine/src/games');
     // console.log(dir);
   }
 
-  select(hw: HardwareConfig): void {
-    this.dialogRef.close(hw);
+  private addGame(game: unknown): void {
+    this.hardwareFiles.push(game as HardwareConfig);
+  }
+
+  select(evt: MatSelectionListChange): void {
+    this.dialogRef.close(evt.options[0].value);
+  }
+
+  getSwCount(hw: HardwareConfig): number {
+    return Object.values(hw.devices.switches).length;
+  }
+
+  getLampCount(hw: HardwareConfig): number {
+    return Object.values(hw.devices.lamps).length;
+  }
+
+  getCoilCount(hw: HardwareConfig): number {
+    return Object.values(hw.devices.coils).length;
   }
 
 }

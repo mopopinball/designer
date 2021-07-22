@@ -35,23 +35,29 @@
         <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
+        <mat-label mat-menu-item [disabled]="true">Rules</mat-label>
+        <button mat-menu-item (click)="showDownloadDialog()">
+            <mat-icon>download</mat-icon>
+            <span>Download</span>
+        </button>
+        <button mat-menu-item (click)="preLoad()">
+            <mat-icon>publish</mat-icon>
+            <span>Upload</span>
+        </button>
+        <button mat-menu-item (click)="newRules()">
+            <mat-icon>create</mat-icon>
+            <span>New</span>
+        </button>
+        <mat-label mat-menu-item [disabled]="true">Options</mat-label>
         <span mat-menu-item>
             <mat-checkbox [(ngModel)]="autoCollapse" (ngModelChange)="onCollapseChange()">Collapse inactive states</mat-checkbox>
         </span>
     </mat-menu>
-    <button mat-icon-button title="Download Rule File">
-        <mat-icon (click)="showDownloadDialog()">download</mat-icon>
-    </button>
-    <button mat-icon-button title="Create New">
-        Create New
-    </button>
     <input type="file"
            #fileload
            style="display:none;"
            (change)="load($event.target.files)">
-    <button mat-icon-button title="Load">
-        <mat-icon (click)="preLoad()">publish</mat-icon>
-    </button>
+    
     <!-- <button mat-icon-button title="Save">
         <mat-icon (click)="save()">save</mat-icon>
     </button> -->

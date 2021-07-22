@@ -13,6 +13,8 @@ import { LampRole } from '@mopopinball/engine/src/system/devices/lamp-role';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { version } from '../../package.json';
 
+// import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -90,7 +92,7 @@ export class AppComponent implements OnInit {
         this.gameService.autoCollapse = this.autoCollapse;
     }
 
-    new(): void {
+    newRules(): void {
         const dialogRef = this.dialog.open(SelectHardwareDialogComponent, {
         });
 
@@ -100,7 +102,8 @@ export class AppComponent implements OnInit {
                 this.root = new RuleEngine('root', true, null);
                 this.root.start();
                 this.gameService.setRoot(this.root);
-                this.populateRootDevices();       
+                this.populateRootDevices();
+                this.gameService.update();       
             }
         });
     }

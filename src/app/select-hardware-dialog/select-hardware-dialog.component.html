@@ -1,11 +1,12 @@
-<h1>Select a machine</h1>
+<h1>Select A Machine</h1>
 
 <mat-dialog-content>
-    <ul>
-        <li *ngFor="let hw of hardwareFiles">
-            <strong>{{hw.name}} </strong>
-            <span>(System {{hw.system}})</span>
-            <button mat-raised-button color="primary" (click)="select(hw)">Select</button>
-        </li>
-    </ul>
+    <p>The following hardware is available to create rules for:</p>
+      <mat-selection-list [multiple]="false" (selectionChange)="select($event)">
+        <mat-list-option *ngFor="let hw of hardwareFiles" [value]="hw">
+          <h3 matLine>{{hw.name}}</h3>
+          <span matLine>System {{hw.system}}</span>
+          <span matLine>{{getSwCount(hw)}} Switches, {{getLampCount(hw)}} Lamps, {{getCoilCount(hw)}} Coils</span>
+        </mat-list-option>
+      </mat-selection-list>
 </mat-dialog-content>

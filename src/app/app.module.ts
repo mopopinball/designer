@@ -17,6 +17,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
+import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
 
 import { FormsModule } from '@angular/forms';
@@ -70,6 +71,7 @@ import { ActionComponent } from './trigger/action/action.component';
     HttpClientModule,
     MatBadgeModule,
     MatButtonModule,
+    MatListModule,
     MatCheckboxModule,
     MatDialogModule,
     MatTabsModule,
