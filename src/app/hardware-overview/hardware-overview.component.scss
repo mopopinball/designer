@@ -1,0 +1,25 @@
+:host {
+
+    mat-dialog-content {
+        max-height: initial;
+    }
+    
+    .hardware-info {
+        display: flex;
+
+        .image, .devices {
+            width: 50%;
+            img {
+                width: 100%;
+            }
+        }
+
+        .devices {
+            display: flex;
+        }
+
+        
+
+            
+    }
+}

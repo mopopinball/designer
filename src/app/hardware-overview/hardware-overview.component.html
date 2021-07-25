@@ -1,0 +1,22 @@
+<mat-dialog-content>
+    <div class="hardware-info">
+        <div class="image">
+            <img
+                src="https://imgproxy.pinside.com/6zzk3ud0h_IWco_Ho-x27Y_k3OF7aqymBGI6q5bGMpY/rs:fit:2048:2048/q:70/aHR0cHM6Ly9vLnBpbnNpZGUuY29tLzgvNGEvZGYvODRhZGYwNWEwM2Q2MTU5OWFiYjE1YjVjOWE0ZTQ3OWQxNjk0YjgwNi5qcGc" />
+        </div>
+        <div class="devices">
+            <div>
+                <h3>Switches</h3>
+                <div *ngFor="let sw of getSwitches()">
+                    {{sw.number}} = {{sw.name}}
+                </div>
+            </div>
+            <div>
+                <h3>Lamps</h3>
+                <div *ngFor="let lamp of getLamps()">
+                    {{lamp.number}} = {{lamp.name}}
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>

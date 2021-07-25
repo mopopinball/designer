@@ -12,6 +12,7 @@ import { LightState } from '@mopopinball/engine/src/system/devices/light';
 import { LampRole } from '@mopopinball/engine/src/system/devices/lamp-role';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { version } from '../../package.json';
+import { HardwareOverviewComponent } from './hardware-overview/hardware-overview.component';
 
 // import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
 
@@ -105,6 +106,16 @@ export class AppComponent implements OnInit {
                 this.populateRootDevices();
                 this.gameService.update();       
             }
+        });
+    }
+
+    showHardwareOverview(): void {
+        const dialogRef = this.dialog.open(HardwareOverviewComponent, {
+            data: this.hardwareConfig,
+            width: '95%',
+            height: 'calc(100% - 30px)',
+            maxHeight: 'calc(100% - 30px)',
+            panelClass: 'hardware-dialog'
         });
     }
 

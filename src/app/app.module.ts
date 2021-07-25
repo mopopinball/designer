@@ -9,6 +9,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatGridListModule} from '@angular/material/grid-list';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
@@ -19,6 +20,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
+import {NgxMousetrapModule} from 'ngx-mousetrap';
 
 import { FormsModule } from '@angular/forms';
 import { CreateDesiredOutputStateDialogComponent } from './create-desired-output-state-dialog/create-desired-output-state-dialog.component';
@@ -40,6 +42,7 @@ import { TriggerComponent } from './trigger/trigger.component';
 import { SwitchSelectorComponent } from './switch-selector/switch-selector.component';
 import { HeaderComponent } from './trigger/header/header.component';
 import { ActionComponent } from './trigger/action/action.component';
+import { HardwareOverviewComponent } from './hardware-overview/hardware-overview.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +66,8 @@ import { ActionComponent } from './trigger/action/action.component';
     TriggerComponent,
     SwitchSelectorComponent,
     HeaderComponent,
-    ActionComponent
+    ActionComponent,
+    HardwareOverviewComponent
   ],
   imports: [
     BrowserModule,
@@ -76,10 +80,12 @@ import { ActionComponent } from './trigger/action/action.component';
     MatDialogModule,
     MatTabsModule,
     MatIconModule,
+    NgxMousetrapModule,
     MatAutocompleteModule,
     MatChipsModule,
     MatMenuModule,
     MatRadioModule,
+    MatGridListModule,
     MatInputModule,
     MatToolbarModule,
     MatSelectModule,
