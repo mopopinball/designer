@@ -112,7 +112,7 @@ export class AppComponent implements OnInit {
     showHardwareOverview(): void {
         const dialogRef = this.dialog.open(HardwareOverviewComponent, {
             data: this.hardwareConfig,
-            width: '95%',
+            width: 'calc(100% - 30px)',
             height: 'calc(100% - 30px)',
             maxHeight: 'calc(100% - 30px)',
             panelClass: 'hardware-dialog'

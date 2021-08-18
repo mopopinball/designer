@@ -1,0 +1,31 @@
+<!-- <mat-menu #addactionmenu="matMenu"> -->
+    <button mat-menu-item (click)="addConditionalAction()"
+        title="Calls a Trigger if all conditions are true, otherwise calls another Trigger">
+        <mat-icon>call_split</mat-icon>
+        <span>Conditional Action</span>
+    </button>
+    <button mat-menu-item (click)="addDataAction()" title="Assigns a value to the specified data entry">
+        <mat-icon>label</mat-icon>
+        <span>Data Action</span>
+    </button>
+    <button mat-menu-item (click)="addDeviceAction()" title="Sets a Device to a given state">
+        <mat-icon>highlight</mat-icon>
+        <span>Device Action</span>
+    </button>
+    <button mat-menu-item (click)="addNamedAction()" title="Calls a named Trigger">
+        <mat-icon>title</mat-icon>
+        <span>Named Action</span>
+    </button>
+    <button mat-menu-item (click)="addRandomAction()" title="Calls a random named Trigger">
+        <mat-icon>gesture</mat-icon>
+        <span>Random Action</span>
+    </button>
+    <button mat-menu-item (click)="addStateAction()" title="Starts/stops the given states">
+        <mat-icon>group_work</mat-icon>
+        <span>State Action</span>
+    </button>
+    <button mat-menu-item (click)="addTimedAction()" title="A time scripted series of child actions">
+        <mat-icon>av_timer</mat-icon>
+        <span>Timed Action</span>
+    </button>
+<!-- </mat-menu> -->

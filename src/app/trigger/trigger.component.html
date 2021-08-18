@@ -9,7 +9,7 @@
             <input [(ngModel)]="trigger.id" (ngModelChange)="gameService.update()" placeholder="Enter triger name" />
         </trigger-header>
         <trigger-header *ngSwitchCase="'timer'" [icon]="'av_timer'" [name]="'Timer'">
-            <span class="id">{{trigger.id}}</span> <input type="number" [(ngModel)]="trigger.valueMs"
+            <input [(ngModel)]="trigger.id" (ngModelChange)="gameService.update()" placeholder="Enter triger id" /> <input type="number" [(ngModel)]="trigger.valueMs"
                 (ngModelChange)="gameService.update()" />
             <span class="timer-mode" *ngIf="trigger.mode === TimerActionTriggerMode.TIMEOUT">timeout ms</span>
             <span class="timer-mode" *ngIf="trigger.mode === TimerActionTriggerMode.INTERVAL">interval ms</span>
@@ -36,35 +36,11 @@
             [disabled]="ruleEngine.triggers.indexOf(trigger) === ruleEngine.triggers.length - 1">
             <mat-icon>vertical_align_bottom</mat-icon>
         </button>
-        <button mat-icon-button title="Add action" [matMenuTriggerFor]="addactionmenu">
+        <button mat-icon-button title="Add action" [matMenuTriggerFor]="mainactionmenu">
             <mat-icon>add_circle_outline</mat-icon>
         </button>
-        <mat-menu #addactionmenu="matMenu">
-            <button mat-menu-item (click)="addConditionalAction(trigger)"
-                title="Calls a Trigger if all conditions are true, otherwise calls another Trigger">
-                <mat-icon>call_split</mat-icon>
-                <span>Conditional Action</span>
-            </button>
-            <button mat-menu-item (click)="addDataAction(trigger)" title="Assigns a value to the specified data entry">
-                <mat-icon>label</mat-icon>
-                <span>Data Action</span>
-            </button>
-            <button mat-menu-item (click)="addDeviceAction(trigger)" title="Sets a Device to a given state">
-                <mat-icon>highlight</mat-icon>
-                <span>Device Action</span>
-            </button>
-            <button mat-menu-item (click)="addNamedAction(trigger)" title="Calls a named Trigger">
-                <mat-icon>title</mat-icon>
-                <span>Named Action</span>
-            </button>
-            <button mat-menu-item (click)="addRandomAction(trigger)" title="Calls a random named Trigger">
-                <mat-icon>gesture</mat-icon>
-                <span>Random Action</span>
-            </button>
-            <button mat-menu-item (click)="addStateAction(trigger)" title="Starts/stops the given states">
-                <mat-icon>group_work</mat-icon>
-                <span>State Action</span>
-            </button>
+        <mat-menu #mainactionmenu="matMenu">
+            <action-menu [actionParent]="trigger"></action-menu>
         </mat-menu>
         <button mat-icon-button title="Delete Trigger">
             <mat-icon (click)="deleteTrigger(trigger)">delete</mat-icon>
@@ -243,6 +219,32 @@
                     </div>
                     <div class="spacer"></div>
                     <button mat-icon-button (click)="addClause(action)" title="Add Clause">
+                        <mat-icon>add_circle_outline</mat-icon>
+                    </button>
+                    <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
+                </action>
+                <action *ngSwitchCase="'timed'" [icon]="'av_timer'" [title]="getActionTitle(action)">
+                    <div>
+                        <span *ngIf="!action.steps?.length">Add an action</span>
+                        <ul>
+                            <li *ngFor="let step of action.steps">
+                                <input type="number" [(ngModel)]="intervalMs" (ngModelChange)="gameService.update()" />
+                                <ol>
+                                    <li *ngFor="let timedActionChild of step.actions">
+                                        TODO: Recursive render this action! {{timedActionChild.type}}
+                                    </li>
+                                </ol>
+                                <button mat-icon-button [matMenuTriggerFor]="timedactionmenu" title="Add Action">
+                                    <mat-icon>add_circle_outline</mat-icon>
+                                </button>
+                                <mat-menu #timedactionmenu="matMenu">
+                                    <action-menu [actionParent]="step"></action-menu>
+                                </mat-menu>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="spacer"></div>
+                    <button mat-icon-button (click)="addTimedStep(action)" title="Add Step">
                         <mat-icon>add_circle_outline</mat-icon>
                     </button>
                     <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>

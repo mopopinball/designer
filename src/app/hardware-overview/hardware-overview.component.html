@@ -7,15 +7,21 @@
         <div class="devices">
             <div>
                 <h3>Switches</h3>
-                <div *ngFor="let sw of getSwitches()">
-                    {{sw.number}} = {{sw.name}}
-                </div>
+                <table>
+                    <tr *ngFor="let sw of getSwitches()">
+                        <td>{{sw.number}}</td>
+                        <td>{{sw.name}}</td>
+                    </tr>
+                </table>
             </div>
             <div>
                 <h3>Lamps</h3>
-                <div *ngFor="let lamp of getLamps()">
-                    {{lamp.number}} = {{lamp.name}}
-                </div>
+                <table>
+                    <tr *ngFor="let sw of getLamps()">
+                        <td>{{sw.number}}</td>
+                        <td>{{sw.name}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

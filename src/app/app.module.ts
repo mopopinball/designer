@@ -43,6 +43,7 @@ import { SwitchSelectorComponent } from './switch-selector/switch-selector.compo
 import { HeaderComponent } from './trigger/header/header.component';
 import { ActionComponent } from './trigger/action/action.component';
 import { HardwareOverviewComponent } from './hardware-overview/hardware-overview.component';
+import { ActionMenuComponent } from './action-menu/action-menu.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { HardwareOverviewComponent } from './hardware-overview/hardware-overview
     SwitchSelectorComponent,
     HeaderComponent,
     ActionComponent,
-    HardwareOverviewComponent
+    HardwareOverviewComponent,
+    ActionMenuComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, throwMatDialogContentAlreadyAttachedError } from '@angular/material/dialog';
 import { ConditionalAction } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
@@ -20,6 +20,8 @@ import { GameService } from '../game.service';
 import { TriggerFactory} from '@mopopinball/engine/src/system/rule-engine/trigger-factory';
 import { Condition, ConditionClause, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/condition-clause';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
+import { TimedAction } from '@mopopinball/engine/src/system/rule-engine/actions/timed-action';
+import { ActionMenuComponent } from '../action-menu/action-menu.component';
 
 @Component({
   selector: 'trigger',
@@ -30,13 +32,15 @@ export class TriggerComponent implements OnInit {
   TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
   @Input() ruleEngine: RuleEngine;
   @Input() trigger: ActionTriggerType;
-
+  // @ViewChild('mainactionmenu') mainActionMenu: ActionMenuComponent;
+  // @ViewChild('timedactionmenu') timedActionMenu: ActionMenuComponent;
+  
   constructor(private gameService: GameService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
 
-  activateTrigger(trigger: SwitchTrigger | IdTrigger | TimerTrigger): void {
+  activateTrigger(trigger: ActionTriggerType): void {
     if (!this.ruleEngine.active) {
       return;
     }
@@ -66,42 +70,6 @@ export class TriggerComponent implements OnInit {
     const currentPosition = this.ruleEngine.triggers.indexOf(trigger);
     this.ruleEngine.triggers.splice(currentPosition, 1);
     this.ruleEngine.triggers.splice(currentPosition + 1, 0, trigger);
-    this.gameService.update();
-  }
-
-  addConditionalAction(trigger: ActionTriggerType): void {
-    const newAction = new ConditionalAction([], {});
-    trigger.actions.push(newAction);
-    this.gameService.update();
-  }
-
-  addDataAction(trigger: ActionTriggerType): void {
-    const newAction = new DataAction('', null, null, '');
-    trigger.actions.push(newAction);
-    this.gameService.update();
-  }
-
-  addStateAction(trigger: ActionTriggerType): void {
-    const newAction = new StateAction('', '');
-    trigger.actions.push(newAction);
-    this.gameService.update();
-  }
-
-  addDeviceAction(trigger: ActionTriggerType): void {
-    const newAction = new DeviceAction(new DesiredOutputState('', null, null));
-    trigger.actions.push(newAction);
-    this.gameService.update();
-  }
-
-  addNamedAction(trigger: ActionTriggerType): void {
-    const newAction = new NamedTriggerAction('');
-    trigger.actions.push(newAction);
-    this.gameService.update();
-  }
-
-  addRandomAction(trigger: ActionTriggerType): void {
-    const newAction = new RandomAction([]);
-    trigger.actions.push(newAction);
     this.gameService.update();
   }
 
@@ -148,6 +116,11 @@ export class TriggerComponent implements OnInit {
         this.gameService.update();
       }
     });
+  }
+
+  addTimedStep(action: TimedAction): void {
+    action.steps.push({intervalMs: 0, actions: []})
+    this.gameService.update();
   }
 
   addDataCondition(clause): void {
@@ -249,6 +222,9 @@ export class TriggerComponent implements OnInit {
     }
     else if (action instanceof ConditionalAction) {
       return 'Conditional Action';
+    }
+    else if (action instanceof TimedAction) {
+      return 'Timed Action';
     }
 
     return 'Unknown Action'

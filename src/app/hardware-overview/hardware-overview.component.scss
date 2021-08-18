@@ -7,6 +7,14 @@
     .hardware-info {
         display: flex;
 
+        td {
+            &:first-child {
+                font-weight: bold;
+                text-align: right;
+            }
+            vertical-align: top;
+        }
+
         .image, .devices {
             width: 50%;
             img {
