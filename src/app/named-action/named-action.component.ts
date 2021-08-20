@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 import { NamedTriggerAction } from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
+import { TimedActionStep } from '@mopopinball/engine/src/system/rule-engine/actions/timed-action';
 import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { GameService } from '../game.service';
@@ -11,7 +12,7 @@ import { GameService } from '../game.service';
   styleUrls: ['./named-action.component.scss']
 })
 export class NamedActionComponent implements OnInit {
-  @Input()trigger: ActionTriggerType;
+  @Input() parent: ActionTriggerType | TimedActionStep;
   @Input()action: NamedTriggerAction;
   @Input()ruleEngine: RuleEngine;
 

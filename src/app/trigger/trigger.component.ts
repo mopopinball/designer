@@ -32,12 +32,16 @@ export class TriggerComponent implements OnInit {
   TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
   @Input() ruleEngine: RuleEngine;
   @Input() trigger: ActionTriggerType;
-  // @ViewChild('mainactionmenu') mainActionMenu: ActionMenuComponent;
-  // @ViewChild('timedactionmenu') timedActionMenu: ActionMenuComponent;
   
-  constructor(private gameService: GameService, public dialog: MatDialog) { }
+  constructor(public gameService: GameService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  getAllEngines(): RuleEngine[] {
+    return Array.from(this.gameService.getRoot().getAllEngines().values())
+      .filter((engine) => engine.id !== this.ruleEngine.id)
+      .sort((a,b) => a.id.localeCompare(b.id));
   }
 
   activateTrigger(trigger: ActionTriggerType): void {
@@ -57,6 +61,12 @@ export class TriggerComponent implements OnInit {
     const index = this.ruleEngine.triggers.indexOf(trigger) + 1;
     TriggerFactory.copyTrigger(serialization, uuidv4(), this.ruleEngine, index);
     this.gameService.update();
+  }
+
+  moveTrigger(trigger: ActionTriggerType, engine: RuleEngine): void {
+    const currentPosition = this.ruleEngine.triggers.indexOf(trigger);
+    this.ruleEngine.triggers.splice(currentPosition, 1);
+    engine.triggers.push(trigger);
   }
 
   moveUp(trigger): void {
@@ -118,11 +128,6 @@ export class TriggerComponent implements OnInit {
     });
   }
 
-  addTimedStep(action: TimedAction): void {
-    action.steps.push({intervalMs: 0, actions: []})
-    this.gameService.update();
-  }
-
   addDataCondition(clause): void {
     const dataCondition: DataCondition = {
       conditionType: 'data',
@@ -177,18 +182,9 @@ export class TriggerComponent implements OnInit {
     this.gameService.update();
   }
 
-  doesTriggerExist(triggerId: string): boolean {
-    return this.gameService.doesTriggerExist(triggerId, this.ruleEngine);
-  }
+  
 
-  doesEngineExist(targetId: string, action: StateAction): boolean {
-    if (!targetId) {
-      return true;
-    }
-    else {
-      return this.ruleEngine.id == targetId || action.doesEngineExist(targetId);
-    }
-  }
+  
 
   copyClause(action: ConditionalAction, clause: ConditionClause): void {
     const copied = clause.toJSON();
@@ -196,38 +192,6 @@ export class TriggerComponent implements OnInit {
     action.clauses.push(back);
   }
 
-  getActionTitle(action: Action): string {
-    // if (action.type === 'state') {
-
-    // }
-    if (action instanceof StateAction) {
-      if (!action.stopTargetId && action.startTargetId) {
-        return 'Start State Action';
-      }
-      if (action.stopTargetId && !action.startTargetId) {
-        return 'Stop State Action';
-      }
-      if (action.stopTargetId && action.startTargetId) {
-        return 'State Action';
-      }
-    }
-    else if (action instanceof DeviceAction) {
-      return 'Device Action';
-    }
-    else if (action instanceof DataAction) {
-      return action.expression === undefined ? 'Data Action (Deprecated)' : 'Data Action';
-    }
-    else if (action instanceof RandomAction) {
-      return 'Random Action';
-    }
-    else if (action instanceof ConditionalAction) {
-      return 'Conditional Action';
-    }
-    else if (action instanceof TimedAction) {
-      return 'Timed Action';
-    }
-
-    return 'Unknown Action'
-  }
+  
 
 }

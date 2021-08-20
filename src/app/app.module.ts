@@ -44,6 +44,7 @@ import { HeaderComponent } from './trigger/header/header.component';
 import { ActionComponent } from './trigger/action/action.component';
 import { HardwareOverviewComponent } from './hardware-overview/hardware-overview.component';
 import { ActionMenuComponent } from './action-menu/action-menu.component';
+import { ActionListComponent } from './trigger/action-list/action-list.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ActionMenuComponent } from './action-menu/action-menu.component';
     HeaderComponent,
     ActionComponent,
     HardwareOverviewComponent,
-    ActionMenuComponent
+    ActionMenuComponent,
+    ActionListComponent
   ],
   imports: [
     BrowserModule,

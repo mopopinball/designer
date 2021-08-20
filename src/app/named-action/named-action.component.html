@@ -4,5 +4,5 @@
         <input type="text" [(ngModel)]="action.triggerId" [class.bad-id]="!doesTriggerExist(action.triggerId)" placeholder="Enter trigger id" (change)="onChange()" spellcheck="false" />
     </div>
     <div class="spacer"></div>
-    <app-action-actions [trigger]="trigger" [action]="action" ></app-action-actions>
+    <app-action-actions [parent]="parent" [action]="action" ></app-action-actions>
 </action>

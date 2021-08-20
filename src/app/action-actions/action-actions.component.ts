@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
+import { TimedActionStep } from '@mopopinball/engine/src/system/rule-engine/actions/timed-action';
 import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
@@ -11,15 +12,16 @@ import { GameService } from '../game.service';
     styleUrls: ['./action-actions.component.scss']
 })
 export class ActionActionsComponent implements OnInit {
-    @Input()trigger: ActionTriggerType;
-    @Input()action: Action;
+    @Input() parent: ActionTriggerType | TimedActionStep;
+    @Input() action: Action;
 
     constructor(protected gameService: GameService, public dialog: MatDialog) { }
 
     ngOnInit(): void {
+        
     }
 
-    deleteAction(trigger, action): void {
+    deleteAction(action): void {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: {
                 action: 'Delete',
@@ -29,23 +31,23 @@ export class ActionActionsComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: boolean) => {
             if (result) {
-                trigger.actions.splice(trigger.actions.indexOf(action), 1);
+                this.parent.actions.splice(this.parent.actions.indexOf(action), 1);
                 this.gameService.update();
             }
         });
     }
 
-    moveUp(trigger: ActionTriggerType, action): void {
-        const currentPosition = trigger.actions.indexOf(action);
-        trigger.actions.splice(currentPosition, 1);
-        trigger.actions.splice(currentPosition - 1, 0, action);
+    moveUp(action): void {
+        const currentPosition = this.parent.actions.indexOf(action);
+        this.parent.actions.splice(currentPosition, 1);
+        this.parent.actions.splice(currentPosition - 1, 0, action);
         this.gameService.update();
     }
 
-    moveDown(trigger, action): void {
-        const currentPosition = trigger.actions.indexOf(action);
-        trigger.actions.splice(currentPosition, 1);
-        trigger.actions.splice(currentPosition + 1, 0, action);
+    moveDown(action): void {
+        const currentPosition = this.parent.actions.indexOf(action);
+        this.parent.actions.splice(currentPosition, 1);
+        this.parent.actions.splice(currentPosition + 1, 0, action);
         this.gameService.update();
     }
 

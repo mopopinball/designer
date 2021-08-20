@@ -22,12 +22,20 @@
             </div>
         </ng-container>
         <div class="spacer"></div>
-        <button mat-icon-button [disabled]="!ruleEngine.active" title="Activate trigger">
-            <mat-icon (click)="activateTrigger(trigger)">play_arrow</mat-icon>
+        <button mat-icon-button (click)="activateTrigger(trigger)" [disabled]="!ruleEngine.active" title="Activate trigger">
+            <mat-icon>play_arrow</mat-icon>
         </button>
-        <button mat-icon-button title="Copy Trigger">
-            <mat-icon (click)="copyTrigger(trigger)">copy_all</mat-icon>
+        <button mat-icon-button title="Copy Trigger" (click)="copyTrigger(trigger)">
+            <mat-icon>copy_all</mat-icon>
         </button>
+        <button mat-icon-button title="Move Trigger" [matMenuTriggerFor]="movemenu">
+            <mat-icon>import_export</mat-icon>
+        </button>
+        <mat-menu #movemenu="matMenu">
+            <button mat-menu-item (click)="moveTrigger(trigger, engine)" *ngFor="let engine of getAllEngines()">
+                <span>Move to {{engine.id}}</span>
+            </button>
+        </mat-menu>
         <button mat-icon-button title="Move up" (click)="moveUp(trigger)"
             [disabled]="ruleEngine.triggers.indexOf(trigger) === 0">
             <mat-icon>vertical_align_top</mat-icon>
@@ -49,211 +57,7 @@
     <div class="body">
         <span class="no-items" *ngIf="!trigger.actions.length">No actions</span>
         <div class="actions">
-            <div *ngFor="let action of trigger.actions" class="action-row" [ngSwitch]="action.type">
-                <action *ngSwitchCase="'state'" [icon]="'group_work'" [title]="getActionTitle(action)">
-                    <span>
-                        Stop: <input type="text" [(ngModel)]="action.stopTargetId"
-                            [class.bad-id]="!doesEngineExist(action.stopTargetId, action)"
-                            (ngModelChange)="gameService.update()" spellcheck="false" /> -> Start: <input type="text"
-                            [(ngModel)]="action.startTargetId"
-                            [class.bad-id]="!doesEngineExist(action.startTargetId, action)"
-                            (ngModelChange)="gameService.update()" spellcheck="false" />
-                    </span>
-                    <div class="spacer"></div>
-                    <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                </action>
-                <named-action *ngSwitchCase="'named'" [trigger]="trigger" [action]="action" [ruleEngine]="ruleEngine">
-                    <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                </named-action>
-                <action *ngSwitchCase="'device'" [icon]="'highlight'" [title]="getActionTitle(action)">
-                    <app-desired-output-state [(state)]="action.state" [parentActive]="ruleEngine.active"
-                        [deleteable]="false"></app-desired-output-state>
-                    <div class="spacer"></div>
-                    <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                </action>
-                <action *ngSwitchCase="'data'" [icon]="'label'" [title]="getActionTitle(action)">
-                    <ng-container *ngIf="action.expression === undefined">
-                        <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="action.dataKey"
-                            (key)="action.dataKey = $event"></app-data-key-selector>
-                        <app-data-operation class="token" [operation]="action.operation"
-                            (changed)="action.operation = $event; gameService.update();"></app-data-operation>
-                        <app-operand-selector class="token" [ruleEngine]="ruleEngine" [(operand)]="action.operand"
-                            (operandChange)="gameService.update()"></app-operand-selector>
-                        <div class="spacer"></div>
-                        <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                    </ng-container>
-                    <ng-container *ngIf="action.expression !== undefined">
-                        <app-data-key-selector class="token" [ruleEngine]="ruleEngine" [dataKey]="action.dataKey"
-                            (key)="action.dataKey = $event"></app-data-key-selector>
-                        =&nbsp;<input type="text" placeholder="Enter an expression" [(ngModel)]="action.expression"
-                            (ngModelChange)="gameService.update()" spellcheck="false" />
-                        <div class="spacer"></div>
-                        <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                    </ng-container>
-                </action>
-                <action *ngSwitchCase="'random'" [icon]="'gesture'" [title]="getActionTitle(action)">
-                    <div *ngIf="!action.candidates.length">No candidates</div>
-                    <div *ngFor="let candidate of action.candidates">
-                        <mat-icon>title</mat-icon>
-                        Trigger Id: <input type="text" [(ngModel)]="candidate.triggerId"
-                            (ngModelChange)="gameService.update()" placeholder="Enter a Trigger Id" />
-                        Weight: <input type="number" min="0" max="1" step="0.05" [(ngModel)]="candidate.weight"
-                            (ngModelChange)="gameService.update()" placeholder="Enter a weight" />
-                        <button mat-icon-button title="Delete Candidate" (click)="deleteCandidate(action, candidate)"
-                            (ngModelChange)="gameService.update()">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </div>
-                    <div class="spacer"></div>
-                    <div>
-                        <button mat-icon-button (click)="addRandomId(action)" title="Add Random Candidate">
-                            <mat-icon>add_circle_outline</mat-icon>
-                        </button>
-                        <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                    </div>
-                </action>
-                <action *ngSwitchCase="'condition'" [icon]="'call_split'" [title]="getActionTitle(action)">
-                    <div>
-                        <div *ngFor="let clause of action.clauses" class="clause">
-                            <div class="if">
-                                <div class="ifelse header">
-                                    IF
-                                    <span class="if-description">(All conditions ANDed)</span>
-                                    <span class="spacer"></span>
-                                    <button mat-icon-button *ngIf="!isRoot" title="Copy this Clause">
-                                        <mat-icon (click)="copyClause(action, clause)">copy_all</mat-icon>
-                                    </button>
-                                    <button mat-icon-button [matMenuTriggerFor]="addcondition" title="Add Condition">
-                                        <mat-icon>add_circle_outline</mat-icon>
-                                    </button>
-                                    <button mat-icon-button (click)="removeClause(action, clause)"
-                                        title="Remove this Clause">
-                                        <mat-icon>delete</mat-icon>
-                                    </button>
-                                    <mat-menu #addcondition="matMenu">
-                                        <button mat-menu-item (click)="addDataCondition(clause)">
-                                            <mat-icon>label</mat-icon>
-                                            <span>Data Condition</span>
-                                        </button>
-                                        <button mat-menu-item (click)="addSwitchCondition(clause)">
-                                            <mat-icon>bolt</mat-icon>
-                                            <span>Switch Condition</span>
-                                        </button>
-                                    </mat-menu>
-                                </div>
-                                <div *ngFor="let condition of clause.conditions">
-                                    <div *ngIf="condition.conditionType === 'data' && condition.expression === undefined"
-                                        class="condition data-container">
-                                        <mat-icon>label</mat-icon>
-                                        <app-data-key-selector class="token" [ruleEngine]="ruleEngine"
-                                            [dataKey]="condition.dataId" (key)="condition.dataId = $event">
-                                        </app-data-key-selector>
-                                        <select class="token" [(ngModel)]="condition.operator">
-                                            <option *ngFor="let op of operators" [ngValue]="op">{{op}}</option>
-                                        </select>
-                                        <app-operand-selector class="token" [ruleEngine]="ruleEngine"
-                                            [(operand)]="condition.operand" (change)="gameService.update()">
-                                        </app-operand-selector>
-                                        <button (click)="deleteCondition(clause, condition)">X</button>
-                                    </div>
-                                    <div *ngIf="condition.conditionType === 'data' && condition.expression !== undefined"
-                                        class="condition  data-container">
-                                        <mat-icon>label</mat-icon>
-                                        <input type="text" [(ngModel)]="condition.expression"
-                                            (ngModelChange)="gameService.update()" placeholder="Enter an expression"
-                                            spellcheck="false" />
-                                        <button mat-icon-button title="Delete condition"
-                                            (click)="deleteCondition(clause, condition)"
-                                            (ngModelChange)="gameService.update()">
-                                            <mat-icon>delete</mat-icon>
-                                        </button>
-                                    </div>
-                                    <div *ngIf="condition.conditionType === 'switch'"
-                                        class="condition switch-container">
-                                        <mat-icon>close_fullscreen</mat-icon>
-                                        <!-- <input type="text" [(ngModel)]="condition.switchId" placeholder="Enter switch id" (ngModelChange)="gameService.update()" /> -->
-                                        <switch-selector [switchId]="condition.switchId"
-                                            (switchSelect)="onSwitchConditionChanged(condition, $event)">
-                                        </switch-selector>
-                                        <input type="checkbox" [(ngModel)]="condition.activated" /> Activated
-                                        <button mat-icon-button title="Delete condition"
-                                            (click)="deleteCondition(clause, condition)"
-                                            (ngModelChange)="gameService.update()">
-                                            <mat-icon>delete</mat-icon>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="ifelse header">THEN <span class="if-description">(trigger)</span></div>
-                                <div class="trigger-container">
-                                    <mat-icon>title</mat-icon>
-                                    <input type="text" [disabled]="!clause.conditions?.length"
-                                        [(ngModel)]="clause.trueResult.triggerId"
-                                        [class.bad-id]="!doesTriggerExist(clause.trueResult.triggerId)"
-                                        (ngModelChange)="gameService.update()" spellcheck="false"
-                                        placeholder="Enter trigger id" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clause">
-                            <div>
-                                <div class="header">ELSE <span class="if-description">(trigger)</span>
-                                    <span *ngIf="!action.falseResult.triggerId" class="else-hint">(do nothing)</span>
-                                </div>
-                                <div class="trigger-container">
-                                    <mat-icon>title</mat-icon>
-                                    <input type="text" [(ngModel)]="action.falseResult.triggerId"
-                                        [class.bad-id]="!doesTriggerExist(action.falseResult.triggerId)"
-                                        (ngModelChange)="gameService.update()" spellcheck="false"
-                                        placeholder="Enter trigger id" />
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div *ngFor="let condition of action.conditions">
-                        </div>
-                        <span class="token">then trigger</span>
-                        <input class="token" type="text" [(ngModel)]="action.trueTriggerId" (ngModelChange)="gameService.update()" placeholder="Enter a Trigger id" spellcheck="false" />
-                        <span class="token">else trigger</span>
-                        <input type="text" [(ngModel)]="action.falseTriggerId" (ngModelChange)="gameService.update()" placeholder="Enter a Trigger id" spellcheck="false" /> -->
-                    </div>
-                    <div class="spacer"></div>
-                    <button mat-icon-button (click)="addClause(action)" title="Add Clause">
-                        <mat-icon>add_circle_outline</mat-icon>
-                    </button>
-                    <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                </action>
-                <action *ngSwitchCase="'timed'" [icon]="'av_timer'" [title]="getActionTitle(action)">
-                    <div>
-                        <span *ngIf="!action.steps?.length">Add an action</span>
-                        <ul>
-                            <li *ngFor="let step of action.steps">
-                                <input type="number" [(ngModel)]="intervalMs" (ngModelChange)="gameService.update()" />
-                                <ol>
-                                    <li *ngFor="let timedActionChild of step.actions">
-                                        TODO: Recursive render this action! {{timedActionChild.type}}
-                                    </li>
-                                </ol>
-                                <button mat-icon-button [matMenuTriggerFor]="timedactionmenu" title="Add Action">
-                                    <mat-icon>add_circle_outline</mat-icon>
-                                </button>
-                                <mat-menu #timedactionmenu="matMenu">
-                                    <action-menu [actionParent]="step"></action-menu>
-                                </mat-menu>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="spacer"></div>
-                    <button mat-icon-button (click)="addTimedStep(action)" title="Add Step">
-                        <mat-icon>add_circle_outline</mat-icon>
-                    </button>
-                    <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                </action>
-                <div *ngSwitchDefault>
-                    UNKNOWN ACTION TYPE ({{action.type}})
-                    <app-action-actions [trigger]="trigger" [action]="action"></app-action-actions>
-                </div>
-            </div>
+            <action-list [actions]="trigger.actions" [ruleEngine]="ruleEngine" [parent]="trigger"></action-list>
         </div>
     </div>
 </div>
