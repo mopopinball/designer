@@ -13,7 +13,7 @@ import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/d
     styleUrls: ['./style-dialog.component.scss']
 })
 export class StyleDialogComponent implements OnInit {
-    selectedOption: string = 'none';
+    selectedOption = 'none';
     style: Style;
 
     constructor(
@@ -34,7 +34,7 @@ export class StyleDialogComponent implements OnInit {
     }
 
     onStyleChange(value: string): void {
-        switch(value) {
+        switch (value) {
             case 'none':
                 this.style = null;
                 break;

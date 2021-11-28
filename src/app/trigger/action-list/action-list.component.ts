@@ -6,7 +6,7 @@ import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions
 import { RandomAction } from '@mopopinball/engine/src/system/rule-engine/actions/random-action';
 import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
 import { TimedAction, TimedActionStep } from '@mopopinball/engine/src/system/rule-engine/actions/timed-action';
-import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
+import { TriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { GameService } from 'src/app/game.service';
 
@@ -18,7 +18,7 @@ import { GameService } from 'src/app/game.service';
 export class ActionListComponent implements OnInit {
   @Input() actions: Action[];
   @Input() ruleEngine: RuleEngine;
-  @Input() parent: ActionTriggerType | TimedActionStep;
+  @Input() parent: TriggerType | TimedActionStep;
   constructor(private gameService: GameService) { }
 
   ngOnInit(): void {

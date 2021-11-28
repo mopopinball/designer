@@ -8,11 +8,10 @@ import { CreateDataDialogComponent } from '../create-data-dialog/create-data-dia
 import { DataItem, NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
 import { Operators } from '../operators';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { SwitchTriggerSchema, TimerTriggerMode, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
+import { SwitchTriggerSchema, TimerTriggerMode } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 import { IdTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-trigger';
 import { SwitchTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-trigger';
 import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
-import { ActionTriggerType, Trigger } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { ActionType, NamedTriggerActionSchema } from '@mopopinball/engine/src/system/rule-engine/schema/actions.schema';
 import {NamedTriggerAction} from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
 import { ConditionalAction } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
@@ -29,7 +28,7 @@ import { RuleSchema } from '@mopopinball/engine/src/system/rule-engine/schema/ru
 })
 export class RuleComponent implements OnInit {
     TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
-    @Input() isRoot: boolean = false;
+    @Input() isRoot = false;
     @Input() ruleEngine: RuleEngine;
     @Input() parent?: RuleEngine;
     @Input() isTabRoot = false;
@@ -38,7 +37,7 @@ export class RuleComponent implements OnInit {
     showBody = true;
     readonly operators = Object.values(Operators);
     constructor(protected dialog: MatDialog, public gameService: GameService) { }
-    
+
     ngOnInit(): void {
         this.updateDevices();
         const show = localStorage.getItem(`mopo-rule-${this.ruleEngine.id}`);
@@ -87,7 +86,7 @@ export class RuleComponent implements OnInit {
         this.ruleEngine.children.push(
             new RuleEngine('new child', false, this.ruleEngine)
         );
-        if(this.ruleEngine.autoStart) {
+        if (this.ruleEngine.autoStart) {
             this.ruleEngine.start();
         }
         this.gameService.update();
@@ -163,7 +162,7 @@ export class RuleComponent implements OnInit {
     }
 
     onAutoStartChange() {
-        if(this.ruleEngine.autoStart) {
+        if (this.ruleEngine.autoStart) {
             this.ruleEngine.start();
         }
         else {
@@ -177,7 +176,7 @@ export class RuleComponent implements OnInit {
             localStorage.removeItem(`mopo-rule-${this.ruleEngine.id}`);
             this.ruleEngine.id = val;
             localStorage.setItem(`mopo-rule-${this.ruleEngine.id}`, `${this.showBody}`);
-            this.gameService.update(); 
+            this.gameService.update();
         }
     }
 
@@ -190,6 +189,6 @@ export class RuleComponent implements OnInit {
         this.delete.emit();
     }
 
-    
+
 
 }

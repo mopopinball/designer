@@ -9,7 +9,7 @@ import { OutputDeviceType } from '@mopopinball/engine/src/system/devices/output-
 
 interface KeyValuePair<T> {
     key: string;
-    value: T
+    value: T;
 }
 
 @Component({

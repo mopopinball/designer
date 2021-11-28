@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list/selection-list';
 import gameMars from '@mopopinball/engine/src/games/mars/hardware-config.json';
+import gamePanth from '@mopopinball/engine/src/games/panthera/hardware-config.json';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
 
 @Component({
@@ -16,7 +17,8 @@ export class SelectHardwareDialogComponent implements OnInit {
   ngOnInit(): void {
     // TODO: Load all hardware files.
     this.addGame(gameMars);
-    
+    this.addGame(gamePanth);
+
     // const dir = readdirSync('@mopopinball/engine/src/games');
     // console.log(dir);
   }

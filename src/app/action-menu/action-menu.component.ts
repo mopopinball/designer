@@ -7,7 +7,7 @@ import { NamedTriggerAction } from '@mopopinball/engine/src/system/rule-engine/a
 import { RandomAction } from '@mopopinball/engine/src/system/rule-engine/actions/random-action';
 import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
 import { TimedAction, TimedActionStep } from '@mopopinball/engine/src/system/rule-engine/actions/timed-action';
-import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
+import { TriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { GameService } from '../game.service';
 import { MatMenu } from '@angular/material/menu';
@@ -19,7 +19,7 @@ import { MatMenu } from '@angular/material/menu';
 })
 export class ActionMenuComponent implements OnInit {
 
-  @Input() actionParent: ActionTriggerType | TimedActionStep;
+  @Input() actionParent: TriggerType | TimedActionStep;
   // @ViewChild('addactionmenu', {static: true}) menu: MatMenu;
   constructor(private gameService: GameService) { }
 

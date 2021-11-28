@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 import { TimedActionStep } from '@mopopinball/engine/src/system/rule-engine/actions/timed-action';
-import { ActionTriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
+import { TriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
 
@@ -12,13 +12,13 @@ import { GameService } from '../game.service';
     styleUrls: ['./action-actions.component.scss']
 })
 export class ActionActionsComponent implements OnInit {
-    @Input() parent: ActionTriggerType | TimedActionStep;
+    @Input() parent: TriggerType | TimedActionStep;
     @Input() action: Action;
 
     constructor(protected gameService: GameService, public dialog: MatDialog) { }
 
     ngOnInit(): void {
-        
+
     }
 
     deleteAction(action): void {

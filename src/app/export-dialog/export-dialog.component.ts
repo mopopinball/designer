@@ -20,8 +20,8 @@ export class ExportDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.ruleConfigString = JSON.stringify(this.gameService.getRoot(), null, 4);
-    this.downloadHref = this.domSanatizer.bypassSecurityTrustUrl("data:text/json;charset=utf-8," + encodeURIComponent(this.ruleConfigString));
-        
+    this.downloadHref = this.domSanatizer.bypassSecurityTrustUrl('data:text/json;charset=utf-8,' + encodeURIComponent(this.ruleConfigString));
+
   }
 
 }

@@ -29,9 +29,9 @@ export class AppComponent implements OnInit {
     selectedTabIndex = 0;
     engineTabs: RuleEngine[] = [];
     remoteMachineAddress: string = JSON.parse(localStorage.getItem('mopo-remote'));
-    remoteMachineReady: boolean = false;
+    remoteMachineReady = false;
     uploadComplete = false;
-    autoCollapse: boolean = true;
+    autoCollapse = true;
     downloadHref: SafeUrl = '';
     appVersion: string = version;
 
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
         this.root = RuleEngine.load(workingRules);
         this.root.start();
         this.gameService.setRoot(this.root);
-        
+
         this.gameService.newTab.subscribe((engine) => {
             if (this.engineTabs.indexOf(engine) < 0) {
                 this.engineTabs.push(engine);
@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
                 this.root.start();
                 this.gameService.setRoot(this.root);
                 this.populateRootDevices();
-                this.gameService.update();       
+                this.gameService.update();
             }
         });
     }
@@ -123,19 +123,19 @@ export class AppComponent implements OnInit {
         // the root should define all non-instantaneous devices (eg. lamps, relays) in their off state,
         // which will ensure they turn off when exiting a child.
         this.root.devices.clear();
-        for(const coilEntry of Object.entries(this.hardwareConfig.devices.coils)) {
+        for (const coilEntry of Object.entries(this.hardwareConfig.devices.coils)) {
             const result = new DesiredOutputState(coilEntry[0], OutputDeviceType.COIL, false);
             this.root.devices.set(result.id, result);
         }
-        for(const displayEntry of Object.entries(this.hardwareConfig.displays)) {
+        for (const displayEntry of Object.entries(this.hardwareConfig.displays)) {
             const result = new DesiredOutputState(displayEntry[0], OutputDeviceType.DISPLAY, '');
             this.root.devices.set(result.id, result);
         }
-        for(const displayEntry of Object.entries(this.hardwareConfig.sounds)) {
+        for (const displayEntry of Object.entries(this.hardwareConfig.sounds)) {
             const result = new DesiredOutputState(displayEntry[0], OutputDeviceType.SOUND, false);
             this.root.devices.set(result.id, result);
         }
-        for(const lampEntry of Object.entries(this.hardwareConfig.devices.lamps)) {
+        for (const lampEntry of Object.entries(this.hardwareConfig.devices.lamps)) {
             let outputType: OutputDeviceType;
             let initState: DesiredOutputStateType;
             if (lampEntry[1].role === LampRole.COIL) {
@@ -171,7 +171,7 @@ export class AppComponent implements OnInit {
             this.save();
             this.uploadInput.nativeElement.value = '';
         };
-        fileReader.readAsText(file)
+        fileReader.readAsText(file);
     }
 
     showDownloadDialog() {
@@ -200,7 +200,7 @@ export class AppComponent implements OnInit {
         }
 
         // this.http.get(`http://${this.remoteMachineAddress}/update/ruleEngine/status`).subscribe(
-            this.http.get(`/update/ruleEngine/status`).subscribe(
+        this.http.get(`/update/ruleEngine/status`).subscribe(
         (res: any) => {
                 this.remoteMachineReady = res.debugEnabled;
             }

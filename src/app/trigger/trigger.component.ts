@@ -11,10 +11,10 @@ import { NamedTriggerAction } from '@mopopinball/engine/src/system/rule-engine/a
 import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
 import { SwitchTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-trigger';
 import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
-import { ActionTriggerType, Trigger } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
+import { TriggerType, Trigger } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
-import { TimerTriggerMode, TriggerSchemasType, TriggerType } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
+import { TimerTriggerMode, TriggerSchemasType, TriggerTypeEnum } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
 import { TriggerFactory} from '@mopopinball/engine/src/system/rule-engine/trigger-factory';
@@ -31,7 +31,7 @@ import { ActionMenuComponent } from '../action-menu/action-menu.component';
 export class TriggerComponent implements OnInit {
   TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
   @Input() ruleEngine: RuleEngine;
-  @Input() trigger: ActionTriggerType;
+  @Input() trigger: TriggerType;
   
   constructor(public gameService: GameService, public dialog: MatDialog) { }
 
@@ -44,26 +44,26 @@ export class TriggerComponent implements OnInit {
       .sort((a,b) => a.id.localeCompare(b.id));
   }
 
-  activateTrigger(trigger: ActionTriggerType): void {
+  activateTrigger(trigger: TriggerType): void {
     if (!this.ruleEngine.active) {
       return;
     }
-    if (trigger.type === TriggerType.SWITCH) {
+    if (trigger.type === TriggerTypeEnum.SWITCH) {
       this.gameService.onSwitch(trigger.switchId, trigger.holdIntervalMs);
-    } else if (trigger.type === TriggerType.ID || trigger.type === TriggerType.TIMER) {
+    } else if (trigger.type === TriggerTypeEnum.ID || trigger.type === TriggerTypeEnum.TIMER) {
       this.gameService.onTrigger(trigger.id);
     }
     this.gameService.update();
   }
 
-  copyTrigger(trigger: ActionTriggerType): void {
+  copyTrigger(trigger: TriggerType): void {
     const serialization = trigger.toJSON() as TriggerSchemasType;
     const index = this.ruleEngine.triggers.indexOf(trigger) + 1;
     TriggerFactory.copyTrigger(serialization, uuidv4(), this.ruleEngine, index);
     this.gameService.update();
   }
 
-  moveTrigger(trigger: ActionTriggerType, engine: RuleEngine): void {
+  moveTrigger(trigger: TriggerType, engine: RuleEngine): void {
     const currentPosition = this.ruleEngine.triggers.indexOf(trigger);
     this.ruleEngine.triggers.splice(currentPosition, 1);
     engine.triggers.push(trigger);

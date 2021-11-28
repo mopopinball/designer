@@ -52,7 +52,7 @@ export class DesiredOutputStateComponent implements OnInit {
             return 'On';
         }
         else if (state === false || state === LightState.OFF) {
-            return 'Off'
+            return 'Off';
         }
         else if (state === LightState.BLINK) {
             return 'Blink';

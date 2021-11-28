@@ -5,4 +5,4 @@ export enum Operators {
     GTE = '>=',
     EQ = '===',
     NE = '!='
-};
+}

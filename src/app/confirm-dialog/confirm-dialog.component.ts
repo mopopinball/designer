@@ -14,7 +14,7 @@ export interface ConfirmationData {
 export class ConfirmDialogComponent implements OnInit {
   action: string;
   prompt: string;
-  
+
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmationData) {
