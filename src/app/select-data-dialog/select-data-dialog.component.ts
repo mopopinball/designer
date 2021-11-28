@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
-import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-select-data-dialog',

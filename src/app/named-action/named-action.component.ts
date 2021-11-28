@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
 import { NamedTriggerAction } from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
 import { TimedActionStep } from '@mopopinball/engine/src/system/rule-engine/actions/timed-action';
 import { TriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';

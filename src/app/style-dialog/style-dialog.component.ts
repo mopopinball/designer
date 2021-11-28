@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LightState } from '@mopopinball/engine/src/system/devices/light';
 import { OutputDeviceType } from '@mopopinball/engine/src/system/devices/output-device-type';
 import { BlinkLightStyle } from '@mopopinball/engine/src/system/devices/styles/blink-light-style';

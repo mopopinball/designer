@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ConditionalAction } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
 import { DataAction } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
 import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
@@ -10,7 +10,6 @@ import { TimedAction, TimedActionStep } from '@mopopinball/engine/src/system/rul
 import { TriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { GameService } from '../game.service';
-import { MatMenu } from '@angular/material/menu';
 
 @Component({
   selector: 'action-menu',

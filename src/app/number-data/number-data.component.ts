@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
-import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { DataItemComponent } from '../data-item.component';
 import { GameService } from '../game.service';
 

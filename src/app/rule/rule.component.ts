@@ -1,24 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateDesiredOutputStateDialogComponent } from '../create-desired-output-state-dialog/create-desired-output-state-dialog.component';
 import { GameService } from '../game.service';
 import { CreateDataDialogComponent } from '../create-data-dialog/create-data-dialog.component';
-import { DataItem, NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
+import { DataItem } from '@mopopinball/engine/src/system/rule-engine/rule-data';
 import { Operators } from '../operators';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { SwitchTriggerSchema, TimerTriggerMode } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
+import { TimerTriggerMode } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 import { IdTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-trigger';
 import { SwitchTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-trigger';
 import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
-import { ActionType, NamedTriggerActionSchema } from '@mopopinball/engine/src/system/rule-engine/schema/actions.schema';
-import {NamedTriggerAction} from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
-import { ConditionalAction } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
-import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
-import { DataAction } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
-import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
-import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
 import { RuleSchema } from '@mopopinball/engine/src/system/rule-engine/schema/rule.schema';
 
 @Component({

@@ -1,27 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatDialog, throwMatDialogContentAlreadyAttachedError } from '@angular/material/dialog';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ConditionalAction } from '@mopopinball/engine/src/system/rule-engine/actions/conditional-action';
-import { DataAction } from '@mopopinball/engine/src/system/rule-engine/actions/data-action';
-import { DeviceAction } from '@mopopinball/engine/src/system/rule-engine/actions/device-action';
 import { RandomAction, RandomActionCandidate } from '@mopopinball/engine/src/system/rule-engine/actions/random-action';
-import { IdTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/id-trigger';
-import { NamedTriggerAction } from '@mopopinball/engine/src/system/rule-engine/actions/named-trigger-action';
-import { StateAction } from '@mopopinball/engine/src/system/rule-engine/actions/state-action';
 import { SwitchTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/switch-trigger';
 import { TimerTrigger } from '@mopopinball/engine/src/system/rule-engine/actions/timer-trigger';
-import { TriggerType, Trigger } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
-import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
+import { TriggerType } from '@mopopinball/engine/src/system/rule-engine/actions/trigger';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { TimerTriggerMode, TriggerSchemasType, TriggerTypeEnum } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GameService } from '../game.service';
 import { TriggerFactory} from '@mopopinball/engine/src/system/rule-engine/trigger-factory';
 import { Condition, ConditionClause, DataCondition, SwitchCondition } from '@mopopinball/engine/src/system/rule-engine/actions/condition-clause';
-import { Action } from '@mopopinball/engine/src/system/rule-engine/actions/action';
-import { TimedAction } from '@mopopinball/engine/src/system/rule-engine/actions/timed-action';
-import { ActionMenuComponent } from '../action-menu/action-menu.component';
 
 @Component({
   selector: 'trigger',

@@ -1,3 +1,5 @@
 dist/**
 e2e/protractor.conf.js
 karma.conf.js
+*.spec.ts
+*.e2e-spec.ts

@@ -3,7 +3,7 @@ import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.s
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { TriggerTypeEnum } from '@mopopinball/engine/src/system/rule-engine/schema/triggers.schema';
-import { BehaviorSubject, VirtualTimeScheduler } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { NumberData } from '@mopopinball/engine/src/system/rule-engine/rule-data';
 
 @Component({
   selector: 'app-create-data-dialog',
