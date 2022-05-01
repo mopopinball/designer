@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { GameService } from './game.service';
@@ -13,6 +14,8 @@ import { LampRole } from '@mopopinball/engine/src/system/devices/lamp-role';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { version } from '../../package.json';
 import { HardwareOverviewComponent } from './hardware-overview/hardware-overview.component';
+import { AvailableEditingSessions, SessionSummary } from './available-editing-sessions';
+import { EditingSession } from './editing-session';
 
 // import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
 
@@ -35,6 +38,9 @@ export class AppComponent implements OnInit {
     downloadHref: SafeUrl = '';
     appVersion: string = version;
 
+    sessions: AvailableEditingSessions = new AvailableEditingSessions();
+    session: EditingSession;
+
     constructor(
         public dialog: MatDialog, private gameService: GameService, private http: HttpClient,
         private domSanatizer: DomSanitizer
@@ -42,16 +48,18 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        const workingHardware = JSON.parse(localStorage.getItem('mopo-hardware'));
-        const workingRules = JSON.parse(localStorage.getItem('mopo-rules'));
-        if (!workingHardware || !workingRules) {
+        // auto save
+        this.gameService.tick.subscribe(() => this.save());
+
+        // this.updateRemoteStatus();
+        this.onCollapseChange();
+
+        if (!this.sessions.sessionSummaries.length) {
             return;
         }
-        this.hardwareConfig = workingHardware;
-        this.gameService.setHardwareConfig(this.hardwareConfig);
-        this.root = RuleEngine.load(workingRules);
-        this.root.start();
-        this.gameService.setRoot(this.root);
+        // TODO Dont always the fist one.
+        const sessionId = this.sessions.sessionSummaries[0].id;
+        this.loadSession(sessionId);
 
         this.gameService.newTab.subscribe((engine) => {
             if (this.engineTabs.indexOf(engine) < 0) {
@@ -67,12 +75,24 @@ export class AppComponent implements OnInit {
             this.engineTabs.push(matchingEngine);
         }
         this.selectedTabIndex = this.loadFromLocalStorage('selectedTabIndex') || 0;
+    }
 
-        // auto save
-        this.gameService.tick.subscribe(() => this.save());
+    selectSession(sessionSummary: SessionSummary) {
+        this.loadSession(sessionSummary.id);
+    }
 
-        // this.updateRemoteStatus();
-        this.onCollapseChange();
+    private loadSession(sessionId: string) {
+        this.engineTabs = [];
+        this.saveTabs();
+
+        this.session = this.sessions.load(sessionId);
+
+        this.hardwareConfig = this.session.hardwareConfig;
+        this.gameService.setHardwareConfig(this.hardwareConfig);
+        this.root = RuleEngine.load(this.session.rules);
+        this.root.start();
+        this.gameService.setRoot(this.root);
+        this.gameService.update();
     }
 
     onSelectedTabIndexChange(tabIndex: number): void {
@@ -104,10 +124,22 @@ export class AppComponent implements OnInit {
 
                 this.hardwareConfig = result;
                 this.root = new RuleEngine('root', true, null);
-                this.root.start();
-                this.gameService.setRoot(this.root);
                 this.populateRootDevices();
-                this.gameService.update();
+                
+                const newSession: EditingSession = {
+                    gameName: result.name,
+                    hardwareConfig: result,
+                    hardwareName: result.name,
+                    id: uuidv4(),
+                    rules: this.root
+                };
+                this.sessions.sessionSummaries.push({
+                    gameName: newSession.gameName,
+                    hardwareName: newSession.hardwareName,
+                    id: newSession.id
+                });
+                this.sessions.save(newSession);
+                this.loadSession(newSession.id);
             }
         });
     }
@@ -157,8 +189,12 @@ export class AppComponent implements OnInit {
     }
 
     save(): void {
-        localStorage.setItem('mopo-hardware', JSON.stringify(this.hardwareConfig));
-        localStorage.setItem('mopo-rules', JSON.stringify(this.root));
+        if(this.session) {
+            this.session.rules = this.root;
+            this.session.gameName = this.root.name;
+            this.sessions.sessionSummaries.find((ss) => ss.id === this.session.id).gameName = this.session.gameName;
+            this.sessions.save(this.session);
+        }
     }
 
     preLoad(): void {

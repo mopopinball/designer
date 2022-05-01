@@ -57,6 +57,11 @@
         <span mat-menu-item>
             <mat-checkbox [(ngModel)]="autoCollapse" (ngModelChange)="onCollapseChange()">Collapse inactive states</mat-checkbox>
         </span>
+        <mat-label mat-menu-item [disabled]="true">Files</mat-label>
+        <button mat-menu-item (click)="selectSession(summary)" *ngFor="let summary of this.sessions.sessionSummaries">
+            <mat-icon>create</mat-icon>
+            <span>{{ summary.gameName }} ({{summary.hardwareName}})</span>
+        </button>
     </mat-menu>
     <input type="file"
            #fileload

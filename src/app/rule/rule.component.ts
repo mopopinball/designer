@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,7 +19,7 @@ import { RuleSchema } from '@mopopinball/engine/src/system/rule-engine/schema/ru
     templateUrl: './rule.component.html',
     styleUrls: ['./rule.component.scss']
 })
-export class RuleComponent implements OnInit {
+export class RuleComponent implements OnInit, OnChanges {
     TimerActionTriggerMode: typeof TimerTriggerMode = TimerTriggerMode;
     @Input() isRoot = false;
     @Input() ruleEngine: RuleEngine;
@@ -36,6 +36,12 @@ export class RuleComponent implements OnInit {
         const show = localStorage.getItem(`mopo-rule-${this.ruleEngine.id}`);
         if (show?.length > 0) {
             this.showBody = this.isTabRoot || localStorage.getItem(`mopo-rule-${this.ruleEngine.id}`) === 'true';
+        }
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if(changes.ruleEngine?.firstChange === false) {
+            this.updateDevices();
         }
     }
 
