@@ -99,6 +99,9 @@ export class AppComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: HardwareConfig) => {
             if (result) {
+                this.engineTabs = [];
+                this.saveTabs();
+
                 this.hardwareConfig = result;
                 this.root = new RuleEngine('root', true, null);
                 this.root.start();
