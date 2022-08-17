@@ -57,8 +57,7 @@ export class AppComponent implements OnInit {
         if (!this.sessions.sessionSummaries.length) {
             return;
         }
-        // TODO Dont always the fist one.
-        const sessionId = this.sessions.sessionSummaries[0].id;
+        const sessionId = this.sessions.sessionSummaries.find((ss) => ss.active)?.id ?? this.sessions.sessionSummaries[0].id
         this.loadSession(sessionId);
 
         this.gameService.newTab.subscribe((engine) => {
@@ -78,6 +77,10 @@ export class AppComponent implements OnInit {
     }
 
     selectSession(sessionSummary: SessionSummary) {
+        for (const candidateSession of this.sessions.sessionSummaries) {
+            candidateSession.active = candidateSession === sessionSummary;
+        }
+        this.sessions.saveSummaries();
         this.loadSession(sessionSummary.id);
     }
 
@@ -136,7 +139,8 @@ export class AppComponent implements OnInit {
                 this.sessions.sessionSummaries.push({
                     gameName: newSession.gameName,
                     hardwareName: newSession.hardwareName,
-                    id: newSession.id
+                    id: newSession.id,
+                    active: true
                 });
                 this.sessions.save(newSession);
                 this.loadSession(newSession.id);

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CoilsSchema, DisplaysSchema, HardwareCoilSchema, HardwareConfig, HardwareDisplaySchema, HardwareLampSchema, HardwareSoundSchema, LampsSchema, SoundsSchema } from '@mopopinball/engine/src/system/hardware-config.schema';
-import hardware from '@mopopinball/engine/src/games/mars/hardware-config.json';
 import { LightState } from '@mopopinball/engine/src/system/devices/light';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { LampRole } from '@mopopinball/engine/src/system/devices/lamp-role';
 import { OutputDeviceType } from '@mopopinball/engine/src/system/devices/output-device-type';
+import { GameService } from '../game.service';
 
 interface KeyValuePair<T> {
     key: string;
@@ -18,7 +18,6 @@ interface KeyValuePair<T> {
     styleUrls: ['./create-desired-output-state-dialog.component.scss']
 })
 export class CreateDesiredOutputStateDialogComponent implements OnInit {
-    hardwareConfig: HardwareConfig;
     result: DesiredOutputState;
     lamps: LampsSchema = {};
     coils: CoilsSchema;
@@ -31,15 +30,15 @@ export class CreateDesiredOutputStateDialogComponent implements OnInit {
     filteredSounds: KeyValuePair<HardwareSoundSchema>[];
 
     constructor(
-        public dialogRef: MatDialogRef<CreateDesiredOutputStateDialogComponent>
+        public dialogRef: MatDialogRef<CreateDesiredOutputStateDialogComponent>,
+        private gameService: GameService
     ) { }
 
     ngOnInit(): void {
-        this.hardwareConfig = hardware as unknown as HardwareConfig;
-        this.sounds = this.hardwareConfig.sounds;
-        this.displays = this.hardwareConfig.displays;
-        this.coils = this.hardwareConfig.devices.coils;
-        for (const lampEntry of Object.entries(this.hardwareConfig.devices.lamps)) {
+        this.sounds = this.gameService.getHardwareConfig().sounds;
+        this.displays = this.gameService.getHardwareConfig().displays;
+        this.coils = this.gameService.getHardwareConfig().devices.coils;
+        for (const lampEntry of Object.entries(this.gameService.getHardwareConfig().devices.lamps)) {
             if (lampEntry[1].role === LampRole.COIL) {
                 this.coils[lampEntry[0]] = lampEntry[1];
             }

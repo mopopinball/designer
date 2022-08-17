@@ -4,6 +4,7 @@ export interface SessionSummary {
     id: string;
     hardwareName: string;
     gameName: string;
+    active: boolean
 }
 
 export class AvailableEditingSessions {
@@ -18,8 +19,12 @@ export class AvailableEditingSessions {
     }
 
     save(session: EditingSession): void {
-        localStorage.setItem('mopo-sessions', JSON.stringify(this.sessionSummaries));
+        this.saveSummaries();
 
         localStorage.setItem(`mopo-session-${session.id}`, JSON.stringify(session));
+    }
+
+    saveSummaries(): void {
+        localStorage.setItem('mopo-sessions', JSON.stringify(this.sessionSummaries));
     }
 }
