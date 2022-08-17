@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CoilsSchema, DisplaysSchema, HardwareCoilSchema, HardwareConfig, HardwareDisplaySchema, HardwareLampSchema, HardwareSoundSchema, LampsSchema, SoundsSchema } from '@mopopinball/engine/src/system/hardware-config.schema';
+import { CoilsSchema, DisplaysSchema, HardwareCoilSchema, HardwareDisplaySchema, HardwareLampSchema, HardwareSoundSchema, LampsSchema, SoundsSchema } from '@mopopinball/engine/src/system/hardware-config.schema';
 import { LightState } from '@mopopinball/engine/src/system/devices/light';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { LampRole } from '@mopopinball/engine/src/system/devices/lamp-role';

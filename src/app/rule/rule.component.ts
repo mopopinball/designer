@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
@@ -143,19 +144,19 @@ export class RuleComponent implements OnInit, OnChanges {
     }
 
     addNamedTrigger(): void {
-        const namedTrigger = new IdTrigger('');
+        const namedTrigger = new IdTrigger(`trigger-${uuidv4()}`);
         this.ruleEngine.triggers.push(namedTrigger);
         this.gameService.update();
     }
 
     addSwitchTrigger(): void {
-        const swTrigger = new SwitchTrigger('');
+        const swTrigger = new SwitchTrigger(`trigger-${uuidv4()}`);
         this.ruleEngine.triggers.push(swTrigger);
         this.gameService.update();
     }
 
     addTimedTrigger(): void {
-        const timedTrigger = new TimerTrigger('', 0, TimerTriggerMode.TIMEOUT);
+        const timedTrigger = new TimerTrigger(`trigger-${uuidv4()}`, 0, TimerTriggerMode.TIMEOUT);
         this.ruleEngine.triggers.push(timedTrigger);
         this.gameService.update();
     }
