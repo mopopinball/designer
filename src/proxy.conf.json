@@ -1,7 +1,0 @@
-{
-    "/update/*": {
-        "target": "http://mopo-derp",
-        "secure": false,
-        "logLevel": "debug"
-    }
-}

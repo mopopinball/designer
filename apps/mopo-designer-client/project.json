@@ -1,0 +1,88 @@
+{
+  "name": "mopo-designer-client",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "mopo",
+  "sourceRoot": "apps/mopo-designer-client/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/mopo-designer-client",
+        "index": "apps/mopo-designer-client/src/index.html",
+        "browser": "apps/mopo-designer-client/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/mopo-designer-client/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/mopo-designer-client/src/favicon.ico",
+          "apps/mopo-designer-client/src/assets"
+        ],
+        "styles": ["apps/mopo-designer-client/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "mopo-designer-client:build:production"
+        },
+        "development": {
+          "buildTarget": "mopo-designer-client:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "mopo-designer-client:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/mopo-designer-client/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "mopo-designer-client:build",
+        "port": 4200,
+        "staticFilePath": "dist/apps/mopo-designer-client/browser",
+        "spa": true
+      }
+    }
+  }
+}

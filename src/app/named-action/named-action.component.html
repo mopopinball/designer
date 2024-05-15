@@ -1,8 +1,0 @@
-<action [icon]="'title'" [title]="'Named Action'">
-    <div class="trigger-container">
-        <mat-icon>title</mat-icon>
-        <input type="text" [(ngModel)]="action.triggerId" [class.bad-id]="!doesTriggerExist(action.triggerId)" placeholder="Enter trigger id" (change)="onChange()" spellcheck="false" />
-    </div>
-    <div class="spacer"></div>
-    <app-action-actions [parent]="parent" [action]="action" ></app-action-actions>
-</action>
