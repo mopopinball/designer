@@ -14,8 +14,11 @@
 </mat-toolbar>
 <mat-sidenav-container >
     <mat-sidenav mode="side" opened position="end">
-        <mat-list>
-            <mat-list-item>Devices</mat-list-item>
+        
+        Devices
+        <mat-list role="list">
+            
+            <mat-list-item *ngFor="let lamp of hardwareConfig.devices.switches| keyvalue">{{lamp.key}}</mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>Data</mat-list-item>
             <mat-divider></mat-divider>

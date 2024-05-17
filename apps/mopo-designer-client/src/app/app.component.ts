@@ -6,6 +6,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
+import {MatTreeModule} from '@angular/material/tree';
+
 
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
@@ -14,7 +16,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, CommonModule, MatIconModule, MatToolbarModule, MatSidenavModule, MatDividerModule, MatListModule, MatSelectModule],
+  imports: [RouterModule, CommonModule, MatTreeModule, MatIconModule, MatToolbarModule, MatSidenavModule, MatDividerModule, MatListModule, MatSelectModule],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
