@@ -2,6 +2,14 @@
 
 <mat-toolbar>
     <span>Mopo Pinball Designer</span>
+    <span class="example-spacer"></span>
+    <mat-icon>edit</mat-icon>
+    <span>Rule Engine:</span>
+    <mat-select style="width: 33%;">
+        
+      <mat-option *ngFor="let engine of engines" [value]="engine">{{engine.id}}</mat-option>
+    
+      </mat-select>
 </mat-toolbar>
 <mat-sidenav-container >
     <mat-sidenav mode="side" opened position="end">
@@ -14,7 +22,7 @@
           </mat-list>
     </mat-sidenav>
     <mat-sidenav-content>
-        sebb2
+        Triggers
     </mat-sidenav-content>
   </mat-sidenav-container>
   
