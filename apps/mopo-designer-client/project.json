@@ -54,7 +54,8 @@
           "buildTarget": "mopo-designer-client:build:production"
         },
         "development": {
-          "buildTarget": "mopo-designer-client:build:development"
+          "buildTarget": "mopo-designer-client:build:development",
+          "liveReload": false
         }
       },
       "defaultConfiguration": "development"
