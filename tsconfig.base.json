@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {},
     "strictNullChecks": false,
+    "resolveJsonModule": true
     
   },
   "exclude": ["node_modules", "tmp"]

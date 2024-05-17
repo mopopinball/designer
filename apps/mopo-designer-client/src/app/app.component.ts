@@ -8,6 +8,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 
 import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
+import { HardwareConfig } from '@mopopinball/engine/src/system/hardware-config.schema';
+import * as hc from '@mopopinball/engine/src/games/panthera/hardware-config.json';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -22,5 +24,7 @@ export class AppComponent {
     new RuleEngine('root', true, null),
     new RuleEngine('attract', true, null)
   ];
-  engine: RuleEngine = null;  
+  engine: RuleEngine = null;
+  
+  hardwareConfig: HardwareConfig = hc as unknown as HardwareConfig;
 }
