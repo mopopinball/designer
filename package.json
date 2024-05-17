@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve": "nx run mopo-designer-client:serve"
+    "serve": "nx run mopo-designer-client:serve",
+    "g:c": "nx g @nx/angular:component --directory=apps/mopo-designer-client/src/app --nameAndDirectoryFormat=derived --style=scss"
   },
   "private": true,
   "dependencies": {
