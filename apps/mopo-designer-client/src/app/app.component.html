@@ -6,7 +6,7 @@
     <span>{{hardwareConfig.name}}</span>
     <mat-icon>edit</mat-icon>
     <span>Rule Engine:</span>
-    <mat-select style="width: 33%;">
+    <mat-select style="width: 33%;" (valueChange)="setEngine($event)">
         
       <mat-option *ngFor="let engine of engines" [value]="engine">{{engine.id}}</mat-option>
     
@@ -17,8 +17,7 @@
         
         Devices
         <mat-list role="list">
-            
-            <mat-list-item *ngFor="let lamp of hardwareConfig.devices.switches| keyvalue">{{lamp.key}}</mat-list-item>
+            <mat-list-item *ngFor="let lamp of engine?.devices | keyvalue">{{lamp.key}}</mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>Data</mat-list-item>
             <mat-divider></mat-divider>
@@ -26,7 +25,7 @@
           </mat-list>
     </mat-sidenav>
     <mat-sidenav-content>
-        Triggers
+        Triggers b
     </mat-sidenav-content>
   </mat-sidenav-container>
   
