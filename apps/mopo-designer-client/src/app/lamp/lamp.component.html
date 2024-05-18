@@ -1,0 +1,9 @@
+<div>
+    <div>{{state.id}}</div>
+    
+    <mat-button-toggle-group [value]="state.getState()">
+        <mat-button-toggle [value]="0">Off</mat-button-toggle>
+        <mat-button-toggle [value]="1">On</mat-button-toggle>
+        <mat-button-toggle [value]="2">Blink</mat-button-toggle>
+      </mat-button-toggle-group>
+</div>

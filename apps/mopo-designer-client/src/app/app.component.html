@@ -6,18 +6,18 @@
     <span>{{hardwareConfig.name}}</span>
     <mat-icon>edit</mat-icon>
     <span>Rule Engine:</span>
-    <mat-select style="width: 33%;" (valueChange)="setEngine($event)">
-        
-      <mat-option *ngFor="let engine of engines" [value]="engine">{{engine.id}}</mat-option>
-    
+    <mat-select style="width: 33%;" (valueChange)="setEngine($event)" [value]="engine">
+      <mat-option *ngFor="let engine of engines" [value]="engine">{{engine.id}}</mat-option>    
       </mat-select>
 </mat-toolbar>
 <mat-sidenav-container >
     <mat-sidenav mode="side" opened position="end">
-        
-        Devices
+          Devices
         <mat-list role="list">
-            <mat-list-item *ngFor="let lamp of engine?.devices | keyvalue">{{lamp.key}}</mat-list-item>
+            <mat-list-item *ngFor="let lamp of engine?.devices | keyvalue">
+              
+              <mopo-lamp [state]="lamp.value"></mopo-lamp>
+              </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>Data</mat-list-item>
             <mat-divider></mat-divider>
