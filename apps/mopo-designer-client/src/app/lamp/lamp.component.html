@@ -1,9 +1,16 @@
-<div>
-    <div>{{state.id}}</div>
-    
-    <mat-button-toggle-group [value]="state.getState()">
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>lightbulb</mat-icon>
+    </div>
+    <mat-card-subtitle>Light</mat-card-subtitle>
+    <mat-card-title>{{state.id}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-button-toggle-group [value]="state.getState()" (change)="setInitialState($event)">
         <mat-button-toggle [value]="0">Off</mat-button-toggle>
         <mat-button-toggle [value]="1">On</mat-button-toggle>
         <mat-button-toggle [value]="2">Blink</mat-button-toggle>
       </mat-button-toggle-group>
-</div>
+  </mat-card-content>
+</mat-card>
