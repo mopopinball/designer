@@ -1,6 +1,12 @@
 <router-outlet></router-outlet>
 
 <mat-toolbar>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="exportJson()">Export</button>
+    </mat-menu>
     <span>Mopo Pinball Designer</span>
     <span class="example-spacer"></span>
     <span>{{hardwareConfig.name}}</span>

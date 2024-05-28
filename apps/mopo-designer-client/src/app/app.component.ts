@@ -17,13 +17,15 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import {MatMenuModule} from '@angular/material/menu';
+
 
 @Component({
   standalone: true,
   imports: [RouterModule, CommonModule, MatTreeModule, MatIconModule, MatToolbarModule, MatFormFieldModule,
     FormsModule,
     MatSidenavModule, MatDividerModule, MatButtonToggleModule
-    , MatListModule, MatCardModule, MatSelectModule, LampComponent, MatInputModule],
+    , MatListModule, MatCardModule, MatSelectModule, LampComponent, MatInputModule, MatMenuModule],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -61,5 +63,10 @@ export class AppComponent implements OnInit {
     this.lamps = Array.from(this.engine.devices.values())
       .filter((l: DesiredOutputState) => l.id.toLowerCase().includes(this.deviceSearchTerm.toLowerCase()))
       .sort((a, b) => a.id.localeCompare(b.id));
+  }
+
+  exportJson(): void {
+    const json = this.engine.toJSON();
+    console.log(json);
   }
 }

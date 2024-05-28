@@ -7,10 +7,16 @@
     <mat-card-title>{{state.id}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-button-toggle-group [value]="state.getState()" (change)="setInitialState($event)">
+    <div class="lamp-options">
+    <mat-button-toggle-group [value]="state.lightState" (change)="setInitialState($event)">
         <mat-button-toggle [value]="0">Off</mat-button-toggle>
         <mat-button-toggle [value]="1">On</mat-button-toggle>
-        <mat-button-toggle [value]="2">Blink</mat-button-toggle>
+        <mat-button-toggle [value]="'BLINK'">Blink</mat-button-toggle>
       </mat-button-toggle-group>
+      <mat-form-field *ngIf="this.state.lightMode === 'BLINK'">
+        <mat-label>Duration (ms)</mat-label>
+        <input matInput [value]="state.blinkRate" type="number" (change)="setBlinkState($event)" >
+      </mat-form-field>
+    </div>
   </mat-card-content>
 </mat-card>

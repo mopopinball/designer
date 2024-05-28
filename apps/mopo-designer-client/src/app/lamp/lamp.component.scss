@@ -5,3 +5,10 @@ mat-card-header {
         height: 40px;
     }
 }
+
+.lamp-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+}
