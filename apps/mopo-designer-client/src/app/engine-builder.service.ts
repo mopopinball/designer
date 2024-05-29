@@ -17,6 +17,7 @@ export class EngineBuilderService {
 
   create(hardwareConfig: HardwareConfig): RuleEngine {
     const root = new RuleEngine('root', true, null);
+    root.name = 'Untitled New Game'
 
     for(const entry of Object.entries(hardwareConfig.devices.lamps)) {
       const value: HardwareLampSchema | HardwareCoilSchema = entry[1];
