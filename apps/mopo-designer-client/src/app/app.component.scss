@@ -1,31 +1,23 @@
-mat-toolbar {
-    gap: 0.5em;
-}
-
 mat-accordion {
-    mat-expansion-panel {
-        margin: 0.5em;
-    }
+  mat-expansion-panel {
+    margin: 0.5em;
+  }
 }
 
 .attributes {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
 }
 
-.example-spacer {
-    flex: 1 1 auto;
-  }
-
 mat-sidenav-container {
-    height: calc(100vh - 64px);
+  height: calc(100vh - 64px);
 }
 
 mat-sidenav {
-    width: 33%;
+  width: 33%;
 }
 
 .device-list {
-    margin: 1em;
+  margin: 1em;
 }

@@ -33,6 +33,7 @@ import {
   MatDialogModule,
 } from '@angular/material/dialog';
 import { NewFileDialogComponent } from './new-file-dialog/new-file-dialog.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @Component({
   standalone: true,
@@ -51,6 +52,7 @@ import { NewFileDialogComponent } from './new-file-dialog/new-file-dialog.compon
     MatCardModule,
     MatSelectModule,
     LampComponent,
+    ToolbarComponent,
     MatInputModule,
     MatMenuModule,
     MatExpansionModule,
@@ -64,8 +66,9 @@ import { NewFileDialogComponent } from './new-file-dialog/new-file-dialog.compon
 export class AppComponent implements OnInit {
   hardwareConfig: HardwareConfig = panthera as unknown as HardwareConfig;
 
-  engines: RuleEngine[] = [];
-  engine: RuleEngine = null;
+  rootEngine: RuleEngine;
+  selectedEngine: RuleEngine;
+  allEngines: RuleEngine[] = [];
 
   deviceSearchTerm = '';
 
@@ -73,48 +76,23 @@ export class AppComponent implements OnInit {
 
   step = 0;
 
-  constructor(
-    public files: DesignerFilesService,
-    private engineBuilder: EngineBuilderService,
-    public dialog: MatDialog
-  ) {}
+  constructor(public files: DesignerFilesService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.files.fileLoaded.subscribe((engine) => this.loadEngine(engine));
   }
 
-  newFile(): void {
-    const dialogRef = this.dialog.open(NewFileDialogComponent, {});
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if(!result) {
-        return;
-      }
-
-      const newEngine = this.engineBuilder.create(this.hardwareConfig);
-      this.files.save(result, newEngine);
-      this.loadEngine(newEngine);
-    });
-  }
-
-  loadFile(file: string): void {
-    this.files.load(file);
-  }
-
-  saveFile(): void {
-    this.files.save(this.files.selectedFile, this.engine);
-  }
-
-  loadEngine(engine: RuleEngine): void {
+  private loadEngine(engine: RuleEngine): void {
     if (!engine) {
       return;
     }
-    this.engines = [engine];
-    this.setEngine(this.engines[0]);
+    this.rootEngine = engine;
+    this.allEngines = [engine];
+    this.setEngine(this.allEngines[0]);
   }
 
-  setEngine(engine: RuleEngine): void {
-    this.engine = engine;
+  private setEngine(engine: RuleEngine): void {
+    this.selectedEngine = engine;
     this.searchDevices();
   }
 
@@ -124,16 +102,11 @@ export class AppComponent implements OnInit {
   }
 
   searchDevices(): void {
-    this.lamps = Array.from(this.engine.devices.values())
+    this.lamps = Array.from(this.selectedEngine.devices.values())
       .filter((l: DesiredOutputState) =>
         l.id.toLowerCase().includes(this.deviceSearchTerm.toLowerCase())
       )
       .sort((a, b) => a.id.localeCompare(b.id));
-  }
-
-  exportJson(): void {
-    const json = this.engine.toJSON();
-    console.log(json);
   }
 
   setStep(index: number) {

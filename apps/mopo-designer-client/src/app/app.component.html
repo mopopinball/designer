@@ -1,50 +1,10 @@
 <router-outlet></router-outlet>
 
-<mat-toolbar>
-  <button mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="newFile()">
-      <mat-icon>note_add</mat-icon> <span>New...</span>
-    </button>
-    <button mat-menu-item (click)="saveFile()">
-      <mat-icon>start</mat-icon> <span>Save</span>
-    </button>
-    <button mat-menu-item (click)="exportJson()">
-      <mat-icon>download</mat-icon> <span>Export</span>
-    </button>
-    <mat-divider></mat-divider>
-    <button
-      *ngFor="let file of files.fileNames"
-      mat-menu-item
-      (click)="loadFile(file)"
-    >
-      <mat-icon *ngIf="file === files.selectedFile">task</mat-icon>
-      <mat-icon *ngIf="file !== files.selectedFile">description</mat-icon>
-      <span>{{ file }}</span>
-    </button>
-  </mat-menu>
-  <span
-    >Mopo Pinball Designer - {{ hardwareConfig.name }} -
-    {{ engine?.name }}</span
-  >
-  <span class="example-spacer"></span>
-  <mat-icon>edit</mat-icon>
-  <span>Rule Engine:</span>
-  <mat-select
-    style="width: 33%"
-    (valueChange)="setEngine($event)"
-    [value]="engine"
-  >
-    <mat-option *ngFor="let engine of engines" [value]="engine">{{
-      engine.id
-    }}</mat-option>
-  </mat-select>
-</mat-toolbar>
+<mopo-toolbar [rootEngine]="rootEngine" [allEngines]="allEngines" [selectedEngine]="selectedEngine"></mopo-toolbar>
+
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened position="end">
-    <mat-accordion *ngIf="engine">
+    <mat-accordion *ngIf="selectedEngine">
       <mat-expansion-panel
         [expanded]="step === 0"
         (opened)="setStep(0)"
@@ -57,17 +17,17 @@
         <div class="attributes">
           <mat-form-field>
             <mat-label>id</mat-label>
-            <input matInput [(ngModel)]="engine.id" />
+            <input matInput [(ngModel)]="selectedEngine.id" />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Name</mat-label>
-            <input matInput [(ngModel)]="engine.name" />
+            <input matInput [(ngModel)]="selectedEngine.name" />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Description</mat-label>
-            <input matInput [(ngModel)]="engine.description" />
+            <input matInput [(ngModel)]="selectedEngine.description" />
           </mat-form-field>
-          <mat-checkbox [(ngModel)]="engine.autoStart">Auto Start</mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedEngine.autoStart">Auto Start</mat-checkbox>
         </div>
       </mat-expansion-panel>
 
