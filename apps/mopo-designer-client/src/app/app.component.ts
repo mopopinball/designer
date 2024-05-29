@@ -87,6 +87,10 @@ export class AppComponent implements OnInit {
     const dialogRef = this.dialog.open(NewFileDialogComponent, {});
 
     dialogRef.afterClosed().subscribe((result) => {
+      if(!result) {
+        return;
+      }
+
       const newEngine = this.engineBuilder.create(this.hardwareConfig);
       this.files.save(result, newEngine);
       this.loadEngine(newEngine);

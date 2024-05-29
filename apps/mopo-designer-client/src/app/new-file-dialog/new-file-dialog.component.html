@@ -2,10 +2,12 @@
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>File Name</mat-label>
-    <input matInput [(ngModel)]="fileName">
+    <input matInput [(ngModel)]="fileName" cdkFocusInitial />
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="fileName" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="fileName" [disabled]="!fileName">
+    Ok
+  </button>
 </div>

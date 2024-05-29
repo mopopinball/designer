@@ -42,11 +42,15 @@ export class DesignerFilesService {
   }
 
   load(fileName: string): void {
-    const schemaData = JSON.parse(this.files.get(fileName));
-    const engine = RuleEngine.load(schemaData);
-    this.selectedFile = fileName;
-    this.fileLoaded.next(engine);
+    try {
+      const schemaData = JSON.parse(this.files.get(fileName));
+      const engine = RuleEngine.load(schemaData);
+      this.selectedFile = fileName;
+      this.fileLoaded.next(engine);
 
-    this.save(fileName, engine);
+      this.save(fileName, engine);
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
