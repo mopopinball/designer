@@ -34,6 +34,8 @@ import {
 } from '@angular/material/dialog';
 import { NewFileDialogComponent } from './new-file-dialog/new-file-dialog.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { AttributesComponent } from './attributes/attributes.component';
+import { DevicesComponent } from './devices/devices.component';
 
 @Component({
   standalone: true,
@@ -53,6 +55,8 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     MatSelectModule,
     LampComponent,
     ToolbarComponent,
+    AttributesComponent,
+    DevicesComponent,
     MatInputModule,
     MatMenuModule,
     MatExpansionModule,
@@ -69,10 +73,6 @@ export class AppComponent implements OnInit {
   rootEngine: RuleEngine;
   selectedEngine: RuleEngine;
   allEngines: RuleEngine[] = [];
-
-  deviceSearchTerm = '';
-
-  lamps: DesiredOutputState[] = [];
 
   step = 0;
 
@@ -93,20 +93,6 @@ export class AppComponent implements OnInit {
 
   private setEngine(engine: RuleEngine): void {
     this.selectedEngine = engine;
-    this.searchDevices();
-  }
-
-  clearDeviceSearch(): void {
-    this.deviceSearchTerm = '';
-    this.searchDevices();
-  }
-
-  searchDevices(): void {
-    this.lamps = Array.from(this.selectedEngine.devices.values())
-      .filter((l: DesiredOutputState) =>
-        l.id.toLowerCase().includes(this.deviceSearchTerm.toLowerCase())
-      )
-      .sort((a, b) => a.id.localeCompare(b.id));
   }
 
   setStep(index: number) {

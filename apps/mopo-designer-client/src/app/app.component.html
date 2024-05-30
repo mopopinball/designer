@@ -1,6 +1,10 @@
 <router-outlet></router-outlet>
 
-<mopo-toolbar [rootEngine]="rootEngine" [allEngines]="allEngines" [selectedEngine]="selectedEngine"></mopo-toolbar>
+<mopo-toolbar
+  [rootEngine]="rootEngine"
+  [allEngines]="allEngines"
+  [selectedEngine]="selectedEngine"
+></mopo-toolbar>
 
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened position="end">
@@ -11,68 +15,19 @@
         hideToggle
       >
         <mat-expansion-panel-header>
-          <mat-panel-title> Attributes </mat-panel-title>
+          <mat-panel-title>Attributes</mat-panel-title>
         </mat-expansion-panel-header>
-
-        <div class="attributes">
-          <mat-form-field>
-            <mat-label>id</mat-label>
-            <input matInput [(ngModel)]="selectedEngine.id" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput [(ngModel)]="selectedEngine.name" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Description</mat-label>
-            <input matInput [(ngModel)]="selectedEngine.description" />
-          </mat-form-field>
-          <mat-checkbox [(ngModel)]="selectedEngine.autoStart">Auto Start</mat-checkbox>
-        </div>
+        <mopo-attributes [selectedEngine]="selectedEngine"></mopo-attributes>
       </mat-expansion-panel>
-
       <mat-expansion-panel
         [expanded]="step === 1"
         (opened)="setStep(1)"
         hideToggle
       >
         <mat-expansion-panel-header>
-          <mat-panel-title> Devices </mat-panel-title>
+          <mat-panel-title>Devices</mat-panel-title>
         </mat-expansion-panel-header>
-
-        <div class="device-list">
-          <mat-form-field>
-            <mat-label>Devices</mat-label>
-            <input
-              matInput
-              type="text"
-              [(ngModel)]="deviceSearchTerm"
-              (input)="searchDevices()"
-            />
-            <button
-              *ngIf="deviceSearchTerm"
-              matSuffix
-              mat-icon-button
-              aria-label="Clear"
-              (click)="clearDeviceSearch()"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <div
-            style="
-              display: flex;
-              flex-direction: column;
-              gap: 1em;
-              align-items: flex-start;
-            "
-          >
-            <mopo-lamp
-              *ngFor="let lamp of this.lamps"
-              [state]="lamp"
-            ></mopo-lamp>
-          </div>
-        </div>
+<mopo-devices [selectedEngine]="selectedEngine"></mopo-devices>  
       </mat-expansion-panel>
     </mat-accordion>
   </mat-sidenav>

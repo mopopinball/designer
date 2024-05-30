@@ -37,7 +37,10 @@ export class ToolbarComponent {
     private engineBuilder: EngineBuilderService,
     public files: DesignerFilesService,
     public dialog: MatDialog
-  ) {}
+  ) {
+    // kind of a hack
+    setInterval(() => this.saveFile());
+  }
 
   newFile(): void {
     const dialogRef = this.dialog.open(NewFileDialogComponent, {});

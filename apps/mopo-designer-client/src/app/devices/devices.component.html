@@ -1,0 +1,23 @@
+<div class="device-list">
+  <mat-form-field>
+    <mat-label>Devices</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="deviceSearchTerm"
+      (input)="searchDevices()"
+    />
+    <button
+      *ngIf="deviceSearchTerm"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="clearDeviceSearch()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div class="lamps">
+    <mopo-lamp *ngFor="let lamp of this.lamps" [state]="lamp"></mopo-lamp>
+  </div>
+</div>

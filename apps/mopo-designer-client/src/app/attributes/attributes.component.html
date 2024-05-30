@@ -1,0 +1,15 @@
+<div class="attributes">
+  <mat-form-field>
+    <mat-label>id</mat-label>
+    <input matInput [(ngModel)]="selectedEngine.id" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="selectedEngine.name" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput [(ngModel)]="selectedEngine.description" />
+  </mat-form-field>
+  <mat-checkbox [(ngModel)]="selectedEngine.autoStart">Auto Start</mat-checkbox>
+</div>
