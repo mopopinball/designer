@@ -15,7 +15,7 @@ import { LampComponent } from './lamp/lamp.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -34,6 +34,7 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogData,
 } from './confirm-dialog/confirm-dialog.component';
+import { MopoValidators } from './mopo-validators';
 
 @Component({
   standalone: true,
@@ -109,12 +110,21 @@ export class AppComponent implements OnInit {
   }
 
   addChild(): void {
-    const dialogRef = this.dialog.open(InputDialogComponent, {
-      data: {
-        title: 'New Engine',
-        field: 'Name',
-      },
-    });
+    const dialogRef = this.dialog.open<InputDialogComponent, InputDialogData>(
+      InputDialogComponent,
+      {
+        data: {
+          title: 'New Engine',
+          field: 'Name',
+          formControl: new FormControl('', [
+            Validators.required,
+            MopoValidators.distinct(
+              Array.from(this.rootEngine.getAllEngines().keys())
+            ),
+          ]),
+        },
+      }
+    );
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) {

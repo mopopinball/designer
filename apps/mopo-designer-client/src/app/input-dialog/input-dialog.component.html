@@ -2,7 +2,12 @@
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>{{ data.field }}</mat-label>
-    <input matInput [(ngModel)]="fileName" cdkFocusInitial />
+    <input
+      matInput
+      [(ngModel)]="fileName"
+      cdkFocusInitial
+      [formControl]="data.formControl"
+    />
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
@@ -11,7 +16,7 @@
     mat-raised-button
     color="primary"
     [mat-dialog-close]="fileName"
-    [disabled]="!fileName"
+    [disabled]="!data.formControl.valid"
   >
     Ok
   </button>

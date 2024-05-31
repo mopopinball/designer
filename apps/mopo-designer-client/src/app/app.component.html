@@ -38,6 +38,7 @@
         <mopo-attributes
           [selectedEngine]="selectedEngine"
           [autoStartDisabled]="selectedEngine === rootEngine"
+          [nameDisabled]="selectedEngine !== rootEngine"
         ></mopo-attributes>
       </mat-expansion-panel>
       <mat-expansion-panel

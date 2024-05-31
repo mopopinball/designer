@@ -5,6 +5,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'mopo-attributes',
@@ -15,6 +17,8 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './attributes.component.html',
   styleUrl: './attributes.component.scss',
@@ -22,4 +26,7 @@ import { FormsModule } from '@angular/forms';
 export class AttributesComponent {
   @Input() selectedEngine: RuleEngine;
   @Input() autoStartDisabled = false;
+  @Input() nameDisabled = false;
+
+  // todo: support id edit via input dialog with distinct id valitator
 }

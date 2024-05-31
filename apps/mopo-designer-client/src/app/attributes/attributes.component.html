@@ -1,9 +1,17 @@
 <div class="attributes">
-  <mat-form-field>
-    <mat-label>id</mat-label>
-    <input matInput [(ngModel)]="selectedEngine.id" />
-  </mat-form-field>
-  <mat-form-field>
+  <div class="attribute-line">
+    <mat-form-field>
+      <mat-label>id</mat-label>
+      <input matInput [(ngModel)]="selectedEngine.id" readonly />
+    </mat-form-field>
+    <button
+      mat-icon-button
+      aria-label="Example icon button with a heart icon"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+  <mat-form-field *ngIf="!nameDisabled">
     <mat-label>Name</mat-label>
     <input matInput [(ngModel)]="selectedEngine.name" />
   </mat-form-field>
@@ -11,5 +19,9 @@
     <mat-label>Description</mat-label>
     <input matInput [(ngModel)]="selectedEngine.description" />
   </mat-form-field>
-  <mat-checkbox [(ngModel)]="selectedEngine.autoStart" [disabled]="autoStartDisabled">Auto Start</mat-checkbox>
+  <mat-checkbox
+    [(ngModel)]="selectedEngine.autoStart"
+    [disabled]="autoStartDisabled"
+    >Auto Start</mat-checkbox
+  >
 </div>
