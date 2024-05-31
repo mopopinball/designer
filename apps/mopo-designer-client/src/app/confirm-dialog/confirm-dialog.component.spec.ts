@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RuleEngineComponent } from './rule-engine.component';
+import { NewFileDialogComponent } from './new-file-dialog.component';
 
-describe('RuleEngineComponent', () => {
-  let component: RuleEngineComponent;
-  let fixture: ComponentFixture<RuleEngineComponent>;
+describe('NewFileDialogComponent', () => {
+  let component: NewFileDialogComponent;
+  let fixture: ComponentFixture<NewFileDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RuleEngineComponent],
+      imports: [NewFileDialogComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RuleEngineComponent);
+    fixture = TestBed.createComponent(NewFileDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

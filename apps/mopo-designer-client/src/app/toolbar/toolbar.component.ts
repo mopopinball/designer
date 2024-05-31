@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'mopo-toolbar',
@@ -18,6 +19,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     CommonModule,
     MatSelectModule,
     MatIconModule,
+    MatButtonModule,
     MatDividerModule,
     MatMenuModule,
     MatToolbarModule,
@@ -65,7 +67,7 @@ export class ToolbarComponent {
   }
 
   exportJson(): void {
-    const json = this.selectedEngine.toJSON();
+    const json = this.rootEngine.toJSON();
     console.log(json);
   }
 

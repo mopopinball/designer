@@ -21,4 +21,5 @@ import { FormsModule } from '@angular/forms';
 })
 export class AttributesComponent {
   @Input() selectedEngine: RuleEngine;
+  @Input() autoStartDisabled = false;
 }

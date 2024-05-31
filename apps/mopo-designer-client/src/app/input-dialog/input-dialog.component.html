@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>{{ data.field }}</mat-label>
+    <input matInput [(ngModel)]="fileName" cdkFocusInitial />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="fileName"
+    [disabled]="!fileName"
+  >
+    Ok
+  </button>
+</div>

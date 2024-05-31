@@ -35,7 +35,7 @@
     (valueChange)="setEngine($event)"
     [value]="selectedEngine"
   >
-    <mat-option *ngFor="let engine of allEngines" [value]="selectedEngine">{{
+    <mat-option *ngFor="let engine of allEngines" [value]="engine">{{
       engine.id
     }}</mat-option>
   </mat-select>

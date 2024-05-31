@@ -4,6 +4,15 @@ mat-accordion {
   }
 }
 
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.property-buttons {
+  display: flex;
+  gap: 0.5em;
+}
+
 mat-sidenav-container {
   height: calc(100vh - 64px);
 }

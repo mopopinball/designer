@@ -11,5 +11,5 @@
     <mat-label>Description</mat-label>
     <input matInput [(ngModel)]="selectedEngine.description" />
   </mat-form-field>
-  <mat-checkbox [(ngModel)]="selectedEngine.autoStart">Auto Start</mat-checkbox>
+  <mat-checkbox [(ngModel)]="selectedEngine.autoStart" [disabled]="autoStartDisabled">Auto Start</mat-checkbox>
 </div>
