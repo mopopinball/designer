@@ -15,6 +15,8 @@ import { RuleEngine, HardwareConfig, LampRole, HardwareLampSchema, HardwareCoilS
 })
 export class EngineBuilderService {
 
+  rootEngine: RuleEngine;
+
   create(hardwareConfig: HardwareConfig): RuleEngine {
     const root = new RuleEngine('root', true, null);
     root.name = 'Untitled New Game'
@@ -31,5 +33,9 @@ export class EngineBuilderService {
 
   addDevice(engine: RuleEngine, id: string): void {
     engine.devices.set(id, new DesiredOutputState(id, OutputDeviceType.LIGHT, LightState.OFF))
+  }
+
+  getAllEngineIds(): string[] {
+    return Array.from(this.rootEngine.getAllEngines().keys());
   }
 }

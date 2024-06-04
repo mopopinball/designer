@@ -95,6 +95,7 @@ export class AppComponent implements OnInit {
     this.rootEngine = engine;
     this.updateAllEngines();
     this.setEngine(this.allEngines[0]);
+    this.engineBuilder.rootEngine = this.rootEngine;
   }
 
   private updateAllEngines(): void {
@@ -118,9 +119,7 @@ export class AppComponent implements OnInit {
           field: 'Name',
           formControl: new FormControl('', [
             Validators.required,
-            MopoValidators.distinct(
-              Array.from(this.rootEngine.getAllEngines().keys())
-            ),
+            MopoValidators.distinct(this.engineBuilder.getAllEngineIds()),
           ]),
         },
       }

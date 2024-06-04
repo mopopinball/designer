@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MAT_DIALOG_DATA,
@@ -13,6 +13,7 @@ export interface InputDialogData {
   title: string;
   field: string;
   formControl: FormControl;
+  value?: string;
 }
 
 @Component({
@@ -29,13 +30,17 @@ export interface InputDialogData {
   templateUrl: './input-dialog.component.html',
   styleUrl: './input-dialog.component.scss',
 })
-export class InputDialogComponent {
+export class InputDialogComponent implements OnInit {
   fileName = '';
 
   constructor(
     public dialogRef: MatDialogRef<InputDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: InputDialogData
   ) {}
+
+  ngOnInit(): void {
+    this.fileName = this.data.value;
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
