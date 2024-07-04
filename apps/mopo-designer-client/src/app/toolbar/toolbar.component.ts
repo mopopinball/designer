@@ -11,6 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { EngineDiagramDialogComponent } from '../engine-diagram-dialog/engine-diagram-dialog.component';
 
 @Component({
   selector: 'mopo-toolbar',
@@ -73,5 +74,18 @@ export class ToolbarComponent {
 
   setEngine(engine: RuleEngine): void {
     this.selectedEngineChanged.emit(engine);
+  }
+
+  showEngineDiagram(): void {
+    const dialogRef = this.dialog.open(EngineDiagramDialogComponent, {
+      data: this.rootEngine,
+    });
+    dialogRef.afterClosed().subscribe((result: RuleEngine) => {
+      if (!result) {
+        return;
+      }
+
+      this.setEngine(result);
+    });
   }
 }

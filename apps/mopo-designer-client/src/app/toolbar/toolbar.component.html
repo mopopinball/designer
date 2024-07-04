@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>menu</mat-icon>
   </button>
@@ -28,9 +28,15 @@
     {{ rootEngine?.name }}</span
   >
   <span class="example-spacer"></span>
-  <mat-icon>edit</mat-icon>
-  <span>Rule Engine:</span>
-  <mat-select
+
+  <button
+    mat-icon-button
+    aria-label="Example icon button with a home icon"
+    (click)="showEngineDiagram()"
+  >
+    <mat-icon>schema</mat-icon>
+  </button>
+  <!-- <mat-select
     style="width: 33%"
     (valueChange)="setEngine($event)"
     [value]="selectedEngine"
@@ -38,5 +44,5 @@
     <mat-option *ngFor="let engine of allEngines" [value]="engine">{{
       engine.id
     }}</mat-option>
-  </mat-select>
+  </mat-select> -->
 </mat-toolbar>
