@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -36,6 +43,9 @@ import {
 } from './confirm-dialog/confirm-dialog.component';
 import { MopoValidators } from './mopo-validators';
 
+import { CustomReactWrapperComponent } from './react-diagram';
+import { TriggersComponent } from './triggers/triggers.component';
+
 @Component({
   standalone: true,
   imports: [
@@ -64,12 +74,18 @@ import { MopoValidators } from './mopo-validators';
     MatExpansionModule,
     MatCheckboxModule,
     MatDialogModule,
+    // NgReactDirective,
+    
+    TriggersComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  schemas: [NO_ERRORS_SCHEMA],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
+  @ViewChild('reactchart', { static: true }) containerRef!: ElementRef;
+  @ViewChild('reactchart2', { static: true }) eRef!: ElementRef;
   hardwareConfig: HardwareConfig = panthera as unknown as HardwareConfig;
 
   rootEngine: RuleEngine;
@@ -77,12 +93,17 @@ export class AppComponent implements OnInit {
   allEngines: RuleEngine[] = [];
 
   step = 0;
+  // path = './react-diagram';
 
   constructor(
     public files: DesignerFilesService,
     public dialog: MatDialog,
     private engineBuilder: EngineBuilderService
   ) {}
+
+  ngAfterViewInit(): void {
+    //
+  }
 
   ngOnInit(): void {
     this.files.fileLoaded.subscribe((engine) => this.loadEngine(engine));
