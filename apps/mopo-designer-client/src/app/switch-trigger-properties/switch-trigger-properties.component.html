@@ -1,9 +1,26 @@
-Switch Triggers Properties
-<mat-form-field>
-  <mat-label>Switch</mat-label>
-  <mat-select [(ngModel)]="switchTrigger.switchId" name="switchId" (selectionChange)="onSelectionChange()">
-    <mat-option *ngFor="let sw of switches" [value]="sw.value">
-      {{ sw.label }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<mopo-properties title="Switch Triggers Properties">
+  <div properties class="properties">
+    <mat-form-field>
+      <mat-label>Switch</mat-label>
+      <mat-select
+        [(ngModel)]="switchTrigger.switchId"
+        name="switchId"
+        (selectionChange)="onSelectionChange()"
+      >
+        <mat-option *ngFor="let sw of switches" [value]="sw.value">
+          {{ sw.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Hold Period (ms)</mat-label>
+      <input
+        matInput
+        type="number"
+        min="0"
+        [(ngModel)]="switchTrigger.holdIntervalMs"
+        (change)="onSelectionChange()"
+      />
+    </mat-form-field>
+  </div>
+</mopo-properties>

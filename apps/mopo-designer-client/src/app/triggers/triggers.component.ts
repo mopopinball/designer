@@ -95,7 +95,18 @@ export class TriggersComponent implements OnInit, OnChanges {
           name: 'Switch Trigger',
           color: 'rgb(0,192,255)',
         });
-        node.addOutPort(trigger.switchId ?? '(Select Switch)');
+        if(trigger.switchId) {
+          if(trigger.holdIntervalMs) {
+            node.addOutPort(`${trigger.switchId} (${trigger.holdIntervalMs}ms)`);
+          }
+          else {
+            node.addOutPort(trigger.switchId);
+          }
+        }
+        else {
+          node.addOutPort('(Select switch)');
+        }
+        
       }
 
       node.registerListener({
