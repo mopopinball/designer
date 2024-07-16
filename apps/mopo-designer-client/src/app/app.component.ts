@@ -43,8 +43,13 @@ import {
 } from './confirm-dialog/confirm-dialog.component';
 import { MopoValidators } from './mopo-validators';
 
-import { CustomReactWrapperComponent } from './react-diagram';
+import { CustomReactWrapperComponent } from './react-diagram/react-diagram';
 import { TriggersComponent } from './triggers/triggers.component';
+import { Trigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/trigger';
+import { RuleEnginePropertiesComponent } from './rule-engine-properties/rule-engine-properties.component';
+import { SwitchTriggerPropertiesComponent } from './switch-trigger-properties/switch-trigger-properties.component';
+import { SwitchTrigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/switch-trigger';
+import { AsPipe } from './as.pipe';
 
 @Component({
   standalone: true,
@@ -63,20 +68,22 @@ import { TriggersComponent } from './triggers/triggers.component';
     MatListModule,
     MatCardModule,
     MatSelectModule,
+    MatInputModule,
+    MatMenuModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatSelectModule,
     LampComponent,
     ToolbarComponent,
     AttributesComponent,
     DevicesComponent,
     InputDialogComponent,
     ConfirmDialogComponent,
-    MatInputModule,
-    MatMenuModule,
-    MatExpansionModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    // NgReactDirective,
-    
     TriggersComponent,
+    RuleEnginePropertiesComponent,
+    SwitchTriggerPropertiesComponent,
+    AsPipe,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -86,14 +93,15 @@ import { TriggersComponent } from './triggers/triggers.component';
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('reactchart', { static: true }) containerRef!: ElementRef;
   @ViewChild('reactchart2', { static: true }) eRef!: ElementRef;
+  @ViewChild(TriggersComponent, { static: true }) triggersComponent: TriggersComponent;
   hardwareConfig: HardwareConfig = panthera as unknown as HardwareConfig;
+
+  SwitchTrigger: SwitchTrigger;
 
   rootEngine: RuleEngine;
   selectedEngine: RuleEngine;
   allEngines: RuleEngine[] = [];
-
-  step = 0;
-  // path = './react-diagram';
+  selectedTrigger: Trigger;
 
   constructor(
     public files: DesignerFilesService,
@@ -125,10 +133,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   setEngine(engine: RuleEngine): void {
     this.selectedEngine = engine;
-  }
-
-  setStep(index: number) {
-    this.step = index;
   }
 
   addChild(): void {
@@ -188,5 +192,13 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.updateAllEngines();
       this.setEngine(this.rootEngine);
     });
+  }
+
+  onTriggerChanged(trigger: Trigger): void {
+    this.selectedTrigger = trigger;
+  }
+
+  onTriggerDetailsChange(): void {
+    this.triggersComponent.render();
   }
 }

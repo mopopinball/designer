@@ -1,10 +1,10 @@
 <mat-toolbar>
   <button mat-button [matMenuTriggerFor]="triggermenu">Triggers</button>
   <mat-menu #triggermenu="matMenu">
-    <button mat-menu-item>Switch Trigger</button>
+    <button mat-menu-item (click)="addSwitchTrigger()">Switch Trigger</button>
   </mat-menu>
 </mat-toolbar>
 
 <div style="display: flex">
-  <app-my-component></app-my-component>
+  <mopo-react-diagram [diagramEngine]="diagramEngine"></mopo-react-diagram>
 </div>

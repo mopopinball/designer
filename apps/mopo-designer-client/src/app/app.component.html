@@ -9,55 +9,25 @@
 
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened position="end">
-    <mat-toolbar>
-      <span>{{ selectedEngine.id }} Properties</span>
-      <span class="example-spacer"></span>
-      <div class="property-buttons">
-        <button mat-raised-button color="primary" (click)="addChild()">
-          Add Child
-        </button>
-        <button
-          mat-raised-button
-          color="warn"
-          (click)="removeEngine()"
-          [disabled]="selectedEngine === rootEngine"
-        >
-          Delete {{ selectedEngine.id }}
-        </button>
-      </div>
-    </mat-toolbar>
-    <mat-accordion *ngIf="selectedEngine">
-      <mat-expansion-panel
-        [expanded]="step === 0"
-        (opened)="setStep(0)"
-        hideToggle
-      >
-        <mat-expansion-panel-header>
-          <mat-panel-title>Attributes</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mopo-attributes
-          [selectedEngine]="selectedEngine"
-          [autoStartDisabled]="selectedEngine === rootEngine"
-          [nameDisabled]="selectedEngine !== rootEngine"
-        ></mopo-attributes>
-      </mat-expansion-panel>
-      <mat-expansion-panel
-        [expanded]="step === 1"
-        (opened)="setStep(1)"
-        hideToggle
-      >
-        <mat-expansion-panel-header>
-          <mat-panel-title>Devices</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mopo-devices [selectedEngine]="selectedEngine"></mopo-devices>
-      </mat-expansion-panel>
-    </mat-accordion>
+    <mopo-rule-engine-properties
+      *ngIf="!selectedTrigger"
+      [rootEngine]="rootEngine"
+      [selectedEngine]="selectedEngine"
+      (addChild)="addChild()"
+      (removeEngine)="removeEngine()"
+    ></mopo-rule-engine-properties>
+    <div *ngIf="selectedTrigger; instanceof: SwitchTrigger">
+      <mopo-switch-trigger-properties
+        [hardwareConfig]="hardwareConfig"
+        [switchTrigger]="selectedTrigger | as : SwitchTrigger"
+        (triggerChange)="onTriggerDetailsChange()"
+      ></mopo-switch-trigger-properties>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <!-- <mat-card>
-      <mat-card-content>Simple card</mat-card-content>
-    </mat-card> -->
-    <mopo-triggers></mopo-triggers>
-
+    <mopo-triggers
+      [engine]="selectedEngine"
+      (triggerChanged)="onTriggerChanged($event)"
+    ></mopo-triggers>
   </mat-sidenav-content>
 </mat-sidenav-container>

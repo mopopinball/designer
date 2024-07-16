@@ -1,0 +1,9 @@
+Switch Triggers Properties
+<mat-form-field>
+  <mat-label>Switch</mat-label>
+  <mat-select [(ngModel)]="switchTrigger.switchId" name="switchId" (selectionChange)="onSelectionChange()">
+    <mat-option *ngFor="let sw of switches" [value]="sw.value">
+      {{ sw.label }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

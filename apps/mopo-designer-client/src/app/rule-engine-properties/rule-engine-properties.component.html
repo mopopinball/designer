@@ -1,0 +1,44 @@
+<mat-toolbar>
+    <span>{{ selectedEngine.id }} Properties</span>
+    <span class="example-spacer"></span>
+    <div class="property-buttons">
+      <button mat-raised-button color="primary" (click)="onAddChild()">
+        Add Child
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="onRemoveEngine()"
+        [disabled]="selectedEngine === rootEngine"
+      >
+        Delete {{ selectedEngine.id }}
+      </button>
+    </div>
+  </mat-toolbar>
+  <mat-accordion *ngIf="selectedEngine">
+    <mat-expansion-panel
+      [expanded]="step === 0"
+      (opened)="setStep(0)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Attributes</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mopo-attributes
+        [selectedEngine]="selectedEngine"
+        [autoStartDisabled]="selectedEngine === rootEngine"
+        [nameDisabled]="selectedEngine !== rootEngine"
+      ></mopo-attributes>
+    </mat-expansion-panel>
+    <mat-expansion-panel
+      [expanded]="step === 1"
+      (opened)="setStep(1)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Devices</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mopo-devices [selectedEngine]="selectedEngine"></mopo-devices>
+    </mat-expansion-panel>
+  </mat-accordion>
+  
