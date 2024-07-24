@@ -22,21 +22,21 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
       id: action.designer.id,
       position: new Point(action.designer.x, action.designer.y),
     });
-    this.options.name = this.getTitle(action);
     this.model = action;
+    this.options.name = this.getTitle();
 
     this.addActionInPort();
 
     this.registerPositionListener();
   }
 
-  private getTitle(action: A): string {
+  private getTitle(): string {
     // https://stackoverflow.com/a/54286277
     switch (true) {
-      case action instanceof DataAction:
-        return `Data Action - ${action.dataKey}`;
-      case action instanceof DeviceAction:
-        return `Device Action - ${action.state?.id}`;
+      case this.action instanceof DataAction:
+        return `Data Action - ${this.action.dataKey}`;
+      case this.action instanceof DeviceAction:
+        return `Device Action - ${this.action.state?.id}`;
       default:
         return 'Action';
     }

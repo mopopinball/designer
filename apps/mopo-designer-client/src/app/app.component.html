@@ -27,6 +27,7 @@
   <mat-sidenav-content>
     <mopo-triggers
       [engine]="selectedEngine"
+      [hardwareConfig]="hardwareConfig"
       (triggerChanged)="onTriggerChanged($event)"
     ></mopo-triggers>
   </mat-sidenav-content>

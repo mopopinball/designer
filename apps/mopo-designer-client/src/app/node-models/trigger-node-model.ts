@@ -1,7 +1,6 @@
 import { Trigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/trigger';
-import { DefaultNodeModelOptions } from '@projectstorm/react-diagrams';
 import { MopoNodeModel } from './mopo-node-model';
-import { SwitchTrigger } from '@mopopinball/engine';
+import { HardwareConfig, SwitchTrigger } from '@mopopinball/engine';
 import { Point } from '@projectstorm/geometry';
 
 export class TriggerNodeModel<T extends Trigger> extends MopoNodeModel<T> {
@@ -11,15 +10,15 @@ export class TriggerNodeModel<T extends Trigger> extends MopoNodeModel<T> {
     return this.model;
   }
 
-  constructor(trigger: T) {
+  constructor(trigger: T, private readonly hardwareConfig: HardwareConfig) {
     super({
-      name: 'Trigger',
+      name: '',
       color: 'rgb(0,192,255)',
       id: trigger.designer.id,
       position: new Point(trigger.designer.x, trigger.designer.y),
     });
-    this.options.name = this.getTitle();
     this.model = trigger;
+    this.options.name = this.getTitle();
 
     this.addTriggerOutPort();
 
@@ -40,12 +39,13 @@ export class TriggerNodeModel<T extends Trigger> extends MopoNodeModel<T> {
     switch (true) {
       case this.trigger instanceof SwitchTrigger: {
         if (this.trigger.switchId) {
+          const swName = this.hardwareConfig.devices.switches[this.trigger.switchId].name;
           if (this.trigger.holdIntervalMs) {
             this.addOutPort(
-              `${this.trigger.switchId} (${this.trigger.holdIntervalMs}ms)`
+              `${swName} (${this.trigger.holdIntervalMs}ms)`
             );
           } else {
-            this.addOutPort(this.trigger.switchId);
+            this.addOutPort(swName);
           }
         } else {
           this.addOutPort('(Select switch)');

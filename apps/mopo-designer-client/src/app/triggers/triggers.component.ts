@@ -12,7 +12,7 @@ import { CustomReactWrapperComponent } from '../react-diagram/react-diagram';
 import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { RuleEngine } from '@mopopinball/engine';
+import { HardwareConfig, RuleEngine } from '@mopopinball/engine';
 import createEngine, {
   DefaultLinkModel,
   DefaultNodeModel,
@@ -27,7 +27,6 @@ import { TriggerNodeModel } from '../node-models/trigger-node-model';
 import { ActionNodeModel } from '../node-models/action-node-model';
 import { Action } from '@mopopinball/engine/dist/src/system/rule-engine/actions/action';
 import { v4 as uuidv4 } from 'uuid';
-import { Point } from '@projectstorm/geometry';
 import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/actions/designer-attributes';
 import {
   ConfirmDialogComponent,
@@ -52,6 +51,7 @@ import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/ac
 })
 export class TriggersComponent implements OnInit, OnChanges {
   @Input() engine: RuleEngine;
+  @Input() hardwareConfig: HardwareConfig;
   @Output() triggerChanged = new EventEmitter<Trigger>();
   @Output() actionChanged = new EventEmitter<Action>();
 
@@ -170,7 +170,7 @@ export class TriggersComponent implements OnInit, OnChanges {
   }
 
   private renderTrigger<T extends Trigger>(trigger: T): TriggerNodeModel<T> {
-    const triggerModel = new TriggerNodeModel(trigger);
+    const triggerModel = new TriggerNodeModel(trigger, this.hardwareConfig);
     if (!trigger.designer) {
       trigger.designer = this.getDefaultTriggerDesigner();
     }
