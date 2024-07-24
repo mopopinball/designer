@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   NO_ERRORS_SCHEMA,
   OnInit,
   ViewChild,
@@ -93,7 +94,8 @@ import { AsPipe } from './as.pipe';
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('reactchart', { static: true }) containerRef!: ElementRef;
   @ViewChild('reactchart2', { static: true }) eRef!: ElementRef;
-  @ViewChild(TriggersComponent, { static: true }) triggersComponent: TriggersComponent;
+  @ViewChild(TriggersComponent, { static: true })
+  triggersComponent: TriggersComponent;
   hardwareConfig: HardwareConfig = panthera as unknown as HardwareConfig;
 
   SwitchTrigger: SwitchTrigger;
@@ -115,6 +117,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.files.fileLoaded.subscribe((engine) => this.loadEngine(engine));
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if(event.ctrlKey && event.key === 's') {
+      event.preventDefault();
+      this.files.save(this.files.selectedFile, this.rootEngine);
+    }
   }
 
   private loadEngine(engine: RuleEngine): void {

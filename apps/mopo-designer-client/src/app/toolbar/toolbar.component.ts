@@ -42,7 +42,7 @@ export class ToolbarComponent {
     public dialog: MatDialog
   ) {
     // kind of a hack
-    setInterval(() => this.saveFile());
+    setInterval(() => this.saveFile(), 5000);
   }
 
   newFile(): void {

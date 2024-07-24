@@ -29,6 +29,12 @@ import { Action } from '@mopopinball/engine/dist/src/system/rule-engine/actions/
 import { v4 as uuidv4 } from 'uuid';
 import { Point } from '@projectstorm/geometry';
 import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/actions/designer-attributes';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+} from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/device-action';
 
 @Component({
   selector: 'mopo-triggers',
@@ -39,6 +45,7 @@ import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-eng
     MatMenuModule,
     MatToolbarModule,
     MatButtonModule,
+    MatDialogModule,
   ],
   templateUrl: './triggers.component.html',
   styleUrl: './triggers.component.scss',
@@ -46,14 +53,19 @@ import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-eng
 export class TriggersComponent implements OnInit, OnChanges {
   @Input() engine: RuleEngine;
   @Output() triggerChanged = new EventEmitter<Trigger>();
+  @Output() actionChanged = new EventEmitter<Action>();
 
   diagramEngine: DiagramEngine;
 
   unassignedActions: Action[] = [];
+  selectedTrigger: Trigger;
+  selectedAction: Action;
 
   get diagramModel(): DiagramModel {
     return this.diagramEngine.getModel();
   }
+
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit(): void {
     const engine = createEngine();
@@ -74,9 +86,18 @@ export class TriggersComponent implements OnInit, OnChanges {
   }
 
   addDataAction(): void {
-    const dataAction = new DataAction('test');
-    dataAction.designer = this.getDefaultActionDesigner();
-    this.unassignedActions.push(dataAction);
+    const dataAction = new DataAction(null);
+    this.addAction(dataAction);
+  }
+
+  addDeviceAction(): void {
+    const deviceAction = new DeviceAction(null);
+    this.addAction(deviceAction);
+  }
+
+  private addAction(action: Action): void {
+    action.designer = this.getDefaultActionDesigner();
+    this.unassignedActions.push(action);
 
     this.render();
   }
@@ -149,46 +170,23 @@ export class TriggersComponent implements OnInit, OnChanges {
   }
 
   private renderTrigger<T extends Trigger>(trigger: T): TriggerNodeModel<T> {
-    let triggerModel: TriggerNodeModel<T>;
+    const triggerModel = new TriggerNodeModel(trigger);
     if (!trigger.designer) {
       trigger.designer = this.getDefaultTriggerDesigner();
     }
 
-    if (trigger instanceof SwitchTrigger) {
-      triggerModel = new TriggerNodeModel(trigger, {
-        name: 'Switch Trigger',
-        color: 'rgb(0,192,255)',
-        id: trigger.designer.id,
-        position: new Point(trigger.designer.x, trigger.designer.y),
-      });
-      if (trigger.switchId) {
-        if (trigger.holdIntervalMs) {
-          triggerModel.addOutPort(
-            `${trigger.switchId} (${trigger.holdIntervalMs}ms)`
-          );
-        } else {
-          triggerModel.addOutPort(trigger.switchId);
-        }
-      } else {
-        triggerModel.addOutPort('(Select switch)');
-      }
-    } else {
-      throw new Error('Not implemented');
-    }
-
-    triggerModel.registerListener({
-      eventDidFire: (a) => {
-        if (a['isSelected'] && a['function'] === 'selectionChanged') {
-          this.triggerChanged.emit(trigger);
-        } else if (!a['isSelected'] && a['function'] === 'selectionChanged') {
-          this.triggerChanged.emit(null);
-        }
-      },
+    triggerModel.onSelected((selectedTrigger) => {
+      this.selectTrigger(selectedTrigger);
     });
 
     this.diagramModel.addNode(triggerModel);
 
     return triggerModel;
+  }
+
+  private selectTrigger(trigger: Trigger): void {
+    this.selectedTrigger = trigger;
+    this.triggerChanged.emit(trigger);
   }
 
   private renderAction<A extends Action>(a: A): ActionNodeModel<A> {
@@ -197,28 +195,85 @@ export class TriggersComponent implements OnInit, OnChanges {
       a.designer = this.getDefaultActionDesigner();
     }
 
-    if (a instanceof DataAction) {
-      // have we already rendered it?
-      actionModel = this.diagramModel
-        .getNodes()
-        .find(
-          (n) => a.designer.id === (n as ActionNodeModel<A>).getID()
-        ) as ActionNodeModel<A>;
+    actionModel = this.diagramModel
+      .getNodes()
+      .find(
+        (n) => a.designer.id === (n as ActionNodeModel<A>).getID()
+      ) as ActionNodeModel<A>;
 
-      if (!actionModel) {
-        actionModel = new ActionNodeModel<A>(a, {
-          name: `Data Action - ${a.dataKey}`,
-          color: 'rgb(0,292,255)',
-          id: a.designer.id,
-          position: new Point(a.designer.x, a.designer.y),
-        });
-        actionModel.addInPort(a.expression ?? '(Enter expression)');
-      }
-    } else {
-      throw new Error('Not implemented');
+    if (!actionModel) {
+      actionModel = new ActionNodeModel<A>(a);
     }
+
+    actionModel.onSelected((selectedAction) => {
+      this.selectAction(selectedAction);
+    });
 
     this.diagramModel.addNode(actionModel);
     return actionModel;
+  }
+
+  private selectAction(action: Action): void {
+    this.selectedAction = action;
+    this.actionChanged.emit(action);
+  }
+
+  deleteSelectedTrigger(): void {
+    const dialogRef = this.dialog.open<
+      ConfirmDialogComponent,
+      ConfirmDialogData
+    >(ConfirmDialogComponent, {
+      data: {
+        title: `Delete Confirm`,
+        body: `Are you sure you want to delete the trigger "${this.selectedTrigger}"?`,
+        confirmAction: 'Delete',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+
+      const index = this.engine.triggers.indexOf(this.selectedTrigger as never);
+      this.engine.triggers.splice(index, 1);
+      this.selectedTrigger = null;
+      this.render();
+    });
+  }
+
+  deleteSelectedAction(): void {
+    const dialogRef = this.dialog.open<
+      ConfirmDialogComponent,
+      ConfirmDialogData
+    >(ConfirmDialogComponent, {
+      data: {
+        title: `Delete Confirm`,
+        body: `Are you sure you want to delete the action "${this.selectedAction}"?`,
+        confirmAction: 'Delete',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+
+      const unassignedIndex = this.unassignedActions.indexOf(
+        this.selectedAction
+      );
+      if (unassignedIndex >= 0) {
+        this.unassignedActions.splice(unassignedIndex, 1);
+      }
+
+      for (const trigger of this.engine.triggers) {
+        const index = trigger.actions.indexOf(this.selectedAction as never);
+        if (index >= 0) {
+          trigger.actions.splice(index, 1);
+        }
+      }
+      this.selectedAction = null;
+      this.render();
+    });
   }
 }
