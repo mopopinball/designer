@@ -10,5 +10,14 @@ export class ActionNodeModel<A extends Action> extends DefaultNodeModel {
     options?: DefaultNodeModelOptions
   ) {
     super(options);
+
+    this.registerListener({
+      eventDidFire: (a2) => {
+        if(a2.function === 'positionChanged') {
+          this.action.designer.x = this.position.x;
+          this.action.designer.y = this.position.y;
+        }
+      },
+    });
   }
 }

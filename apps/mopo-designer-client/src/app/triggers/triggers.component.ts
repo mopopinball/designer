@@ -24,9 +24,11 @@ import { SwitchTrigger } from '@mopopinball/engine/dist/src/system/rule-engine/a
 import { Trigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/trigger';
 import { DataAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/data-action';
 import { TriggerNodeModel } from '../node-models/trigger-node-model';
-import { link } from 'fs';
 import { ActionNodeModel } from '../node-models/action-node-model';
 import { Action } from '@mopopinball/engine/dist/src/system/rule-engine/actions/action';
+import { v4 as uuidv4 } from 'uuid';
+import { Point } from '@projectstorm/geometry';
+import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/actions/designer-attributes';
 
 @Component({
   selector: 'mopo-triggers',
@@ -65,6 +67,7 @@ export class TriggersComponent implements OnInit, OnChanges {
 
   addSwitchTrigger(): void {
     const trigger = new SwitchTrigger(null);
+    trigger.designer = this.getDefaultTriggerDesigner();
     this.engine.triggers.push(trigger);
 
     this.render();
@@ -72,9 +75,26 @@ export class TriggersComponent implements OnInit, OnChanges {
 
   addDataAction(): void {
     const dataAction = new DataAction('test');
+    dataAction.designer = this.getDefaultActionDesigner();
     this.unassignedActions.push(dataAction);
 
     this.render();
+  }
+
+  private getDefaultTriggerDesigner(): DesignerAttributes {
+    return {
+      id: uuidv4(),
+      x: 50,
+      y: 50,
+    };
+  }
+
+  private getDefaultActionDesigner(): DesignerAttributes {
+    return {
+      id: uuidv4(),
+      x: 100,
+      y: 100,
+    };
   }
 
   render(): void {
@@ -117,7 +137,7 @@ export class TriggersComponent implements OnInit, OnChanges {
         const link = triggerModel
           .getOutPorts()[0]
           .link(actionModel.getInPorts()[0]);
-          this.diagramModel.addLink(link);
+        this.diagramModel.addLink(link);
       }
     }
 
@@ -130,10 +150,16 @@ export class TriggersComponent implements OnInit, OnChanges {
 
   private renderTrigger<T extends Trigger>(trigger: T): TriggerNodeModel<T> {
     let triggerModel: TriggerNodeModel<T>;
+    if (!trigger.designer) {
+      trigger.designer = this.getDefaultTriggerDesigner();
+    }
+
     if (trigger instanceof SwitchTrigger) {
       triggerModel = new TriggerNodeModel(trigger, {
         name: 'Switch Trigger',
         color: 'rgb(0,192,255)',
+        id: trigger.designer.id,
+        position: new Point(trigger.designer.x, trigger.designer.y),
       });
       if (trigger.switchId) {
         if (trigger.holdIntervalMs) {
@@ -167,22 +193,24 @@ export class TriggersComponent implements OnInit, OnChanges {
 
   private renderAction<A extends Action>(a: A): ActionNodeModel<A> {
     let actionModel: ActionNodeModel<A>;
-    if (a instanceof DataAction) {
-      // have we already rendered it? Match based on datakey
+    if (!a.designer) {
+      a.designer = this.getDefaultActionDesigner();
+    }
 
+    if (a instanceof DataAction) {
+      // have we already rendered it?
       actionModel = this.diagramModel
         .getNodes()
         .find(
-          (n) =>
-            n instanceof ActionNodeModel &&
-            n.action instanceof DataAction &&
-            a.dataKey === a.dataKey
+          (n) => a.designer.id === (n as ActionNodeModel<A>).getID()
         ) as ActionNodeModel<A>;
 
       if (!actionModel) {
         actionModel = new ActionNodeModel<A>(a, {
           name: `Data Action - ${a.dataKey}`,
           color: 'rgb(0,292,255)',
+          id: a.designer.id,
+          position: new Point(a.designer.x, a.designer.y),
         });
         actionModel.addInPort(a.expression ?? '(Enter expression)');
       }
