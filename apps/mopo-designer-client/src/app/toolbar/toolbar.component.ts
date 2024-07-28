@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EngineBuilderService } from '../engine-builder.service';
 import { NewFileDialogComponent } from '../new-file-dialog/new-file-dialog.component';
@@ -35,6 +41,7 @@ export class ToolbarComponent {
   @Input() selectedEngine: RuleEngine;
   @Input() allEngines: RuleEngine[] = [];
   @Output() selectedEngineChanged = new EventEmitter<RuleEngine>();
+  @Output() run = new EventEmitter<void>();
 
   constructor(
     private engineBuilder: EngineBuilderService,
@@ -43,6 +50,14 @@ export class ToolbarComponent {
   ) {
     // kind of a hack
     setInterval(() => this.saveFile(), 5000);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 'e') {
+      event.preventDefault();
+      this.showEngineDiagram();
+    }
   }
 
   newFile(): void {
@@ -68,8 +83,7 @@ export class ToolbarComponent {
   }
 
   exportJson(): void {
-    const json = this.rootEngine.toJSON();
-    console.log(json);
+    console.log(JSON.stringify(this.rootEngine.toJSON()));
   }
 
   setEngine(engine: RuleEngine): void {

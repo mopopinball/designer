@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RuleEngine } from '@mopopinball/engine';
+import { HardwareConfig, RuleEngine } from '@mopopinball/engine';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
@@ -54,6 +54,7 @@ import { PropertiesComponent } from '../properties/properties.component';
 export class RuleEnginePropertiesComponent {
   rootEngine: RuleEngine;
   @Input() selectedEngine: RuleEngine;
+  @Input() hardwareConfig: HardwareConfig;
   @Output() addChild = new EventEmitter<void>();
   @Output() removeEngine = new EventEmitter<void>();
 

@@ -27,13 +27,14 @@ import { TriggerNodeModel } from '../node-models/trigger-node-model';
 import { ActionNodeModel } from '../node-models/action-node-model';
 import { Action } from '@mopopinball/engine/dist/src/system/rule-engine/actions/action';
 import { v4 as uuidv4 } from 'uuid';
-import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/actions/designer-attributes';
 import {
   ConfirmDialogComponent,
   ConfirmDialogData,
 } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/device-action';
+import { MatIconModule } from '@angular/material/icon';
+import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/designer-attributes';
 
 @Component({
   selector: 'mopo-triggers',
@@ -45,6 +46,7 @@ import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/ac
     MatToolbarModule,
     MatButtonModule,
     MatDialogModule,
+    MatIconModule,
   ],
   templateUrl: './triggers.component.html',
   styleUrl: './triggers.component.scss',
@@ -202,7 +204,7 @@ export class TriggersComponent implements OnInit, OnChanges {
       ) as ActionNodeModel<A>;
 
     if (!actionModel) {
-      actionModel = new ActionNodeModel<A>(a);
+      actionModel = new ActionNodeModel<A>(a, this.hardwareConfig);
     }
 
     actionModel.onSelected((selectedAction) => {

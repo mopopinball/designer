@@ -1,4 +1,4 @@
-import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/actions/designer-attributes';
+import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/designer-attributes';
 import { DefaultNodeModel } from '@projectstorm/react-diagrams';
 
 export abstract class MopoNodeModel<

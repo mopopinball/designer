@@ -4,15 +4,33 @@
     <button mat-menu-item (click)="addSwitchTrigger()">Switch Trigger</button>
   </mat-menu>
 
-  <button mat-button color="warn" [disabled]="!selectedTrigger" (click)="deleteSelectedTrigger()">Delete Trigger</button>
-  
+  <button
+    mat-button
+    color="warn"
+    [disabled]="!selectedTrigger"
+    (click)="deleteSelectedTrigger()"
+  >
+    Delete Trigger
+  </button>
+
   <button mat-button [matMenuTriggerFor]="actionmenu">Add Action</button>
   <mat-menu #actionmenu="matMenu">
-    <button mat-menu-item (click)="addDataAction()">Data Action</button>
-    <button mat-menu-item (click)="addDeviceAction()">Device Action</button>
+    <button mat-menu-item (click)="addDataAction()">
+      <mat-icon>storage</mat-icon>Data Action
+    </button>
+    <button mat-menu-item (click)="addDeviceAction()">
+      <mat-icon>widgets</mat-icon>Device Action
+    </button>
   </mat-menu>
 
-  <button mat-button color="warn" [disabled]="!selectedAction" (click)="deleteSelectedAction()">Delete Action</button>
+  <button
+    mat-button
+    color="warn"
+    [disabled]="!selectedAction"
+    (click)="deleteSelectedAction()"
+  >
+    Delete Action
+  </button>
 </mat-toolbar>
 
 <div style="display: flex">

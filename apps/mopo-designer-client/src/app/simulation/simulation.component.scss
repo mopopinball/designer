@@ -1,0 +1,15 @@
+@mixin simulation-part() {
+  border: solid 1px grey;
+  overflow: hidden;
+  width: 270px;
+}
+
+.backbox {
+  height: 100px;
+  @include simulation-part();
+}
+
+.playfield {
+  height: 600px;
+  @include simulation-part();
+}

@@ -8,13 +8,25 @@ mat-accordion {
   flex: 1 1 auto;
 }
 
-
 mat-sidenav-container {
   height: calc(100vh - 64px);
 }
 
 mat-sidenav {
   width: 30vw;
+
+  &.simulation {
+    width: 15vw;
+    padding: 0.5em;
+
+    .sim {
+      display: flex;
+      flex-direction: column;
+
+      .close {
+        display: flex;
+        justify-content: end;
+      }
+    }
+  }
 }
-
-

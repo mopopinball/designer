@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,7 +18,12 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatCardModule } from '@angular/material/card';
 
 import { CommonModule } from '@angular/common';
-import { HardwareConfig, RuleEngine, panthera } from '@mopopinball/engine';
+import {
+  Action,
+  HardwareConfig,
+  RuleEngine,
+  panthera,
+} from '@mopopinball/engine';
 import { LampComponent } from './lamp/lamp.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
@@ -44,13 +49,16 @@ import {
 } from './confirm-dialog/confirm-dialog.component';
 import { MopoValidators } from './mopo-validators';
 
-import { CustomReactWrapperComponent } from './react-diagram/react-diagram';
 import { TriggersComponent } from './triggers/triggers.component';
 import { Trigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/trigger';
 import { RuleEnginePropertiesComponent } from './rule-engine-properties/rule-engine-properties.component';
 import { SwitchTriggerPropertiesComponent } from './switch-trigger-properties/switch-trigger-properties.component';
 import { SwitchTrigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/switch-trigger';
 import { AsPipe } from './as.pipe';
+import { SimulationComponent } from './simulation/simulation.component';
+import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/device-action';
+import { DeviceActionPropertiesComponent } from './device-action-properties/device-action-properties.component';
+import { DataAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/data-action';
 
 @Component({
   standalone: true,
@@ -85,25 +93,30 @@ import { AsPipe } from './as.pipe';
     RuleEnginePropertiesComponent,
     SwitchTriggerPropertiesComponent,
     AsPipe,
+    SimulationComponent,
+    DeviceActionPropertiesComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class AppComponent implements OnInit, AfterViewInit {
-  @ViewChild('reactchart', { static: true }) containerRef!: ElementRef;
-  @ViewChild('reactchart2', { static: true }) eRef!: ElementRef;
+export class AppComponent implements OnInit {
+  @ViewChild('drawer', { static: true }) simulation!: MatSidenav;
   @ViewChild(TriggersComponent, { static: true })
   triggersComponent: TriggersComponent;
   hardwareConfig: HardwareConfig = panthera as unknown as HardwareConfig;
 
   SwitchTrigger: SwitchTrigger;
+  DeviceAction: DeviceAction;
+  DataAction: DataAction;
 
   rootEngine: RuleEngine;
   selectedEngine: RuleEngine;
   allEngines: RuleEngine[] = [];
+
   selectedTrigger: Trigger;
+  selectedAction: Action;
 
   constructor(
     public files: DesignerFilesService,
@@ -111,19 +124,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     private engineBuilder: EngineBuilderService
   ) {}
 
-  ngAfterViewInit(): void {
-    //
-  }
-
   ngOnInit(): void {
     this.files.fileLoaded.subscribe((engine) => this.loadEngine(engine));
   }
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if(event.ctrlKey && event.key === 's') {
+    if (event.ctrlKey && event.key === 's') {
       event.preventDefault();
       this.files.save(this.files.selectedFile, this.rootEngine);
+    } else if (event.ctrlKey && event.key === 'r') {
+      event.preventDefault();
+      this.simulation.open();
     }
   }
 
@@ -206,9 +218,19 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   onTriggerChanged(trigger: Trigger): void {
     this.selectedTrigger = trigger;
+    this.selectedAction = null;
+  }
+
+  onActionChanged(action: Action): void {
+    this.selectedTrigger = null;
+    this.selectedAction = action;
   }
 
   onTriggerDetailsChange(): void {
+    this.triggersComponent.render();
+  }
+
+  onActionDetailsChange(): void {
     this.triggersComponent.render();
   }
 }

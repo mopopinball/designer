@@ -13,6 +13,10 @@
       <mat-icon>download</mat-icon> <span>Export</span>
     </button>
     <mat-divider></mat-divider>
+    <button mat-menu-item (click)="run.emit()">
+      <mat-icon>play_arrow</mat-icon><span>Run (Ctrl+R)</span>
+    </button>
+    <mat-divider></mat-divider>
     <button
       *ngFor="let file of files.fileNames"
       mat-menu-item

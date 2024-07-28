@@ -1,0 +1,22 @@
+<mopo-properties title="Device Action Properties">
+  <div properties class="properties">
+    <mat-form-field>
+      <mat-label>Device</mat-label>
+      <mat-select
+        [(ngModel)]="deviceId"
+        name="deviceId"
+        (selectionChange)="onSelectionChange($event)"
+      >
+        <mat-option *ngFor="let d of devices" [value]="d.value">
+          <mat-icon>lightbulb</mat-icon> {{ d.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mopo-lamp
+      *ngIf="deviceAction.state"
+      [state]="deviceAction.state"
+      [hardwareConfig]="hardwareConfig"
+      (lampChange)="actionChange.emit()"
+    ></mopo-lamp>
+  </div>
+</mopo-properties>

@@ -7,6 +7,7 @@ import { Point } from '@projectstorm/geometry';
 import { DataAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/data-action';
 import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/device-action';
 import { MopoNodeModel } from './mopo-node-model';
+import { HardwareConfig, Light, LightState } from '@mopopinball/engine';
 
 export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
   model: A;
@@ -15,7 +16,7 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
     return this.model;
   }
 
-  constructor(action: A) {
+  constructor(action: A, private readonly hardwareConfig: HardwareConfig) {
     super({
       name: 'Action',
       color: 'rgb(0,292,255)',
@@ -35,8 +36,12 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
     switch (true) {
       case this.action instanceof DataAction:
         return `Data Action - ${this.action.dataKey}`;
-      case this.action instanceof DeviceAction:
-        return `Device Action - ${this.action.state?.id}`;
+      case this.action instanceof DeviceAction: {
+        const type = this.action.state?.forLight ? 'Lamp' : 'Device';
+        const deviceName =
+          this.hardwareConfig.devices.lamps[this.action.state?.id]?.name;
+        return `${type} Action - ${deviceName}`;
+      }
       default:
         return 'Action';
     }
@@ -47,6 +52,23 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
     switch (true) {
       case this.action instanceof DataAction: {
         this.addInPort(this.action.expression ?? '(Enter expression)');
+        break;
+      }
+      case this.action instanceof DeviceAction: {
+        if (this.action.state?.forLight) {
+          switch (this.action?.state.lightState) {
+            case LightState.ON:
+              this.addInPort('On');
+              break;
+            case LightState.OFF:
+              this.addInPort('Off');
+              break;
+            case 'BLINK' as never:
+              this.addInPort(`Blink at ${this.action.state.blinkRate}ms`);
+          }
+        }
+
+        break;
       }
     }
   }

@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   DesiredOutputState,
+  HardwareConfig,
+  PlayfieldLamp,
 } from '@mopopinball/engine';
 import {
   MatButtonToggleChange,
@@ -26,14 +28,27 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   templateUrl: './lamp.component.html',
   styleUrl: './lamp.component.scss',
 })
-export class LampComponent {
+export class LampComponent implements OnInit {
   @Input() state: DesiredOutputState;
+  @Input() hardwareConfig: HardwareConfig;
+  @Output() lampChange = new EventEmitter<DesiredOutputState>();
+  number: number;
+  name: string;
+
+  ngOnInit(): void {
+    this.number = this.hardwareConfig.devices.lamps[this.state.id].number;
+    this.name =  this.hardwareConfig.devices.lamps[this.state.id].name;
+  }
 
   setInitialState(evt: MatButtonToggleChange): void {
     this.state.setInitialState(evt.value);
+    this.lampChange.emit(this.state);
+
+    
   }
 
   setBlinkState(evt): void {
     this.state.blinkRate = parseInt(evt.target.value);
+    this.lampChange.emit(this.state);
   }
 }

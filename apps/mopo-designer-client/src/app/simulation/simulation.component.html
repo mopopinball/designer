@@ -1,0 +1,19 @@
+Backbox
+
+<div class="backbox"></div>
+
+
+Playfield
+<div class="playfield">
+  <mat-icon
+    *ngFor="let device of outputDevices"
+    [matBadge]="device.number"
+    cdkDragBoundary=".playfield"
+    cdkDrag
+    [cdkDragFreeDragPosition]="device.position"
+    [cdkDragData]="device"
+    [style.color]="device.isOn ? 'yellow' : 'grey'"
+    (cdkDragEnded)="onDropped($event)"
+    >{{ device.icon }}</mat-icon
+  >
+</div>

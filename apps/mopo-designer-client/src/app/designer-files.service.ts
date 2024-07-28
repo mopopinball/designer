@@ -46,6 +46,13 @@ export class DesignerFilesService {
       const schemaData = JSON.parse(this.files.get(fileName));
       const engine = RuleEngine.load(schemaData);
       this.selectedFile = fileName;
+
+      if (!engine.designer) {
+        engine.designer = {
+          outputDevices: [],
+        };
+      }
+
       this.fileLoaded.next(engine);
 
       this.save(fileName, engine);

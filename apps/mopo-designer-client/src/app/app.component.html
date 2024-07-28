@@ -5,30 +5,50 @@
   [allEngines]="allEngines"
   [selectedEngine]="selectedEngine"
   (selectedEngineChanged)="setEngine($event)"
+  (run)="drawer.open()"
 ></mopo-toolbar>
 
-<mat-sidenav-container>
+<mat-sidenav-container [hasBackdrop]="false">
+  <mat-sidenav #drawer mode="push" position="start" class="simulation">
+    <div class="sim">
+      <div class="close">
+        <button mat-button (click)="drawer.close()">X</button>
+      </div>
+      <mopo-simulation
+        [hardwareConfig]="hardwareConfig"
+        [rootEngine]="rootEngine"
+      ></mopo-simulation>
+    </div>
+  </mat-sidenav>
   <mat-sidenav mode="side" opened position="end">
     <mopo-rule-engine-properties
-      *ngIf="!selectedTrigger"
+      *ngIf="!selectedTrigger && !selectedAction"
       [rootEngine]="rootEngine"
       [selectedEngine]="selectedEngine"
+      [hardwareConfig]="hardwareConfig"
       (addChild)="addChild()"
       (removeEngine)="removeEngine()"
     ></mopo-rule-engine-properties>
-    <div *ngIf="selectedTrigger; instanceof: SwitchTrigger">
-      <mopo-switch-trigger-properties
-        [hardwareConfig]="hardwareConfig"
-        [switchTrigger]="selectedTrigger | as : SwitchTrigger"
-        (triggerChange)="onTriggerDetailsChange()"
-      ></mopo-switch-trigger-properties>
-    </div>
+    <mopo-switch-trigger-properties
+      *ngIf="selectedTrigger; instanceof: SwitchTrigger"
+      [hardwareConfig]="hardwareConfig"
+      [switchTrigger]="selectedTrigger | as : SwitchTrigger"
+      (triggerChange)="onTriggerDetailsChange()"
+    ></mopo-switch-trigger-properties>
+    <mopo-device-action-properties
+      *ngIf="selectedAction?.type === 'device'"
+      [hardwareConfig]="hardwareConfig"
+      [deviceAction]="selectedAction | as : DeviceAction"
+      (actionChange)="onActionDetailsChange()"
+    ></mopo-device-action-properties>
+    <div *ngIf="selectedAction?.type === 'data'">data action props</div>
   </mat-sidenav>
   <mat-sidenav-content>
     <mopo-triggers
       [engine]="selectedEngine"
       [hardwareConfig]="hardwareConfig"
       (triggerChanged)="onTriggerChanged($event)"
+      (actionChanged)="onActionChanged($event)"
     ></mopo-triggers>
   </mat-sidenav-content>
 </mat-sidenav-container>

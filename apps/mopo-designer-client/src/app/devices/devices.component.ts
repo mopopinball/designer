@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { DesiredOutputState, RuleEngine } from '@mopopinball/engine';
+import { DesiredOutputState, HardwareConfig, RuleEngine } from '@mopopinball/engine';
 import { MatIconModule } from '@angular/material/icon';
 import { LampComponent } from '../lamp/lamp.component';
 
@@ -23,6 +23,7 @@ import { LampComponent } from '../lamp/lamp.component';
 })
 export class DevicesComponent implements OnInit {
   @Input() selectedEngine: RuleEngine;
+  @Input() hardwareConfig: HardwareConfig;
 
   deviceSearchTerm = '';
   lamps: DesiredOutputState[] = [];
