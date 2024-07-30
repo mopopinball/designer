@@ -39,7 +39,8 @@ export class TriggerNodeModel<T extends Trigger> extends MopoNodeModel<T> {
     switch (true) {
       case this.trigger instanceof SwitchTrigger: {
         if (this.trigger.switchId) {
-          const swName = this.hardwareConfig.devices.switches[this.trigger.switchId].name;
+          const sw = this.hardwareConfig.devices.switches[this.trigger.switchId];
+          const swName = `${sw.name} (#${sw.number})`;
           if (this.trigger.holdIntervalMs) {
             this.addOutPort(
               `${swName} (${this.trigger.holdIntervalMs}ms)`

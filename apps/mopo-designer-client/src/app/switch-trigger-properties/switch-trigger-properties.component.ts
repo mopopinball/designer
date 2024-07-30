@@ -27,6 +27,8 @@ export class SwitchTriggerPropertiesComponent implements OnInit {
 
   switches: { label: string; value: string }[] = [];
 
+  swNumber: number;
+
   ngOnInit(): void {
     this.switches = Array.from(
       Object.entries(this.hardwareConfig.devices.switches)
@@ -36,9 +38,19 @@ export class SwitchTriggerPropertiesComponent implements OnInit {
         value: entry[0],
       };
     });
+
+    this.swNumber =
+      this.hardwareConfig.devices.switches[this.switchTrigger.switchId].number;
   }
 
   onSelectionChange(): void {
+    this.swNumber =
+      this.hardwareConfig.devices.switches[this.switchTrigger.switchId].number;
+
+    if (!this.switchTrigger.holdIntervalMs) {
+      this.switchTrigger.holdIntervalMs = undefined;
+    }
+
     this.triggerChange.emit();
   }
 }

@@ -2,7 +2,6 @@ Backbox
 
 <div class="backbox"></div>
 
-
 Playfield
 <div class="playfield">
   <mat-icon
@@ -16,4 +15,19 @@ Playfield
     (cdkDragEnded)="onDropped($event)"
     >{{ device.icon }}</mat-icon
   >
+
+  <button
+    mat-icon-button
+    *ngFor="let sw of inputDevices"
+    cdkDragBoundary=".playfield"
+    cdkDrag
+    [cdkDragFreeDragPosition]="sw.position"
+    [cdkDragData]="sw"
+    (cdkDragEnded)="onDropped($event)"
+    (click)="onPlayfiledButtonPress(sw.id)"
+  >
+    <mat-icon [matBadge]="sw.number">{{ sw.icon }}</mat-icon>
+  </button>
 </div>
+
+Active Engines

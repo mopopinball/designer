@@ -50,6 +50,7 @@ export class DesignerFilesService {
       if (!engine.designer) {
         engine.designer = {
           outputDevices: [],
+          inputDevices: [],
         };
       }
 
