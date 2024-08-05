@@ -31,3 +31,9 @@ Playfield
 </div>
 
 Active Engines
+
+<mat-chip-set class="active-engines">
+  <mat-chip *ngFor="let engine of activeEngines" (click)="selectedEngineChanged.emit(engine)">
+    {{ engine.id }}
+  </mat-chip>
+</mat-chip-set>

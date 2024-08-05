@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -22,7 +22,7 @@ import { GameClock } from '@mopopinball/engine/dist/src/system/game-clock';
 import { OutputDevice } from '@mopopinball/engine/dist/src/system/devices/output-device';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SimulationOutputDevice } from './simulation-output-device';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import {MatChipsModule} from '@angular/material/chips';
 import { SimulationInputDevice } from './simulation-input.device';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -35,6 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatBadgeModule,
     CdkDrag,
     MatButtonModule,
+    MatChipsModule
   ],
   templateUrl: './simulation.component.html',
   styleUrl: './simulation.component.scss',
@@ -42,6 +43,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class SimulationComponent implements OnInit, OnDestroy {
   @Input() hardwareConfig: HardwareConfig;
   @Input() rootEngine: RuleEngine;
+  @Output() selectedEngineChanged = new EventEmitter<RuleEngine>();
 
   clock: GameClock = GameClock.getInstance();
 
@@ -58,6 +60,9 @@ export class SimulationComponent implements OnInit, OnDestroy {
   outputDevices: SimulationOutputDevice[] = [];
 
   inputDevices: SimulationInputDevice[] = [];
+
+  // could be a tree in the future.
+  activeEngines: RuleEngine[] = [];
 
   ngOnInit(): void {
     this.setup();
@@ -116,6 +121,8 @@ export class SimulationComponent implements OnInit, OnDestroy {
           )
       )
     );
+
+    this.rootEngine.start();
   }
 
   private getSavedOutputDevicePosition(
@@ -161,6 +168,9 @@ export class SimulationComponent implements OnInit, OnDestroy {
   }
 
   private update(): void {
+    this.activeEngines = Array.from(this.rootEngine.getAllEngines().values())
+      .filter((e) => e.active);
+
     // compute data once
     const data = this.rootEngine.getData();
 

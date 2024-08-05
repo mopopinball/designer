@@ -13,3 +13,7 @@
   height: 600px;
   @include simulation-part();
 }
+
+.active-engines {
+  @include simulation-part();
+}

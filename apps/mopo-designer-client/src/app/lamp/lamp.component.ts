@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   DesiredOutputState,
   HardwareConfig,
+  LightState,
   PlayfieldLamp,
 } from '@mopopinball/engine';
 import {
@@ -37,14 +38,17 @@ export class LampComponent implements OnInit {
 
   ngOnInit(): void {
     this.number = this.hardwareConfig.devices.lamps[this.state.id].number;
-    this.name =  this.hardwareConfig.devices.lamps[this.state.id].name;
+    this.name = this.hardwareConfig.devices.lamps[this.state.id].name;
   }
 
   setInitialState(evt: MatButtonToggleChange): void {
     this.state.setInitialState(evt.value);
-    this.lampChange.emit(this.state);
+    if (evt.value === LightState.ON || evt.value === LightState.OFF) {
+      this.state.blinkRate = null;
+      this.state.styles = [];
+    }
 
-    
+    this.lampChange.emit(this.state);
   }
 
   setBlinkState(evt): void {

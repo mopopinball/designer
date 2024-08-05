@@ -17,6 +17,7 @@
       <mopo-simulation
         [hardwareConfig]="hardwareConfig"
         [rootEngine]="rootEngine"
+        (selectedEngineChanged)="setEngine($event)"
       ></mopo-simulation>
     </div>
   </mat-sidenav>
