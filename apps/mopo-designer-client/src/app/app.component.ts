@@ -59,6 +59,8 @@ import { SimulationComponent } from './simulation/simulation.component';
 import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/device-action';
 import { DeviceActionPropertiesComponent } from './device-action-properties/device-action-properties.component';
 import { DataAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/data-action';
+import { StateActionPropertiesComponent } from './state-action-properties/state-action-properties.component';
+import { StateAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/state-action';
 
 @Component({
   standalone: true,
@@ -95,6 +97,7 @@ import { DataAction } from '@mopopinball/engine/dist/src/system/rule-engine/acti
     AsPipe,
     SimulationComponent,
     DeviceActionPropertiesComponent,
+    StateActionPropertiesComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -109,6 +112,7 @@ export class AppComponent implements OnInit {
 
   SwitchTrigger: SwitchTrigger;
   DeviceAction: DeviceAction;
+  StateAction: StateAction;
   DataAction: DataAction;
 
   rootEngine: RuleEngine;
@@ -155,6 +159,8 @@ export class AppComponent implements OnInit {
 
   setEngine(engine: RuleEngine): void {
     this.selectedEngine = engine;
+    this.selectedAction = null;
+    this.selectedTrigger = null;
   }
 
   addChild(): void {
@@ -177,7 +183,11 @@ export class AppComponent implements OnInit {
         return;
       }
 
-      const newEngine = new RuleEngine(result, false, this.selectedEngine);
+      const newEngine = this.engineBuilder.create(
+        result,
+        this.selectedEngine,
+        this.hardwareConfig
+      );
       this.selectedEngine.children.push(newEngine);
 
       this.updateAllEngines();

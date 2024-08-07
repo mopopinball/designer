@@ -42,6 +42,13 @@
       [deviceAction]="selectedAction | as : DeviceAction"
       (actionChange)="onActionDetailsChange()"
     ></mopo-device-action-properties>
+    <mopo-state-action-properties
+      *ngIf="selectedAction?.type === 'state'"
+      [hardwareConfig]="hardwareConfig"
+      [rootEngine]="rootEngine"
+      [stateAction]="selectedAction | as : StateAction"
+      (actionChange)="onActionDetailsChange()"
+    ></mopo-state-action-properties>
     <div *ngIf="selectedAction?.type === 'data'">data action props</div>
   </mat-sidenav>
   <mat-sidenav-content>

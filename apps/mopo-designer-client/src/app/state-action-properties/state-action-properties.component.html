@@ -1,0 +1,38 @@
+<mopo-properties title="State Action Properties">
+  <div properties class="properties">
+    <div>
+      <mat-form-field>
+        <mat-label>Start State</mat-label>
+        <mat-select [(ngModel)]="stateAction.startTargetId" (selectionChange)="onSelectionChange()">
+          <mat-option *ngFor="let engine of engines" [value]="engine.id">
+            {{ engine.id }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button
+        mat-button
+        (click)="stateAction.startTargetId = null"
+        [disabled]="!stateAction.startTargetId"
+      >
+        Clear
+      </button>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Stop State</mat-label>
+        <mat-select [(ngModel)]="stateAction.stopTargetId" (selectionChange)="onSelectionChange()">
+          <mat-option *ngFor="let engine of engines" [value]="engine.id">
+            {{ engine.id }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button
+        mat-button
+        (click)="stateAction.stopTargetId = null"
+        [disabled]="!stateAction.stopTargetId"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+</mopo-properties>

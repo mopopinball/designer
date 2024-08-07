@@ -68,7 +68,7 @@ export class ToolbarComponent {
         return;
       }
 
-      const newEngine = this.engineBuilder.create(this.hardwareConfig);
+      const newEngine = this.engineBuilder.create('root', null, this.hardwareConfig);
       this.files.save(result, newEngine);
       this.files.load(this.files.selectedFile);
     });

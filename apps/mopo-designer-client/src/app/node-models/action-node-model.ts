@@ -8,6 +8,7 @@ import { DataAction } from '@mopopinball/engine/dist/src/system/rule-engine/acti
 import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/device-action';
 import { MopoNodeModel } from './mopo-node-model';
 import { HardwareConfig, Light, LightState } from '@mopopinball/engine';
+import { StateAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/state-action';
 
 export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
   model: A;
@@ -42,6 +43,9 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
           this.hardwareConfig.devices.lamps[this.action.state?.id]?.name;
         return `${type} Action - ${deviceName}`;
       }
+      case this.action instanceof StateAction: {
+        return 'State Action';
+      }
       default:
         return 'Action';
     }
@@ -69,6 +73,19 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
         }
 
         break;
+      }
+      case this.action instanceof StateAction: {
+        if (this.action.startTargetId && this.action.stopTargetId) {
+          this.addInPort(
+            `Start ${this.action.startTargetId}; Stop ${this.action.stopTargetId}`
+          );
+        } else if (this.action.startTargetId) {
+          this.addInPort(`Start ${this.action.startTargetId}`);
+        } else if (this.action.stopTargetId) {
+          this.addInPort(`Stop ${this.action.stopTargetId}`);
+        } else {
+          this.addInPort(`(Select Start/Stop states)`);
+        }
       }
     }
   }

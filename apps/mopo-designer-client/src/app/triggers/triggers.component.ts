@@ -33,6 +33,7 @@ import {
 } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/device-action';
+import { StateAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/state-action';
 import { MatIconModule } from '@angular/material/icon';
 import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/designer-attributes';
 
@@ -95,6 +96,11 @@ export class TriggersComponent implements OnInit, OnChanges {
   addDeviceAction(): void {
     const deviceAction = new DeviceAction(null);
     this.addAction(deviceAction);
+  }
+
+  addStateAction(): void {
+    const stateAction = new StateAction(null, null);
+    this.addAction(stateAction);
   }
 
   private addAction(action: Action): void {

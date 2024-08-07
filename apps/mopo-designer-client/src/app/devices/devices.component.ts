@@ -1,9 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { DesiredOutputState, HardwareConfig, RuleEngine } from '@mopopinball/engine';
+import {
+  DesiredOutputState,
+  HardwareConfig,
+  RuleEngine,
+} from '@mopopinball/engine';
 import { MatIconModule } from '@angular/material/icon';
 import { LampComponent } from '../lamp/lamp.component';
 
@@ -21,7 +31,7 @@ import { LampComponent } from '../lamp/lamp.component';
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',
 })
-export class DevicesComponent implements OnInit {
+export class DevicesComponent implements OnInit, OnChanges {
   @Input() selectedEngine: RuleEngine;
   @Input() hardwareConfig: HardwareConfig;
 
@@ -30,6 +40,12 @@ export class DevicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchDevices();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes?.['selectedEngine']) {
+      this.searchDevices();
+    }
   }
 
   clearDeviceSearch(): void {

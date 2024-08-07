@@ -17,18 +17,18 @@ export class EngineBuilderService {
 
   rootEngine: RuleEngine;
 
-  create(hardwareConfig: HardwareConfig): RuleEngine {
-    const root = new RuleEngine('root', true, null);
-    root.name = 'Untitled New Game'
+  create(id: string, parent: RuleEngine, hardwareConfig: HardwareConfig): RuleEngine {
+    const engine = new RuleEngine(id, id === 'root', parent);
+    engine.name = id === 'root' ? 'Untitled New Game' : 'Untitled Engine';
 
     for(const entry of Object.entries(hardwareConfig.devices.lamps)) {
       const value: HardwareLampSchema | HardwareCoilSchema = entry[1];
       if(value.role === LampRole.LAMP) {
-        this.addDevice(root, entry[0]);
+        this.addDevice(engine, entry[0]);
       }
     }
 
-    return root;
+    return engine;
   }
 
   addDevice(engine: RuleEngine, id: string): void {
