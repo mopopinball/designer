@@ -24,6 +24,7 @@ export class SwitchTriggerPropertiesComponent implements OnInit {
   @Input() hardwareConfig: HardwareConfig;
   @Input() switchTrigger: SwitchTrigger;
   @Output() triggerChange = new EventEmitter();
+  @Output() removeTrigger = new EventEmitter();
 
   switches: { label: string; value: string }[] = [];
 

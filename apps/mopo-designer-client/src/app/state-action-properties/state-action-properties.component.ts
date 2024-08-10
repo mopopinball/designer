@@ -30,6 +30,7 @@ export class StateActionPropertiesComponent implements OnInit {
   @Input() rootEngine: RuleEngine;
 
   @Output() actionChange = new EventEmitter();
+  @Output() removeAction = new EventEmitter();
 
   engines: RuleEngine[] = [];
 

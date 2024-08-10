@@ -1,15 +1,7 @@
-<mopo-properties title="{{ selectedEngine.id }} Properties">
+<mopo-properties title="{{ selectedEngine.id }} Properties" (removeEngineRule)="removeEngine.emit()">
   <div buttons class="property-buttons">
     <button mat-raised-button color="primary" (click)="onAddChild()">
       Add Child
-    </button>
-    <button
-      mat-raised-button
-      color="warn"
-      (click)="onRemoveEngine()"
-      [disabled]="selectedEngine === rootEngine"
-    >
-      Delete {{ selectedEngine.id }}
     </button>
   </div>
   <mat-accordion properties *ngIf="selectedEngine">

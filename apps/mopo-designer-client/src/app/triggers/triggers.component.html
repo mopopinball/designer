@@ -4,15 +4,6 @@
     <button mat-menu-item (click)="addSwitchTrigger()">Switch Trigger</button>
   </mat-menu>
 
-  <button
-    mat-button
-    color="warn"
-    [disabled]="!selectedTrigger"
-    (click)="deleteSelectedTrigger()"
-  >
-    Delete Trigger
-  </button>
-
   <button mat-button [matMenuTriggerFor]="actionmenu">Add Action</button>
   <mat-menu #actionmenu="matMenu">
     <button mat-menu-item (click)="addDataAction()">
@@ -25,17 +16,9 @@
       <mat-icon>schema</mat-icon>State Action
     </button>
   </mat-menu>
-
-  <button
-    mat-button
-    color="warn"
-    [disabled]="!selectedAction"
-    (click)="deleteSelectedAction()"
-  >
-    Delete Action
-  </button>
 </mat-toolbar>
 
+<div class="watermark">{{ engine.id }} </div>
 <div style="display: flex">
   <mopo-react-diagram [diagramEngine]="diagramEngine"></mopo-react-diagram>
 </div>

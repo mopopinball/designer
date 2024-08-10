@@ -35,12 +35,14 @@
       [hardwareConfig]="hardwareConfig"
       [switchTrigger]="selectedTrigger | as : SwitchTrigger"
       (triggerChange)="onTriggerDetailsChange()"
+      (removeTrigger)="removeTrigger()"
     ></mopo-switch-trigger-properties>
     <mopo-device-action-properties
       *ngIf="selectedAction?.type === 'device'"
       [hardwareConfig]="hardwareConfig"
       [deviceAction]="selectedAction | as : DeviceAction"
       (actionChange)="onActionDetailsChange()"
+      (removeAction)="removeAction()"
     ></mopo-device-action-properties>
     <mopo-state-action-properties
       *ngIf="selectedAction?.type === 'state'"
@@ -48,6 +50,7 @@
       [rootEngine]="rootEngine"
       [stateAction]="selectedAction | as : StateAction"
       (actionChange)="onActionDetailsChange()"
+      (removeAction)="removeAction()"
     ></mopo-state-action-properties>
     <div *ngIf="selectedAction?.type === 'data'">data action props</div>
   </mat-sidenav>

@@ -1,7 +1,10 @@
 <mat-toolbar>
   <span>{{ title }}</span>
   <span class="example-spacer"></span>
-  <ng-content select="[buttons]"></ng-content>
+  <div class="buttons">
+    <ng-content select="[buttons]"></ng-content>
+    <button mat-raised-button color="warn" (click)="onDelete()">Delete</button>
+  </div>
 </mat-toolbar>
 
 <div class="prop-content">

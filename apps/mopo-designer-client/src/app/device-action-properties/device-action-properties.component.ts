@@ -35,6 +35,7 @@ export class DeviceActionPropertiesComponent implements OnInit {
   @Input() hardwareConfig: HardwareConfig;
   @Input() deviceAction: DeviceAction;
   @Output() actionChange = new EventEmitter();
+  @Output() removeAction = new EventEmitter();
 
   devices: { label: string; value: string }[] = [];
 

@@ -27,10 +27,6 @@ import { TriggerNodeModel } from '../node-models/trigger-node-model';
 import { ActionNodeModel } from '../node-models/action-node-model';
 import { Action } from '@mopopinball/engine/dist/src/system/rule-engine/actions/action';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  ConfirmDialogComponent,
-  ConfirmDialogData,
-} from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/device-action';
 import { StateAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/state-action';
@@ -126,7 +122,7 @@ export class TriggersComponent implements OnInit, OnChanges {
     };
   }
 
-  render(): void {
+  public render(): void {
     if (!this.diagramEngine) {
       return;
     }
@@ -224,64 +220,5 @@ export class TriggersComponent implements OnInit, OnChanges {
   private selectAction(action: Action): void {
     this.selectedAction = action;
     this.actionChanged.emit(action);
-  }
-
-  deleteSelectedTrigger(): void {
-    const dialogRef = this.dialog.open<
-      ConfirmDialogComponent,
-      ConfirmDialogData
-    >(ConfirmDialogComponent, {
-      data: {
-        title: `Delete Confirm`,
-        body: `Are you sure you want to delete the trigger "${this.selectedTrigger}"?`,
-        confirmAction: 'Delete',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!result) {
-        return;
-      }
-
-      const index = this.engine.triggers.indexOf(this.selectedTrigger as never);
-      this.engine.triggers.splice(index, 1);
-      this.selectedTrigger = null;
-      this.render();
-    });
-  }
-
-  deleteSelectedAction(): void {
-    const dialogRef = this.dialog.open<
-      ConfirmDialogComponent,
-      ConfirmDialogData
-    >(ConfirmDialogComponent, {
-      data: {
-        title: `Delete Confirm`,
-        body: `Are you sure you want to delete the action "${this.selectedAction}"?`,
-        confirmAction: 'Delete',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!result) {
-        return;
-      }
-
-      const unassignedIndex = this.unassignedActions.indexOf(
-        this.selectedAction
-      );
-      if (unassignedIndex >= 0) {
-        this.unassignedActions.splice(unassignedIndex, 1);
-      }
-
-      for (const trigger of this.engine.triggers) {
-        const index = trigger.actions.indexOf(this.selectedAction as never);
-        if (index >= 0) {
-          trigger.actions.splice(index, 1);
-        }
-      }
-      this.selectedAction = null;
-      this.render();
-    });
   }
 }

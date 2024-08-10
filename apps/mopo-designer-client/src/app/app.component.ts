@@ -243,4 +243,65 @@ export class AppComponent implements OnInit {
   onActionDetailsChange(): void {
     this.triggersComponent.render();
   }
+
+  removeTrigger(): void {
+    const dialogRef = this.dialog.open<
+      ConfirmDialogComponent,
+      ConfirmDialogData
+    >(ConfirmDialogComponent, {
+      data: {
+        title: `Delete Confirm`,
+        body: `Are you sure you want to delete the trigger "${this.selectedTrigger}"?`,
+        confirmAction: 'Delete',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+
+      const index = this.selectedEngine.triggers.indexOf(
+        this.selectedTrigger as never
+      );
+      this.selectedEngine.triggers.splice(index, 1);
+      this.selectedTrigger = null;
+      this.onTriggerDetailsChange();
+    });
+  }
+
+  removeAction(): void {
+    const dialogRef = this.dialog.open<
+      ConfirmDialogComponent,
+      ConfirmDialogData
+    >(ConfirmDialogComponent, {
+      data: {
+        title: `Delete Confirm`,
+        body: `Are you sure you want to delete the action "${this.selectedAction}"?`,
+        confirmAction: 'Delete',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+
+      // const unassignedIndex = this.unassignedActions.indexOf(
+      //   this.selectedAction
+      // );
+      // if (unassignedIndex >= 0) {
+      //   this.unassignedActions.splice(unassignedIndex, 1);
+      // }
+
+      for (const trigger of this.selectedEngine.triggers) {
+        const index = trigger.actions.indexOf(this.selectedAction as never);
+        if (index >= 0) {
+          trigger.actions.splice(index, 1);
+        }
+      }
+      this.selectedAction = null;
+      this.onActionDetailsChange();
+    });
+  }
 }

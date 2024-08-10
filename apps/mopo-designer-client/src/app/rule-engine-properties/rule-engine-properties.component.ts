@@ -56,16 +56,12 @@ export class RuleEnginePropertiesComponent {
   @Input() selectedEngine: RuleEngine;
   @Input() hardwareConfig: HardwareConfig;
   @Output() addChild = new EventEmitter<void>();
-  @Output() removeEngine = new EventEmitter<void>();
+  @Output() removeEngine = new EventEmitter();
 
   step = 0;
 
   onAddChild(): void {
     this.addChild.emit();
-  }
-
-  onRemoveEngine(): void {
-    this.removeEngine.emit();
   }
 
   setStep(index: number) {
