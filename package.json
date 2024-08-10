@@ -19,7 +19,7 @@
     "@angular/platform-browser": "~17.3.0",
     "@angular/platform-browser-dynamic": "~17.3.0",
     "@angular/router": "~17.3.0",
-    "@mopopinball/engine": "^1.11.0",
+    "@mopopinball/engine": "^1.12.0",
     "@nx/angular": "19.0.3",
     "@projectstorm/react-diagrams": "^7.0.4",
     "@types/react": "^18.3.3",

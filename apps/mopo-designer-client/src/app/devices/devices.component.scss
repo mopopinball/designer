@@ -1,4 +1,11 @@
-.lamps {
+.devices {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.lamps,
+.coils {
   display: flex;
   flex-direction: column;
   gap: 1em;

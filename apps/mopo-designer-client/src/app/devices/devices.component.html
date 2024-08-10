@@ -17,11 +17,20 @@
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
-  <div class="lamps">
-    <mopo-lamp
-      *ngFor="let lamp of this.lamps"
-      [state]="lamp"
-      [hardwareConfig]="hardwareConfig"
-    ></mopo-lamp>
+  <div class="devices">
+    <div class="lamps">
+      <mopo-lamp
+        *ngFor="let lamp of this.lamps"
+        [state]="lamp"
+        [hardwareConfig]="hardwareConfig"
+      ></mopo-lamp>
+    </div>
+    <div class="coils">
+      <mopo-coil
+        *ngFor="let coil of this.coils"
+        [state]="coil"
+        [hardwareConfig]="hardwareConfig"
+      ></mopo-coil>
+    </div>
   </div>
 </div>

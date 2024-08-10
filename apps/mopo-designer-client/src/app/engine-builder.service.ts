@@ -8,31 +8,58 @@ import { Injectable } from '@angular/core';
 // import { DesiredOutputState } from '@mopopinball/engine/src/system/rule-engine/desired-output-state';
 // import { RuleEngine } from '@mopopinball/engine/src/system/rule-engine/rule-engine';
 
-import { RuleEngine, HardwareConfig, LampRole, HardwareLampSchema, HardwareCoilSchema, DesiredOutputState, LightState, OutputDeviceType } from '@mopopinball/engine'
+import {
+  RuleEngine,
+  HardwareConfig,
+  LampRole,
+  HardwareLampSchema,
+  HardwareCoilSchema,
+  DesiredOutputState,
+  LightState,
+  OutputDeviceType,
+  CoilsSchema,
+} from '@mopopinball/engine';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EngineBuilderService {
-
   rootEngine: RuleEngine;
 
-  create(id: string, parent: RuleEngine, hardwareConfig: HardwareConfig): RuleEngine {
+  create(
+    id: string,
+    parent: RuleEngine,
+    hardwareConfig: HardwareConfig
+  ): RuleEngine {
     const engine = new RuleEngine(id, id === 'root', parent);
     engine.name = id === 'root' ? 'Untitled New Game' : 'Untitled Engine';
 
-    for(const entry of Object.entries(hardwareConfig.devices.lamps)) {
+    for (const entry of Object.entries(hardwareConfig.devices.lamps)) {
       const value: HardwareLampSchema | HardwareCoilSchema = entry[1];
-      if(value.role === LampRole.LAMP) {
-        this.addDevice(engine, entry[0]);
+      if (value.role === LampRole.LAMP) {
+        this.addLightDevice(engine, entry[0]);
       }
+    }
+
+    for (const entry of Object.entries(hardwareConfig.devices.coils)) {
+      this.addCoilDevice(engine, entry[0]);
     }
 
     return engine;
   }
 
-  addDevice(engine: RuleEngine, id: string): void {
-    engine.devices.set(id, new DesiredOutputState(id, OutputDeviceType.LIGHT, LightState.OFF))
+  addLightDevice(engine: RuleEngine, id: string): void {
+    engine.devices.set(
+      id,
+      new DesiredOutputState(id, OutputDeviceType.LIGHT, LightState.OFF)
+    );
+  }
+
+  addCoilDevice(engine: RuleEngine, id: string): void {
+    engine.devices.set(
+      id,
+      new DesiredOutputState(id, OutputDeviceType.COIL, false)
+    );
   }
 
   getAllEngineIds(): string[] {

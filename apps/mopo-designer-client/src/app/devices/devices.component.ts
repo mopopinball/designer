@@ -16,6 +16,7 @@ import {
 } from '@mopopinball/engine';
 import { MatIconModule } from '@angular/material/icon';
 import { LampComponent } from '../lamp/lamp.component';
+import { CoilComponent } from '../coil/coil.component';
 
 @Component({
   selector: 'mopo-devices',
@@ -27,6 +28,7 @@ import { LampComponent } from '../lamp/lamp.component';
     FormsModule,
     MatIconModule,
     LampComponent,
+    CoilComponent,
   ],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',
@@ -37,6 +39,7 @@ export class DevicesComponent implements OnInit, OnChanges {
 
   deviceSearchTerm = '';
   lamps: DesiredOutputState[] = [];
+  coils: DesiredOutputState[] = [];
 
   ngOnInit(): void {
     this.searchDevices();
@@ -55,6 +58,14 @@ export class DevicesComponent implements OnInit, OnChanges {
 
   searchDevices(): void {
     this.lamps = Array.from(this.selectedEngine.devices.values())
+      .filter((dos) => dos.forLight)
+      .filter((l: DesiredOutputState) =>
+        l.id.toLowerCase().includes(this.deviceSearchTerm.toLowerCase())
+      )
+      .sort((a, b) => a.id.localeCompare(b.id));
+
+    this.coils = Array.from(this.selectedEngine.devices.values())
+      .filter((dos) => dos.forCoil)
       .filter((l: DesiredOutputState) =>
         l.id.toLowerCase().includes(this.deviceSearchTerm.toLowerCase())
       )
