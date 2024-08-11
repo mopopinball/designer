@@ -34,18 +34,26 @@ export class EngineBuilderService {
     const engine = new RuleEngine(id, id === 'root', parent);
     engine.name = id === 'root' ? 'Untitled New Game' : 'Untitled Engine';
 
+    this.resetEngineDevices(engine, hardwareConfig);
+
+    return engine;
+  }
+
+  resetEngineDevices(engine: RuleEngine, hardwareConfig: HardwareConfig): void {
+    engine.devices.clear();
+
     for (const entry of Object.entries(hardwareConfig.devices.lamps)) {
       const value: HardwareLampSchema | HardwareCoilSchema = entry[1];
       if (value.role === LampRole.LAMP) {
         this.addLightDevice(engine, entry[0]);
+      } else if (value.role === LampRole.COIL) {
+        this.addCoilDevice(engine, entry[0]);
       }
     }
 
     for (const entry of Object.entries(hardwareConfig.devices.coils)) {
       this.addCoilDevice(engine, entry[0]);
     }
-
-    return engine;
   }
 
   addLightDevice(engine: RuleEngine, id: string): void {

@@ -17,6 +17,14 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { LampComponent } from '../lamp/lamp.component';
 import { CoilComponent } from '../coil/coil.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+} from '../confirm-dialog/confirm-dialog.component';
+import { EngineBuilderService } from '../engine-builder.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'mopo-devices',
@@ -29,6 +37,9 @@ import { CoilComponent } from '../coil/coil.component';
     MatIconModule,
     LampComponent,
     CoilComponent,
+    MatButtonModule,
+    MatDialogModule,
+    MatToolbarModule,
   ],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',
@@ -40,6 +51,11 @@ export class DevicesComponent implements OnInit, OnChanges {
   deviceSearchTerm = '';
   lamps: DesiredOutputState[] = [];
   coils: DesiredOutputState[] = [];
+
+  constructor(
+    public dialog: MatDialog,
+    private readonly builder: EngineBuilderService
+  ) {}
 
   ngOnInit(): void {
     this.searchDevices();
@@ -70,5 +86,27 @@ export class DevicesComponent implements OnInit, OnChanges {
         l.id.toLowerCase().includes(this.deviceSearchTerm.toLowerCase())
       )
       .sort((a, b) => a.id.localeCompare(b.id));
+  }
+
+  resetDevices(): void {
+    const dialogRef = this.dialog.open<
+      ConfirmDialogComponent,
+      ConfirmDialogData
+    >(ConfirmDialogComponent, {
+      data: {
+        title: `Reset ${this.selectedEngine.id}'s devices?`,
+        body: `Are you sure you want to reset this engine's devices?`,
+        confirmAction: 'Reset',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+
+      this.builder.resetEngineDevices(this.selectedEngine, this.hardwareConfig);
+      this.searchDevices();
+    });
   }
 }

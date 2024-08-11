@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DesiredOutputState, HardwareCoilSchema, HardwareConfig } from '@mopopinball/engine';
+import {
+  DesiredOutputState,
+  HardwareCoilSchema,
+  HardwareConfig,
+} from '@mopopinball/engine';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,9 +30,18 @@ export class CoilComponent implements OnInit {
   @Input() hardwareConfig: HardwareConfig;
   @Output() coilChange = new EventEmitter<DesiredOutputState>();
 
+  dvivenBy: 'Coil' | 'Lamp';
   coil: HardwareCoilSchema;
 
   ngOnInit(): void {
     this.coil = this.hardwareConfig.devices.coils[this.state.id];
+    this.dvivenBy = 'Coil';
+    // some coils are driven by lamps. If this is the case load it.
+    if (!this.coil) {
+      this.coil = this.hardwareConfig.devices.lamps[
+        this.state.id
+      ] as HardwareCoilSchema;
+      this.dvivenBy = 'Lamp';
+    }
   }
 }
