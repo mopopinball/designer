@@ -1,19 +1,13 @@
 .device-list {
   margin-top: 1em;
+  display: flex;
+  flex-direction: column;
 }
 
 .devices {
   display: flex;
   flex-direction: column;
   gap: 1em;
-}
-
-.lamps,
-.coils {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  align-items: flex-start;
 }
 
 .example-spacer {
