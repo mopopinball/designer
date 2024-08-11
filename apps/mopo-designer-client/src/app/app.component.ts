@@ -129,7 +129,15 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.files.fileLoaded.subscribe((engine) => this.loadEngine(engine));
+    this.files.fileLoaded.subscribe(([rootEngine, selectedEngineId]) => {
+      this.loadEngine(rootEngine);
+      const prevSelectedEngine = Array.from(
+        this.rootEngine.getAllEngines().values()
+      ).find((e) => e.id === selectedEngineId);
+      if (prevSelectedEngine) {
+        this.setEngine(prevSelectedEngine);
+      }
+    });
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -161,6 +169,8 @@ export class AppComponent implements OnInit {
     this.selectedEngine = engine;
     this.selectedAction = null;
     this.selectedTrigger = null;
+
+    this.files.setSelectedEngineId(engine.id);
   }
 
   addChild(): void {

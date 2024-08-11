@@ -2,21 +2,31 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { RuleEngine } from '@mopopinball/engine';
 import { BehaviorSubject } from 'rxjs';
 
+type Storage = {
+  files: Record<string, string>;
+  selectedFile: string;
+  selectedEngineId: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class DesignerFilesService {
   files: Map<string, string> = new Map();
   selectedFile: string;
+  selectedEngineId: string;
 
-  fileLoaded = new BehaviorSubject<RuleEngine>(null);
+  fileLoaded = new BehaviorSubject<[RuleEngine, string]>(null);
 
   constructor() {
-    const storage = JSON.parse(localStorage.getItem('mopo-pinball-designer'));
+    const storage = JSON.parse(
+      localStorage.getItem('mopo-pinball-designer')
+    ) as Storage;
     this.selectedFile = storage.selectedFile;
     for (const entry of Object.entries<string>(storage.files)) {
       this.files.set(entry[0], entry[1]);
     }
+    this.selectedEngineId = storage.selectedEngineId;
 
     this.load(this.selectedFile);
   }
@@ -32,6 +42,7 @@ export class DesignerFilesService {
     const storage = {
       files: {},
       selectedFile: this.selectedFile,
+      selectedEngineId: this.selectedEngineId,
     };
 
     for (const k of Array.from(this.files.keys())) {
@@ -54,11 +65,15 @@ export class DesignerFilesService {
         };
       }
 
-      this.fileLoaded.next(engine);
+      this.fileLoaded.next([engine, this.selectedEngineId]);
 
       this.save(fileName, engine);
     } catch (e) {
       console.error(e);
     }
+  }
+
+  setSelectedEngineId(engineId: string): void {
+    this.selectedEngineId = engineId;
   }
 }
