@@ -2,6 +2,8 @@ import { Trigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions
 import { MopoNodeModel } from './mopo-node-model';
 import { HardwareConfig, SwitchTrigger } from '@mopopinball/engine';
 import { Point } from '@projectstorm/geometry';
+import { TimerTrigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/timer-trigger';
+import { TimerTriggerMode } from '@mopopinball/engine/dist/src/system/rule-engine/schema/triggers.schema';
 
 export class TriggerNodeModel<T extends Trigger> extends MopoNodeModel<T> {
   public readonly model: T;
@@ -30,6 +32,9 @@ export class TriggerNodeModel<T extends Trigger> extends MopoNodeModel<T> {
       case this.trigger instanceof SwitchTrigger: {
         return 'Switch Trigger';
       }
+      case this.trigger instanceof TimerTrigger: {
+        return 'Timer Trigger';
+      }
       default:
         return 'Trigger';
     }
@@ -39,17 +44,24 @@ export class TriggerNodeModel<T extends Trigger> extends MopoNodeModel<T> {
     switch (true) {
       case this.trigger instanceof SwitchTrigger: {
         if (this.trigger.switchId) {
-          const sw = this.hardwareConfig.devices.switches[this.trigger.switchId];
+          const sw =
+            this.hardwareConfig.devices.switches[this.trigger.switchId];
           const swName = `${sw.name} (#${sw.number})`;
           if (this.trigger.holdIntervalMs) {
-            this.addOutPort(
-              `${swName} (${this.trigger.holdIntervalMs}ms)`
-            );
+            this.addOutPort(`${swName} (${this.trigger.holdIntervalMs}ms)`);
           } else {
             this.addOutPort(swName);
           }
         } else {
           this.addOutPort('(Select switch)');
+        }
+        break;
+      }
+      case this.trigger instanceof TimerTrigger: {
+        if (this.trigger.mode === TimerTriggerMode.INTERVAL) {
+          this.addOutPort(`Every ${this.trigger.valueMs} ms`);
+        } else {
+          this.addOutPort(`After ${this.trigger.valueMs} ms`);
         }
       }
     }

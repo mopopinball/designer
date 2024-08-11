@@ -1,7 +1,8 @@
 <mat-toolbar>
   <button mat-button [matMenuTriggerFor]="triggermenu">Add Trigger</button>
   <mat-menu #triggermenu="matMenu">
-    <button mat-menu-item (click)="addSwitchTrigger()">Switch Trigger</button>
+    <button mat-menu-item (click)="addSwitchTrigger()"><mat-icon>compress</mat-icon>Switch Trigger</button>
+    <button mat-menu-item (click)="addTimerTrigger()"><mat-icon>timer</mat-icon>Timer Trigger</button>
   </mat-menu>
 
   <button mat-button [matMenuTriggerFor]="actionmenu">Add Action</button>

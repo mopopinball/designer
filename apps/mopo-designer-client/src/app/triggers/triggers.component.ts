@@ -32,6 +32,8 @@ import { DeviceAction } from '@mopopinball/engine/dist/src/system/rule-engine/ac
 import { StateAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/state-action';
 import { MatIconModule } from '@angular/material/icon';
 import { DesignerAttributes } from '@mopopinball/engine/dist/src/system/rule-engine/designer-attributes';
+import { TimerTrigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/timer-trigger';
+import { TimerTriggerMode } from '@mopopinball/engine/dist/src/system/rule-engine/schema/triggers.schema';
 
 @Component({
   selector: 'mopo-triggers',
@@ -78,6 +80,14 @@ export class TriggersComponent implements OnInit, OnChanges {
 
   addSwitchTrigger(): void {
     const trigger = new SwitchTrigger(null);
+    trigger.designer = this.getDefaultTriggerDesigner();
+    this.engine.triggers.push(trigger);
+
+    this.render();
+  }
+
+  addTimerTrigger(): void {
+    const trigger = new TimerTrigger(null, 0, TimerTriggerMode.TIMEOUT);
     trigger.designer = this.getDefaultTriggerDesigner();
     this.engine.triggers.push(trigger);
 
