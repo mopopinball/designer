@@ -8,7 +8,10 @@
   </mat-card-header>
   <mat-card-content>
     <div class="coil-options">
-      <mat-button-toggle-group [(value)]="state.coilState">
+      <mat-button-toggle-group
+        [value]="state.coilState"
+        (change)="onChange($event)"
+      >
         <mat-button-toggle [value]="false">Off</mat-button-toggle>
         <mat-button-toggle [value]="true">On</mat-button-toggle>
       </mat-button-toggle-group>

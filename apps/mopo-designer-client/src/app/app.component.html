@@ -22,6 +22,7 @@
     </div>
   </mat-sidenav>
   <mat-sidenav mode="side" opened position="end">
+    <!-- Engine -->
     <mopo-rule-engine-properties
       *ngIf="!selectedTrigger && !selectedAction"
       [rootEngine]="rootEngine"
@@ -30,13 +31,24 @@
       (addChild)="addChild()"
       (removeEngine)="removeEngine()"
     ></mopo-rule-engine-properties>
+
+    <!-- Triggers -->
     <mopo-switch-trigger-properties
-      *ngIf="selectedTrigger; instanceof: SwitchTrigger"
+      *ngIf="selectedTrigger?.type === 'switch'"
       [hardwareConfig]="hardwareConfig"
       [switchTrigger]="selectedTrigger | as : SwitchTrigger"
       (triggerChange)="onTriggerDetailsChange()"
       (removeTrigger)="removeTrigger()"
     ></mopo-switch-trigger-properties>
+    <mopo-timer-trigger-properties
+      *ngIf="selectedTrigger?.type === 'timer'"
+      [hardwareConfig]="hardwareConfig"
+      [timerTrigger]="selectedTrigger | as : TimerTrigger"
+      (triggerChange)="onTriggerDetailsChange()"
+      (removeTrigger)="removeTrigger()"
+    ></mopo-timer-trigger-properties>
+
+    <!-- Actions -->
     <mopo-device-action-properties
       *ngIf="selectedAction?.type === 'device'"
       [hardwareConfig]="hardwareConfig"

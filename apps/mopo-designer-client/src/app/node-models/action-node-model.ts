@@ -40,7 +40,8 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
       case this.action instanceof DeviceAction: {
         const type = this.action.state?.forLight ? 'Lamp' : 'Device';
         const deviceName =
-          this.hardwareConfig.devices.lamps[this.action.state?.id]?.name;
+          this.hardwareConfig.devices.lamps[this.action.state?.id]?.name ??
+          this.hardwareConfig.devices.coils[this.action.state?.id]?.name;
         return `${type} Action - ${deviceName}`;
       }
       case this.action instanceof StateAction: {
@@ -69,6 +70,12 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
               break;
             case 'BLINK' as never:
               this.addInPort(`Blink at ${this.action.state.blinkRate}ms`);
+          }
+        } else if (this.action.state?.forCoil) {
+          if (this.action.state.coilState) {
+            this.addInPort('On');
+          } else {
+            this.addInPort('Off');
           }
         }
 

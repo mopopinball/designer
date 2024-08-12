@@ -61,6 +61,8 @@ import { DeviceActionPropertiesComponent } from './device-action-properties/devi
 import { DataAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/data-action';
 import { StateActionPropertiesComponent } from './state-action-properties/state-action-properties.component';
 import { StateAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/state-action';
+import { TimerTrigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/timer-trigger';
+import { TimerTriggerPropertiesComponent } from './timer-trigger-properties/timer-trigger-properties.component';
 
 @Component({
   standalone: true,
@@ -94,6 +96,7 @@ import { StateAction } from '@mopopinball/engine/dist/src/system/rule-engine/act
     TriggersComponent,
     RuleEnginePropertiesComponent,
     SwitchTriggerPropertiesComponent,
+    TimerTriggerPropertiesComponent,
     AsPipe,
     SimulationComponent,
     DeviceActionPropertiesComponent,
@@ -111,6 +114,7 @@ export class AppComponent implements OnInit {
   hardwareConfig: HardwareConfig = panthera as unknown as HardwareConfig;
 
   SwitchTrigger: SwitchTrigger;
+  TimerTrigger: TimerTrigger;
   DeviceAction: DeviceAction;
   StateAction: StateAction;
   DataAction: DataAction;

@@ -1,0 +1,28 @@
+<mopo-properties
+  title="Timer Triggers Properties"
+  (removeEngineRule)="removeTrigger.emit()"
+>
+  <div properties class="properties">
+    <mat-form-field>
+      <mat-label>Value (ms)</mat-label>
+      <input
+        matInput
+        type="number"
+        min="0"
+        step="100"
+        [(ngModel)]="timerTrigger.valueMs"
+        (change)="onSelectionChange()"
+      />
+    </mat-form-field>
+
+    <div>
+      <mat-button-toggle-group
+        [(value)]="timerTrigger.mode"
+        (change)="onChange($event)"
+      >
+        <mat-button-toggle [value]="0">Interval</mat-button-toggle>
+        <mat-button-toggle [value]="1">Timeout</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+</mopo-properties>

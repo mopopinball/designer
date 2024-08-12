@@ -5,7 +5,7 @@ import {
   HardwareCoilSchema,
   HardwareConfig,
 } from '@mopopinball/engine';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,5 +43,10 @@ export class CoilComponent implements OnInit {
       ] as HardwareCoilSchema;
       this.dvivenBy = 'Lamp';
     }
+  }
+
+  onChange(evt: MatButtonToggleChange): void {
+    this.state.setInitialState(evt.value);
+    this.coilChange.emit(this.state);
   }
 }

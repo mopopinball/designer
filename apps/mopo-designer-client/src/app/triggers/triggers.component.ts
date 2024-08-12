@@ -87,7 +87,7 @@ export class TriggersComponent implements OnInit, OnChanges {
   }
 
   addTimerTrigger(): void {
-    const trigger = new TimerTrigger(null, 0, TimerTriggerMode.TIMEOUT);
+    const trigger = new TimerTrigger(uuidv4(), 0, TimerTriggerMode.TIMEOUT);
     trigger.designer = this.getDefaultTriggerDesigner();
     this.engine.triggers.push(trigger);
 
@@ -136,6 +136,9 @@ export class TriggersComponent implements OnInit, OnChanges {
     if (!this.diagramEngine) {
       return;
     }
+    this.diagramModel?.clearListeners();
+    this.diagramModel?.clearSelection();
+
     this.diagramEngine.setModel(new DiagramModel());
 
     // listen for linking a trigger to a action
