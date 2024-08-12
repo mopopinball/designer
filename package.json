@@ -4,6 +4,8 @@
   "license": "MIT",
   "scripts": {
     "serve": "nx run mopo-designer-client:serve",
+    "lint": "nx run mopo-designer-client:lint",
+    "build": "nx run mopo-designer-client:build",
     "g:c": "nx g @nx/angular:component --directory=apps/mopo-designer-client/src/app --nameAndDirectoryFormat=derived --style=scss",
     "g:s": "nx g @nx/angular:service --project=mopo-designer-client"
   },

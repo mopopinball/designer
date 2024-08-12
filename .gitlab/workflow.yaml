@@ -1,0 +1,45 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Nx Workflow
+
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+
+jobs:
+  lint-build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    # - name: Configure AWS Credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.S3_PUBLISH_KEY }}
+    #     aws-secret-access-key: ${{ secrets.S3_PUBLISH }}
+    #     aws-region: us-east-1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    # - run: npm config set //npm.pkg.github.com/:_authToken=${{ secrets.MOPOPAK }}
+    # - run: npm install -g @angular/cli@12
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run build
+    # - name: Release
+    #   env:
+    #     GH_TOKEN: ${{ secrets.MOPOPACKAGES }}
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     # NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   run: npx semantic-release
