@@ -38,11 +38,15 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
       case this.action instanceof DataAction:
         return `Data Action - ${this.action.dataKey}`;
       case this.action instanceof DeviceAction: {
-        const type = this.action.state?.forLight ? 'Lamp' : 'Device';
-        const deviceName =
-          this.hardwareConfig.devices.lamps[this.action.state?.id]?.name ??
-          this.hardwareConfig.devices.coils[this.action.state?.id]?.name;
-        return `${type} Action - ${deviceName}`;
+        let type: string;
+        if (this.action.state?.forLight) {
+          type = 'Lamp';
+        } else if (this.action.state?.forCoil) {
+          type = 'Coil';
+        } else {
+          type = 'Device';
+        }
+        return `${type} Action`;
       }
       case this.action instanceof StateAction: {
         return 'State Action';
@@ -60,22 +64,28 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
         break;
       }
       case this.action instanceof DeviceAction: {
+        const deviceName =
+          this.hardwareConfig.devices.lamps[this.action.state?.id]?.name ??
+          this.hardwareConfig.devices.coils[this.action.state?.id]?.name;
+
         if (this.action.state?.forLight) {
           switch (this.action?.state.lightState) {
             case LightState.ON:
-              this.addInPort('On');
+              this.addInPort(`On - ${deviceName}`);
               break;
             case LightState.OFF:
-              this.addInPort('Off');
+              this.addInPort(`Off - ${deviceName}`);
               break;
             case 'BLINK' as never:
-              this.addInPort(`Blink at ${this.action.state.blinkRate}ms`);
+              this.addInPort(
+                `Blink ${deviceName} at ${this.action.state.blinkRate}ms`
+              );
           }
         } else if (this.action.state?.forCoil) {
           if (this.action.state.coilState) {
-            this.addInPort('On');
+            this.addInPort(`On - ${deviceName}`);
           } else {
-            this.addInPort('Off');
+            this.addInPort(`Off - ${deviceName}`);
           }
         }
 

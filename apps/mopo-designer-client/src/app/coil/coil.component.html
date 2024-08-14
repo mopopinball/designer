@@ -1,6 +1,9 @@
 <mat-card>
   <mat-card-header>
-    <div mat-card-avatar><mat-icon>expand</mat-icon></div>
+    <div mat-card-avatar>
+      <mat-icon *ngIf="coil.coilType === 'coil'">compress</mat-icon>
+      <mat-icon *ngIf="coil.coilType === 'relay'">lock</mat-icon>
+    </div>
     <mat-card-title>{{ coil.name }}</mat-card-title>
     <mat-card-subtitle
       >{{ dvivenBy }} {{ coil.number }} ({{ coil.coilType }})</mat-card-subtitle

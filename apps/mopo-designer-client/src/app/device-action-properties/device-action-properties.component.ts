@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { LampComponent } from '../lamp/lamp.component';
 import { CoilComponent } from '../coil/coil.component';
+import { CoilType } from '@mopopinball/engine/dist/src/system/devices/coil-type';
 
 export interface DeviceOption {
   label: string;
@@ -76,8 +77,8 @@ export class DeviceActionPropertiesComponent implements OnInit {
         return {
           label: entry[1].name,
           value: entry[0],
-          icon: 'compress',
-          type: LampRole.LAMP,
+          icon: entry[1].coilType === CoilType.COIL ? 'compress' : 'lock',
+          type: LampRole.COIL,
         };
       });
     this.devices.push(...lampDrivenCoils);
