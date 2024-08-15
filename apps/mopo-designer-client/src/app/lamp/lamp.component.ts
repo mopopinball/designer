@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { LAMP_ICON } from '../icons-constants';
 
 @Component({
   selector: 'mopo-lamp',
@@ -35,6 +36,8 @@ export class LampComponent implements OnInit {
   @Output() lampChange = new EventEmitter<DesiredOutputState>();
   number: number;
   name: string;
+
+  LAMP_ICON = LAMP_ICON;
 
   ngOnInit(): void {
     this.number = this.hardwareConfig.devices.lamps[this.state.id].number;

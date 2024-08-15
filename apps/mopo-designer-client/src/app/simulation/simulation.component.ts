@@ -70,6 +70,12 @@ export class SimulationComponent implements OnInit, OnDestroy {
   }
 
   private setup(): void {
+
+    // TODO: This is kinda crappy. This wont account for newly added timers.
+    this.rootEngine.getAllTimerTriggers().forEach((t) => {
+      t.eventEmitter.on('tick', () => this.rootEngine.onTrigger(t.id));
+  });
+
     this.switches.clear();
     // this.switchesByNumber.clear();
     for (const switchEntry of Object.entries(

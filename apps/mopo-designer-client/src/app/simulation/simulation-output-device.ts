@@ -1,6 +1,7 @@
 import { Point } from '@angular/cdk/drag-drop';
 import { OutputDeviceType } from '@mopopinball/engine';
 import { OutputDevice } from '@mopopinball/engine/dist/src/system/devices/output-device';
+import { LAMP_ICON } from '../icons-constants';
 
 export class SimulationOutputDevice {
   icon: string;
@@ -26,7 +27,7 @@ export class SimulationOutputDevice {
 
     switch (outputDevice.type) {
       case OutputDeviceType.LIGHT:
-        this.icon = 'lightbulb';
+        this.icon = LAMP_ICON;
     }
   }
 

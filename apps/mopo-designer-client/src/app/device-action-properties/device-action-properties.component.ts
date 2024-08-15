@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PropertiesComponent } from '../properties/properties.component';
@@ -19,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { LampComponent } from '../lamp/lamp.component';
 import { CoilComponent } from '../coil/coil.component';
 import { CoilType } from '@mopopinball/engine/dist/src/system/devices/coil-type';
+import { COIL_ICON, LAMP_ICON, RELAY_ICON } from '../icons-constants';
 
 export interface DeviceOption {
   label: string;
@@ -63,7 +63,7 @@ export class DeviceActionPropertiesComponent implements OnInit {
         return {
           label: entry[1].name,
           value: entry[0],
-          icon: 'lightbulb',
+          icon: LAMP_ICON,
           type: LampRole.LAMP,
         };
       });
@@ -77,7 +77,7 @@ export class DeviceActionPropertiesComponent implements OnInit {
         return {
           label: entry[1].name,
           value: entry[0],
-          icon: entry[1].coilType === CoilType.COIL ? 'compress' : 'lock',
+          icon: entry[1].coilType === CoilType.COIL ? COIL_ICON : RELAY_ICON,
           type: LampRole.COIL,
         };
       });
@@ -89,7 +89,7 @@ export class DeviceActionPropertiesComponent implements OnInit {
       return {
         label: entry[1].name,
         value: entry[0],
-        icon: 'compress',
+        icon: COIL_ICON,
         type: LampRole.COIL,
       };
     });

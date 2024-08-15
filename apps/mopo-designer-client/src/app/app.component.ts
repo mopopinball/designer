@@ -133,8 +133,12 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // enable engine debug logs
+    localStorage.setItem('loglevel', 'DEBUG');
+
     this.files.fileLoaded.subscribe(([rootEngine, selectedEngineId]) => {
       this.loadEngine(rootEngine);
+
       const prevSelectedEngine = Array.from(
         this.rootEngine.getAllEngines().values()
       ).find((e) => e.id === selectedEngineId);

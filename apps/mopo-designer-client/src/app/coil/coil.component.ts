@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { COIL_ICON, RELAY_ICON } from '../icons-constants';
 import {
   DesiredOutputState,
   HardwareCoilSchema,
@@ -32,6 +33,9 @@ export class CoilComponent implements OnInit {
 
   dvivenBy: 'Coil' | 'Lamp';
   coil: HardwareCoilSchema;
+
+  COIL_ICON = COIL_ICON;
+  RELAY_ICON = RELAY_ICON;
 
   ngOnInit(): void {
     this.coil = this.hardwareConfig.devices.coils[this.state.id];
