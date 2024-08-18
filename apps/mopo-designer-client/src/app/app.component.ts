@@ -134,6 +134,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.files.fileLoaded.subscribe(([rootEngine, selectedEngineId]) => {
+      if (!rootEngine) {
+        return;
+      }
+
       this.loadEngine(rootEngine);
       const prevSelectedEngine = Array.from(
         this.rootEngine.getAllEngines().values()

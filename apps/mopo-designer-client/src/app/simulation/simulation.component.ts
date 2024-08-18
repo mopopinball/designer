@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -22,7 +29,7 @@ import { GameClock } from '@mopopinball/engine/dist/src/system/game-clock';
 import { OutputDevice } from '@mopopinball/engine/dist/src/system/devices/output-device';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SimulationOutputDevice } from './simulation-output-device';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { SimulationInputDevice } from './simulation-input.device';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -35,7 +42,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatBadgeModule,
     CdkDrag,
     MatButtonModule,
-    MatChipsModule
+    MatChipsModule,
   ],
   templateUrl: './simulation.component.html',
   styleUrl: './simulation.component.scss',
@@ -65,6 +72,10 @@ export class SimulationComponent implements OnInit, OnDestroy {
   activeEngines: RuleEngine[] = [];
 
   ngOnInit(): void {
+    if (!this.rootEngine) {
+      return;
+    }
+
     this.setup();
     this.interval = setInterval(() => this.loop(), 100);
   }
@@ -168,8 +179,9 @@ export class SimulationComponent implements OnInit, OnDestroy {
   }
 
   private update(): void {
-    this.activeEngines = Array.from(this.rootEngine.getAllEngines().values())
-      .filter((e) => e.active);
+    this.activeEngines = Array.from(
+      this.rootEngine.getAllEngines().values()
+    ).filter((e) => e.active);
 
     // compute data once
     const data = this.rootEngine.getData();

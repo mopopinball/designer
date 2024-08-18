@@ -6,14 +6,14 @@
     <button mat-menu-item (click)="newFile()">
       <mat-icon>note_add</mat-icon> <span>New...</span>
     </button>
-    <button mat-menu-item (click)="saveFile()">
+    <button mat-menu-item (click)="saveFile()" [disabled]="!rootEngine">
       <mat-icon>start</mat-icon> <span>Save</span>
     </button>
-    <button mat-menu-item (click)="exportJson()">
+    <button mat-menu-item (click)="exportJson()" [disabled]="!rootEngine">
       <mat-icon>download</mat-icon> <span>Export</span>
     </button>
     <mat-divider></mat-divider>
-    <button mat-menu-item (click)="run.emit()">
+    <button mat-menu-item (click)="run.emit()" [disabled]="!rootEngine">
       <mat-icon>play_arrow</mat-icon><span>Run (Ctrl+R)</span>
     </button>
     <mat-divider></mat-divider>

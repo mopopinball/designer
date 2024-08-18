@@ -21,7 +21,7 @@
       ></mopo-simulation>
     </div>
   </mat-sidenav>
-  <mat-sidenav mode="side" opened position="end">
+  <mat-sidenav mode="side" opened position="end" *ngIf="rootEngine">
     <!-- Engine -->
     <mopo-rule-engine-properties
       *ngIf="!selectedTrigger && !selectedAction"
@@ -66,7 +66,7 @@
     ></mopo-state-action-properties>
     <div *ngIf="selectedAction?.type === 'data'">data action props</div>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content *ngIf="rootEngine">
     <mopo-triggers
       [engine]="selectedEngine"
       [hardwareConfig]="hardwareConfig"
