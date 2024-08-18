@@ -136,8 +136,6 @@ export class TriggersComponent implements OnInit, OnChanges {
     if (!this.diagramEngine) {
       return;
     }
-    this.diagramModel?.clearListeners();
-    this.diagramModel?.clearSelection();
 
     this.diagramEngine.setModel(new DiagramModel());
 

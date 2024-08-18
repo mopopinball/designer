@@ -109,7 +109,7 @@ import { TimerTriggerPropertiesComponent } from './timer-trigger-properties/time
 })
 export class AppComponent implements OnInit {
   @ViewChild('drawer', { static: true }) simulation!: MatSidenav;
-  @ViewChild(TriggersComponent, { static: true })
+  @ViewChild(TriggersComponent)
   triggersComponent: TriggersComponent;
   hardwareConfig: HardwareConfig = panthera as unknown as HardwareConfig;
 
