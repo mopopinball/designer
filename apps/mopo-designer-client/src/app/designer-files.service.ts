@@ -16,12 +16,17 @@ export class DesignerFilesService {
   selectedFile: string;
   selectedEngineId: string;
 
-  fileLoaded = new BehaviorSubject<[RuleEngine, string]>(null);
+  fileLoaded = new BehaviorSubject<[RuleEngine, string]>([null, null]);
 
   constructor() {
     const storage = JSON.parse(
       localStorage.getItem('mopo-pinball-designer')
     ) as Storage;
+
+    if (!storage) {
+      return;
+    }
+
     this.selectedFile = storage.selectedFile;
     for (const entry of Object.entries<string>(storage.files)) {
       this.files.set(entry[0], entry[1]);

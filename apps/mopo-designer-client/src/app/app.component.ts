@@ -109,7 +109,7 @@ import { TimerTriggerPropertiesComponent } from './timer-trigger-properties/time
 })
 export class AppComponent implements OnInit {
   @ViewChild('drawer', { static: true }) simulation!: MatSidenav;
-  @ViewChild(TriggersComponent, { static: true })
+  @ViewChild(TriggersComponent)
   triggersComponent: TriggersComponent;
   hardwareConfig: HardwareConfig = panthera as unknown as HardwareConfig;
 
@@ -137,6 +137,10 @@ export class AppComponent implements OnInit {
     localStorage.setItem('loglevel', 'DEBUG');
 
     this.files.fileLoaded.subscribe(([rootEngine, selectedEngineId]) => {
+      if (!rootEngine) {
+        return;
+      }
+
       this.loadEngine(rootEngine);
 
       const prevSelectedEngine = Array.from(
