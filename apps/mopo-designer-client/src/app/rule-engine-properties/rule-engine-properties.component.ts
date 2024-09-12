@@ -21,6 +21,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { DevicesComponent } from '../devices/devices.component';
 import { AttributesComponent } from '../attributes/attributes.component';
 import { PropertiesComponent } from '../properties/properties.component';
+import { DataComponent } from '../data/data.component';
 
 @Component({
   selector: 'mopo-rule-engine-properties',
@@ -46,7 +47,8 @@ import { PropertiesComponent } from '../properties/properties.component';
     MatDialogModule,
     DevicesComponent,
     AttributesComponent,
-    PropertiesComponent
+    PropertiesComponent,
+    DataComponent,
   ],
   templateUrl: './rule-engine-properties.component.html',
   styleUrl: './rule-engine-properties.component.scss',

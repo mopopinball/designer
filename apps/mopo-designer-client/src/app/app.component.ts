@@ -63,6 +63,7 @@ import { StateActionPropertiesComponent } from './state-action-properties/state-
 import { StateAction } from '@mopopinball/engine/dist/src/system/rule-engine/actions/state-action';
 import { TimerTrigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/timer-trigger';
 import { TimerTriggerPropertiesComponent } from './timer-trigger-properties/timer-trigger-properties.component';
+import { DataActionPropertiesComponent } from './data-action-properties/data-action-properties.component';
 
 @Component({
   standalone: true,
@@ -101,6 +102,7 @@ import { TimerTriggerPropertiesComponent } from './timer-trigger-properties/time
     SimulationComponent,
     DeviceActionPropertiesComponent,
     StateActionPropertiesComponent,
+    DataActionPropertiesComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',

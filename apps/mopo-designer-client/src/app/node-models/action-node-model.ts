@@ -36,7 +36,7 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
     // https://stackoverflow.com/a/54286277
     switch (true) {
       case this.action instanceof DataAction:
-        return `Data Action - ${this.action.dataKey}`;
+        return `Data Action`;
       case this.action instanceof DeviceAction: {
         let type: string;
         if (this.action.state?.forLight) {
@@ -60,7 +60,12 @@ export class ActionNodeModel<A extends Action> extends MopoNodeModel<A> {
     // https://stackoverflow.com/a/54286277
     switch (true) {
       case this.action instanceof DataAction: {
-        this.addInPort(this.action.expression ?? '(Enter expression)');
+        if (this.action.expression) {
+          this.addInPort(`Evaluate "${this.action.dataKey}" as "${this.action.expression}"`);
+        }
+        else {
+          this.addInPort('(Enter expression)')
+        }
         break;
       }
       case this.action instanceof DeviceAction: {

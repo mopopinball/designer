@@ -64,7 +64,14 @@
       (actionChange)="onActionDetailsChange()"
       (removeAction)="removeAction()"
     ></mopo-state-action-properties>
-    <div *ngIf="selectedAction?.type === 'data'">data action props</div>
+    <mopo-data-action-properties
+      *ngIf="selectedAction?.type === 'data'"
+      [hardwareConfig]="hardwareConfig"
+      [selectedEngine]="selectedEngine"
+      [dataAction]="selectedAction | as : DataAction"
+      (actionChange)="onActionDetailsChange()"
+      (removeAction)="removeAction()"
+    ></mopo-data-action-properties>
   </mat-sidenav>
   <mat-sidenav-content *ngIf="rootEngine">
     <mopo-triggers

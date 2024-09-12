@@ -1,0 +1,19 @@
+<mat-form-field class="data-list">
+    <mat-label>Data</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Enter data">
+      <mat-chip-row *ngFor="let d of dataList"
+                    (removed)="remove(d)"
+                    [editable]="true"
+                    [aria-description]="'press enter to edit ' + d.id">
+        {{d.id}}
+        <button matChipRemove [attr.aria-label]="'remove ' + d.id">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+      <input placeholder="New data..."
+             [matChipInputFor]="chipGrid"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="add($event)"/>
+    </mat-chip-grid>
+  </mat-form-field>

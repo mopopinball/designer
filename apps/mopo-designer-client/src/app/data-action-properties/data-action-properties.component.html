@@ -1,0 +1,27 @@
+<mopo-properties
+  title="Data Action Properties"
+  (removeEngineRule)="removeAction.emit()"
+>
+  <div properties class="properties">
+    <mat-form-field>
+      <mat-label>Data element</mat-label>
+      <mat-select
+        [(ngModel)]="dataAction.dataKey"
+        (valueChange)="onDataKeyChange($event)"
+      >
+        <mat-option *ngFor="let dataKey of dataKeys" [value]="dataKey">
+          {{ dataKey }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="expression" *ngIf="dataAction">
+      <mat-label>Data Expression</mat-label>
+      <input
+        matInput
+        placeholder="ballNumber = 7"
+        [(ngModel)]="dataAction.expression"
+        (change)="onExpressionChange()"
+      />
+    </mat-form-field>
+  </div>
+</mopo-properties>
