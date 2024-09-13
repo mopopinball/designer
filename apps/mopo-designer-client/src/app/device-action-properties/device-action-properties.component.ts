@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PropertiesComponent } from '../properties/properties.component';
 import {
@@ -43,7 +51,7 @@ export interface DeviceOption {
   templateUrl: './device-action-properties.component.html',
   styleUrl: './device-action-properties.component.scss',
 })
-export class DeviceActionPropertiesComponent implements OnInit {
+export class DeviceActionPropertiesComponent implements OnInit, OnChanges {
   @Input() hardwareConfig: HardwareConfig;
   @Input() deviceAction: DeviceAction;
   @Output() actionChange = new EventEmitter();
@@ -54,7 +62,9 @@ export class DeviceActionPropertiesComponent implements OnInit {
   deviceId: string = null;
   selectedItem: DeviceOption;
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
     this.devices = [];
 
     const lamps = Array.from(Object.entries(this.hardwareConfig.devices.lamps))

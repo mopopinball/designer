@@ -28,6 +28,7 @@ export class StateActionPropertiesComponent implements OnInit {
   @Input() hardwareConfig: HardwareConfig;
   @Input() stateAction: StateAction;
   @Input() rootEngine: RuleEngine;
+  @Input() selectedEngine: RuleEngine;
 
   @Output() actionChange = new EventEmitter();
   @Output() removeAction = new EventEmitter();

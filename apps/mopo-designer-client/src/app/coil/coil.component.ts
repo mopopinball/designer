@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COIL_ICON, RELAY_ICON } from '../icons-constants';
 import {
@@ -6,7 +14,10 @@ import {
   HardwareCoilSchema,
   HardwareConfig,
 } from '@mopopinball/engine';
-import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import {
+  MatButtonToggleChange,
+  MatButtonToggleModule,
+} from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +37,7 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './coil.component.html',
   styleUrl: './coil.component.scss',
 })
-export class CoilComponent implements OnInit {
+export class CoilComponent implements OnInit, OnChanges {
   @Input() state: DesiredOutputState;
   @Input() hardwareConfig: HardwareConfig;
   @Output() coilChange = new EventEmitter<DesiredOutputState>();
@@ -37,7 +48,9 @@ export class CoilComponent implements OnInit {
   COIL_ICON = COIL_ICON;
   RELAY_ICON = RELAY_ICON;
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
     this.coil = this.hardwareConfig.devices.coils[this.state.id];
     this.dvivenBy = 'Coil';
     // some coils are driven by lamps. If this is the case load it.

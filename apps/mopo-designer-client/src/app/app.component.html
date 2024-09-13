@@ -60,6 +60,7 @@
       *ngIf="selectedAction?.type === 'state'"
       [hardwareConfig]="hardwareConfig"
       [rootEngine]="rootEngine"
+      [selectedEngine]="selectedEngine"
       [stateAction]="selectedAction | as : StateAction"
       (actionChange)="onActionDetailsChange()"
       (removeAction)="removeAction()"

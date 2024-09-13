@@ -18,6 +18,7 @@ import createEngine, {
   DefaultNodeModel,
   DiagramEngine,
   DiagramModel,
+  LabelModel,
   NodeModel,
 } from '@projectstorm/react-diagrams';
 import { SwitchTrigger } from '@mopopinball/engine/dist/src/system/rule-engine/actions/switch-trigger';
@@ -75,6 +76,8 @@ export class TriggersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.unassignedActions = [];
+
     this.render();
   }
 
@@ -173,6 +176,7 @@ export class TriggersComponent implements OnInit, OnChanges {
         const link = triggerModel
           .getOutPorts()[0]
           .link(actionModel.getInPorts()[0]);
+        (link as DefaultLinkModel).addLabel(trigger.actions.indexOf(a) + '');
         this.diagramModel.addLink(link);
       }
     }
